@@ -24,3 +24,15 @@ type HealthCheckResult struct {
 	// Spec depends on the plugin
 	Details *common.Unstructured `json:"details,omitempty"`
 }
+
+// +k8s:deepcopy-gen=true
+// +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+type DatasourceAccessInfo struct {
+	metav1.TypeMeta   `json:",inline"`
+	DatasourcesIdRead string
+	DatasourcesRead   string
+	DatasourcesDelete string
+	DatasourcesWrite  string
+	DatasourcesQuery  string
+}

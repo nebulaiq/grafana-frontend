@@ -191,6 +191,7 @@ func addKnownTypes(scheme *runtime.Scheme, gv schema.GroupVersion) {
 		&datasourceV0.DataSourceList{},
 		&datasourceV0.HealthCheckResult{},
 		&unstructured.Unstructured{},
+		&datasourceV0.DatasourceAccessInfo{},
 
 		// Query handler
 		&queryV0.QueryDataRequest{},
@@ -245,6 +246,7 @@ func (b *DataSourceAPIBuilder) UpdateAPIGroupInfo(apiGroupInfo *genericapiserver
 	storage[ds.StoragePath("query")] = &subQueryREST{builder: b}
 	storage[ds.StoragePath("health")] = &subHealthREST{builder: b}
 	storage[ds.StoragePath("resource")] = &subResourceREST{builder: b}
+	storage[ds.StoragePath("access")] = &subAccessREST{builder: b}
 
 	// FIXME: temporarily register both "datasources" and "connections" query paths
 	// This lets us deploy both datasources/{uid}/query and connections/{uid}/query

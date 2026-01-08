@@ -1,2 +1,7 @@
+API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DatasourceAccessInfo,DatasourcesDelete
+API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DatasourceAccessInfo,DatasourcesIdRead
+API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DatasourceAccessInfo,DatasourcesQuery
+API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DatasourceAccessInfo,DatasourcesRead
+API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DatasourceAccessInfo,DatasourcesWrite
 API rule violation: names_match,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,UnstructuredSpec,Object
 API rule violation: streaming_list_type_json_tags,github.com/grafana/grafana/pkg/apis/datasource/v0alpha1,DataSourceList,ListMeta
