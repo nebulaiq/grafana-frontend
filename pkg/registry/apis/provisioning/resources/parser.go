@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"path"
 
@@ -19,6 +20,7 @@ import (
 
 	dashboard "github.com/grafana/grafana/apps/dashboard/pkg/apis/dashboard/v0alpha1"
 	provisioning "github.com/grafana/grafana/apps/provisioning/pkg/apis/provisioning/v0alpha1"
+	"github.com/grafana/grafana/apps/provisioning/pkg/quotas"
 	"github.com/grafana/grafana/apps/provisioning/pkg/repository"
 	"github.com/grafana/grafana/apps/provisioning/pkg/safepath"
 	"github.com/grafana/grafana/pkg/apimachinery/apis/common/v0alpha1"
@@ -27,6 +29,8 @@ import (
 	"github.com/grafana/grafana/pkg/infra/tracing"
 	"github.com/grafana/grafana/pkg/util"
 )
+
+var ErrQuotaExceeded = errors.New("quota exceeded")
 
 // ParserFactory is a factory for creating parsers for a given repository
 //
@@ -44,10 +48,14 @@ type Parser interface {
 
 type parserFactory struct {
 	ClientFactory ClientFactory
+	QuotaChecker  quotas.QuotaChecker
 }
 
-func NewParserFactory(clientFactory ClientFactory) ParserFactory {
-	return &parserFactory{clientFactory}
+func NewParserFactory(clientFactory ClientFactory, quotaChecker quotas.QuotaChecker) ParserFactory {
+	return &parserFactory{
+		ClientFactory: clientFactory,
+		QuotaChecker:  quotaChecker,
+	}
 }
 
 func (f *parserFactory) GetParser(ctx context.Context, repo repository.Reader) (Parser, error) {
@@ -66,9 +74,10 @@ func (f *parserFactory) GetParser(ctx context.Context, repo repository.Reader) (
 			Namespace: config.Namespace,
 			Name:      config.Name,
 		},
-		urls:    urls,
-		clients: clients,
-		config:  config,
+		urls:         urls,
+		clients:      clients,
+		config:       config,
+		quotaChecker: f.QuotaChecker,
 	}, nil
 }
 
@@ -83,6 +92,9 @@ type parser struct {
 
 	// ResourceClients give access to k8s apis
 	clients ResourceClients
+
+	// QuotaChecker checks resource quota before creation
+	quotaChecker quotas.QuotaChecker
 }
 
 type ParsedResource struct {
@@ -125,6 +137,9 @@ type ParsedResource struct {
 
 	// If we got some Errors
 	Errors []string
+
+	// QuotaChecker checks resource quota before creation
+	quotaChecker quotas.QuotaChecker
 }
 
 func (r *parser) Parse(ctx context.Context, info *repository.FileInfo) (parsed *ParsedResource, err error) {
@@ -215,6 +230,9 @@ func (r *parser) Parse(ctx context.Context, info *repository.FileInfo) (parsed *
 	if err != nil {
 		return nil, fmt.Errorf("get client for kind: %w", err)
 	}
+
+	// Store quota checker for use in Run method
+	parsed.quotaChecker = r.quotaChecker
 
 	return parsed, nil
 }
@@ -368,6 +386,13 @@ func (f *ParsedResource) Run(ctx context.Context) error {
 		// Set the deleted resource as the result
 		if err == nil && f.Existing != nil {
 			f.Upsert = f.Existing.DeepCopy()
+
+			// Update quota usage after successful deletion
+			if quotaErr := f.quotaChecker.OnResourceDeleted(deleteCtx, f.Obj.GetNamespace()); quotaErr != nil {
+				// Log the error but don't fail the operation since the resource was already deleted
+				logging.FromContext(deleteCtx).Error("failed to update quota after resource deletion", "error", quotaErr)
+			}
+
 		}
 
 		deleteSpan.End()
@@ -387,6 +412,18 @@ func (f *ParsedResource) Run(ctx context.Context) error {
 	// If we have already tried loading existing, start with create
 	if f.DryRunResponse != nil && f.Existing == nil {
 		f.Action = provisioning.ResourceActionCreate
+
+		// Check quota before creating
+		if f.quotaChecker != nil {
+			allowed, err := f.quotaChecker.CheckResourceQuota(actionsCtx, f.Obj.GetNamespace())
+			if err != nil {
+				return fmt.Errorf("check resource quota: %w", err)
+			}
+			if !allowed {
+				return ErrQuotaExceeded
+			}
+		}
+
 		createCtx, createSpan := tracing.Start(actionsCtx, "provisioning.resources.run_resource.create")
 		createSpan.SetAttributes(attribute.String("resource.name", f.Obj.GetName()))
 		f.Upsert, err = f.Client.Create(createCtx, f.Obj, metav1.CreateOptions{
@@ -398,6 +435,12 @@ func (f *ParsedResource) Run(ctx context.Context) error {
 		createSpan.End()
 
 		if err == nil {
+			// Update quota usage after successful creation
+			if quotaErr := f.quotaChecker.OnResourceCreated(actionsCtx, f.Obj.GetNamespace()); quotaErr != nil {
+				// Log the error but don't fail the operation since the resource was already created
+				logging.FromContext(actionsCtx).Error("failed to update quota after resource creation", "error", quotaErr)
+			}
+
 			return nil // it worked, return
 		}
 	}
@@ -417,6 +460,18 @@ func (f *ParsedResource) Run(ctx context.Context) error {
 
 	if apierrors.IsNotFound(err) {
 		f.Action = provisioning.ResourceActionCreate
+
+		// Check quota before creating (fallback create)
+		if f.quotaChecker != nil {
+			allowed, quotaErr := f.quotaChecker.CheckResourceQuota(actionsCtx, f.Obj.GetNamespace())
+			if quotaErr != nil {
+				return fmt.Errorf("check resource quota: %w", quotaErr)
+			}
+			if !allowed {
+				return ErrQuotaExceeded
+			}
+		}
+
 		fallbackCreateCtx, fallbackCreateSpan := tracing.Start(actionsCtx, "provisioning.resources.run_resource.create_fallback")
 		fallbackCreateSpan.SetAttributes(attribute.String("resource.name", f.Obj.GetName()))
 		f.Upsert, err = f.Client.Create(fallbackCreateCtx, f.Obj, metav1.CreateOptions{
@@ -426,6 +481,14 @@ func (f *ParsedResource) Run(ctx context.Context) error {
 			fallbackCreateSpan.RecordError(err)
 		}
 		fallbackCreateSpan.End()
+
+		// Update quota usage after successful creation
+		if err == nil && f.quotaChecker != nil {
+			if quotaErr := f.quotaChecker.OnResourceCreated(actionsCtx, f.Obj.GetNamespace()); quotaErr != nil {
+				// Log the error but don't fail the operation since the resource was already created
+				logging.FromContext(actionsCtx).Error("failed to update quota after resource creation", "error", quotaErr)
+			}
+		}
 	}
 	return err
 }
