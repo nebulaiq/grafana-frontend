@@ -153,10 +153,10 @@ func (qb *queryBuilder) buildBatchDeleteQuery(keyPaths []string) (string, []inte
 }
 
 // buildInsertDatastoreQuery generates INSERT for datastore section for use in non-backwards compatible mode (without rvmanager)
-// Includes all 8 fields with empty string defaults for group, resource, namespace, name, and 0 for action
+// Includes all required fields with empty string defaults for group, resource, namespace, name, folder, and 0 for action
 func (qb *queryBuilder) buildInsertDatastoreQuery(keyPath string, value []byte, guid string) (string, []interface{}) {
 	query := fmt.Sprintf(
-		"INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+		"INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
 		qb.dialect.QuoteIdent(qb.tableName),
 		qb.dialect.QuoteIdent("guid"),
 		qb.dialect.QuoteIdent("key_path"),
@@ -166,6 +166,7 @@ func (qb *queryBuilder) buildInsertDatastoreQuery(keyPath string, value []byte, 
 		qb.dialect.QuoteIdent("namespace"),
 		qb.dialect.QuoteIdent("name"),
 		qb.dialect.QuoteIdent("action"),
+		qb.dialect.QuoteIdent("folder"),
 		qb.dialect.Placeholder(1), // guid
 		qb.dialect.Placeholder(2), // key_path
 		qb.dialect.Placeholder(3), // value
@@ -174,13 +175,15 @@ func (qb *queryBuilder) buildInsertDatastoreQuery(keyPath string, value []byte, 
 		qb.dialect.Placeholder(6), // namespace (empty)
 		qb.dialect.Placeholder(7), // name (empty)
 		qb.dialect.Placeholder(8), // action (0)
+		qb.dialect.Placeholder(9), // folder (empty)
 	)
-	return query, []interface{}{guid, keyPath, value, "", "", "", "", 0}
+	return query, []interface{}{guid, keyPath, value, "", "", "", "", 0, ""}
 }
 
 // buildInsertDatastoreBackwardCompatQuery generates INSERT for backward-compatible mode
 // Inserts guid, value, and placeholder values for NOT NULL columns - these will be updated by applyBackwardsCompatibleChanges()
-func (qb *queryBuilder) buildInsertDatastoreBackwardCompatQuery(value []byte, guid, group, resource, namespace, name, folder string) (string, []interface{}) {
+// action must be 1 (created), 2 (updated), or 3 (deleted) - this is required for rvmanager to generate key_path correctly
+func (qb *queryBuilder) buildInsertDatastoreBackwardCompatQuery(value []byte, guid, group, resource, namespace, name, folder string, action int64) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
 		qb.dialect.QuoteIdent(qb.tableName),
@@ -201,7 +204,7 @@ func (qb *queryBuilder) buildInsertDatastoreBackwardCompatQuery(value []byte, gu
 		qb.dialect.Placeholder(7), // action
 		qb.dialect.Placeholder(8), // folder
 	)
-	return query, []interface{}{guid, value, group, resource, namespace, name, 0, folder}
+	return query, []interface{}{guid, value, group, resource, namespace, name, action, folder}
 }
 
 // buildUpdateDatastoreQuery generates UPDATE for datastore section

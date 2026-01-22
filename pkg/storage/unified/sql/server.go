@@ -116,8 +116,14 @@ func NewResourceServer(opts ServerOptions) (resource.ResourceServer, error) {
 				return nil, fmt.Errorf("unsupported database driver: %s", dbConn.DriverName())
 			}
 
+			// Get the underlying *sql.DB for sqlkv
+			sqlDB, ok := dbimpl.GetSqlDB(dbConn)
+			if !ok {
+				return nil, fmt.Errorf("failed to get underlying *sql.DB from db connection")
+			}
+
 			// Create sqlkv with the standard library DB
-			sqlkv, err := resource.NewSQLKV(dbConn.SqlDB(), dbConn.DriverName())
+			sqlkv, err := resource.NewSQLKV(sqlDB, dbConn.DriverName())
 			if err != nil {
 				return nil, fmt.Errorf("error creating sqlkv: %s", err)
 			}

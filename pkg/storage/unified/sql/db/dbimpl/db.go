@@ -7,6 +7,29 @@ import (
 	"github.com/grafana/grafana/pkg/storage/unified/sql/db"
 )
 
+// dbUnwrapper is an interface for db.DB wrappers that can return their underlying DB.
+type dbUnwrapper interface {
+	UnwrapDB() db.DB
+}
+
+// GetSqlDB extracts the underlying *sql.DB from a db.DB instance.
+// This is used by code that needs direct access to stdlib database/sql methods.
+// It handles wrapped DBs (like the otel instrumented wrapper) by recursively unwrapping.
+// Returns nil and false if the underlying *sql.DB cannot be found.
+func GetSqlDB(d db.DB) (*sql.DB, bool) {
+	// Try direct type assertion first
+	if impl, ok := d.(sqlDB); ok {
+		return impl.DB, true
+	}
+
+	// Check if this is a wrapper that can be unwrapped
+	if wrapper, ok := d.(dbUnwrapper); ok {
+		return GetSqlDB(wrapper.UnwrapDB())
+	}
+
+	return nil, false
+}
+
 // NewDB converts a *sql.DB to a db.DB.
 func NewDB(d *sql.DB, driverName string) db.DB {
 	ret := sqlDB{
@@ -29,7 +52,8 @@ func (d sqlDB) DriverName() string {
 }
 
 // SqlDB returns the underlying *sql.DB.
-// This is needed for code that requires direct access to stdlib database/sql methods.
+// Note: This method is not part of the db.DB interface.
+// Use GetSqlDB() function instead for external access.
 func (d sqlDB) SqlDB() *sql.DB {
 	return d.DB
 }

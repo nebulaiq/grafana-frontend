@@ -29,7 +29,6 @@ type DB interface {
 	PingContext(context.Context) error
 	Stats() sql.DBStats
 	DriverName() string
-	SqlDB() *sql.DB
 }
 
 // TxFunc is a function that executes with access to a transaction. The context
