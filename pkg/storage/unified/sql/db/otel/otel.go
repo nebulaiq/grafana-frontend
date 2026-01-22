@@ -246,6 +246,12 @@ func (x *otelDB) PingContext(ctx context.Context) error {
 	return err
 }
 
+// UnwrapDB returns the underlying db.DB that this instrumented wrapper decorates.
+// This is used by code that needs to access the raw database connection.
+func (x *otelDB) UnwrapDB() db.DB {
+	return x.DB
+}
+
 type otelTx struct {
 	tx              db.Tx
 	span            trace.Span

@@ -36,7 +36,9 @@ func setupTestEventStoreSqlKv(t *testing.T) *eventStore {
 	require.NoError(t, err)
 	dbConn, err := eDB.Init(context.Background())
 	require.NoError(t, err)
-	kv, err := NewSQLKV(dbConn.SqlDB(), dbConn.DriverName())
+	sqlDB, ok := dbimpl.GetSqlDB(dbConn)
+	require.True(t, ok, "failed to get underlying *sql.DB")
+	kv, err := NewSQLKV(sqlDB, dbConn.DriverName())
 	require.NoError(t, err)
 	return newEventStore(kv)
 }

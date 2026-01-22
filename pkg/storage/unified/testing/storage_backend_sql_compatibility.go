@@ -29,7 +29,9 @@ func NewTestSqlKvBackend(t *testing.T, ctx context.Context, withRvManager bool) 
 	require.NoError(t, err)
 	dbConn, err := eDB.Init(ctx)
 	require.NoError(t, err)
-	kv, err := resource.NewSQLKV(dbConn.SqlDB(), dbConn.DriverName())
+	sqlDB, ok := dbimpl.GetSqlDB(dbConn)
+	require.True(t, ok, "failed to get underlying *sql.DB")
+	kv, err := resource.NewSQLKV(sqlDB, dbConn.DriverName())
 	require.NoError(t, err)
 
 	kvOpts := resource.KVBackendOptions{

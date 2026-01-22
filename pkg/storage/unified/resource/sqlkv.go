@@ -296,7 +296,21 @@ func (w *sqlWriteCloser) Close() error {
 		return fmt.Errorf("failed to parse key for GUID: %w", err)
 	}
 
-	query, args := qb.buildInsertDatastoreBackwardCompatQuery(value, dataKey.GUID, dataKey.Group, dataKey.Resource, dataKey.Namespace, dataKey.Name, dataKey.Folder)
+	// Convert action string to numeric value for database
+	// This is required for rvmanager to construct key_path correctly
+	var action int64
+	switch dataKey.Action {
+	case DataActionCreated:
+		action = 1
+	case DataActionUpdated:
+		action = 2
+	case DataActionDeleted:
+		action = 3
+	default:
+		return fmt.Errorf("invalid action: %s", dataKey.Action)
+	}
+
+	query, args := qb.buildInsertDatastoreBackwardCompatQuery(value, dataKey.GUID, dataKey.Group, dataKey.Resource, dataKey.Namespace, dataKey.Name, dataKey.Folder, action)
 	_, err = tx.ExecContext(w.ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("failed to save to resource_history: %w", err)
