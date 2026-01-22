@@ -613,7 +613,7 @@ func TestDataKey_Validate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := tt.key.Validate()
+			err := validateDataKey(tt.key)
 			if tt.expectError {
 				require.Error(t, err)
 				if tt.errorMsg != "" {

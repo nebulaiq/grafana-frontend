@@ -1,18 +1,26 @@
-package resource
+package kv
 
 import (
 	"fmt"
 	"strings"
 )
 
-// queryBuilder helps build SQL queries with a dialect
-type queryBuilder struct {
+// QueryBuilder helps build SQL queries with a dialect
+type QueryBuilder struct {
 	dialect   Dialect
 	tableName string
 }
 
-// buildGetQuery generates SELECT query for single key
-func (qb *queryBuilder) buildGetQuery(keyPath string) (string, []interface{}) {
+// NewQueryBuilder creates a new query builder for the given dialect and table
+func NewQueryBuilder(dialect Dialect, tableName string) *QueryBuilder {
+	return &QueryBuilder{
+		dialect:   dialect,
+		tableName: tableName,
+	}
+}
+
+// BuildGetQuery generates SELECT query for single key
+func (qb *QueryBuilder) BuildGetQuery(keyPath string) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"SELECT %s FROM %s WHERE %s = %s",
 		qb.dialect.QuoteIdent("value"),
@@ -23,8 +31,8 @@ func (qb *queryBuilder) buildGetQuery(keyPath string) (string, []interface{}) {
 	return query, []interface{}{keyPath}
 }
 
-// buildKeysQuery generates SELECT query for listing keys
-func (qb *queryBuilder) buildKeysQuery(startKey, endKey string, sortAsc bool, limit int64) (string, []interface{}) {
+// BuildKeysQuery generates SELECT query for listing keys
+func (qb *QueryBuilder) BuildKeysQuery(startKey, endKey string, sortAsc bool, limit int64) (string, []interface{}) {
 	order := "ASC"
 	if !sortAsc {
 		order = "DESC"
@@ -46,8 +54,8 @@ func (qb *queryBuilder) buildKeysQuery(startKey, endKey string, sortAsc bool, li
 	return query, []interface{}{startKey, endKey}
 }
 
-// buildUpsertQuery generates INSERT with ON CONFLICT/ON DUPLICATE KEY
-func (qb *queryBuilder) buildUpsertQuery(keyPath string, value []byte) (string, []interface{}) {
+// BuildUpsertQuery generates INSERT with ON CONFLICT/ON DUPLICATE KEY
+func (qb *QueryBuilder) BuildUpsertQuery(keyPath string, value []byte) (string, []interface{}) {
 	var query string
 
 	switch qb.dialect.Name() {
@@ -73,8 +81,8 @@ func (qb *queryBuilder) buildUpsertQuery(keyPath string, value []byte) (string, 
 	}
 }
 
-// buildDeleteQuery generates DELETE query
-func (qb *queryBuilder) buildDeleteQuery(keyPath string) (string, []interface{}) {
+// BuildDeleteQuery generates DELETE query
+func (qb *QueryBuilder) BuildDeleteQuery(keyPath string) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"DELETE FROM %s WHERE %s = %s",
 		qb.dialect.QuoteIdent(qb.tableName),
@@ -84,9 +92,9 @@ func (qb *queryBuilder) buildDeleteQuery(keyPath string) (string, []interface{})
 	return query, []interface{}{keyPath}
 }
 
-// buildBatchGetQuery generates SELECT with IN clause
+// BuildBatchGetQuery generates SELECT with IN clause
 // This uses a UNION ALL approach to preserve ordering by input index
-func (qb *queryBuilder) buildBatchGetQuery(keyPaths []string) (string, []interface{}) {
+func (qb *QueryBuilder) BuildBatchGetQuery(keyPaths []string) (string, []interface{}) {
 	if len(keyPaths) == 0 {
 		return "", nil
 	}
@@ -128,8 +136,8 @@ func (qb *queryBuilder) buildBatchGetQuery(keyPaths []string) (string, []interfa
 	return query, args
 }
 
-// buildBatchDeleteQuery generates DELETE with IN clause
-func (qb *queryBuilder) buildBatchDeleteQuery(keyPaths []string) (string, []interface{}) {
+// BuildBatchDeleteQuery generates DELETE with IN clause
+func (qb *QueryBuilder) BuildBatchDeleteQuery(keyPaths []string) (string, []interface{}) {
 	if len(keyPaths) == 0 {
 		return "", nil
 	}
@@ -152,9 +160,9 @@ func (qb *queryBuilder) buildBatchDeleteQuery(keyPaths []string) (string, []inte
 	return query, args
 }
 
-// buildInsertDatastoreQuery generates INSERT for datastore section for use in non-backwards compatible mode (without rvmanager)
+// BuildInsertDatastoreQuery generates INSERT for datastore section for use in non-backwards compatible mode (without rvmanager)
 // Includes all required fields with empty string defaults for group, resource, namespace, name, folder, and 0 for action
-func (qb *queryBuilder) buildInsertDatastoreQuery(keyPath string, value []byte, guid string) (string, []interface{}) {
+func (qb *QueryBuilder) BuildInsertDatastoreQuery(keyPath string, value []byte, guid string) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
 		qb.dialect.QuoteIdent(qb.tableName),
@@ -180,10 +188,10 @@ func (qb *queryBuilder) buildInsertDatastoreQuery(keyPath string, value []byte, 
 	return query, []interface{}{guid, keyPath, value, "", "", "", "", 0, ""}
 }
 
-// buildInsertDatastoreBackwardCompatQuery generates INSERT for backward-compatible mode
+// BuildInsertDatastoreBackwardCompatQuery generates INSERT for backward-compatible mode
 // Inserts guid, value, and placeholder values for NOT NULL columns - these will be updated by applyBackwardsCompatibleChanges()
 // action must be 1 (created), 2 (updated), or 3 (deleted) - this is required for rvmanager to generate key_path correctly
-func (qb *queryBuilder) buildInsertDatastoreBackwardCompatQuery(value []byte, guid, group, resource, namespace, name, folder string, action int64) (string, []interface{}) {
+func (qb *QueryBuilder) BuildInsertDatastoreBackwardCompatQuery(value []byte, guid, group, resource, namespace, name, folder string, action int64) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
 		qb.dialect.QuoteIdent(qb.tableName),
@@ -207,8 +215,8 @@ func (qb *queryBuilder) buildInsertDatastoreBackwardCompatQuery(value []byte, gu
 	return query, []interface{}{guid, value, group, resource, namespace, name, action, folder}
 }
 
-// buildUpdateDatastoreQuery generates UPDATE for datastore section
-func (qb *queryBuilder) buildUpdateDatastoreQuery(keyPath string, value []byte) (string, []interface{}) {
+// BuildUpdateDatastoreQuery generates UPDATE for datastore section
+func (qb *QueryBuilder) BuildUpdateDatastoreQuery(keyPath string, value []byte) (string, []interface{}) {
 	query := fmt.Sprintf(
 		"UPDATE %s SET %s = %s WHERE %s = %s",
 		qb.dialect.QuoteIdent(qb.tableName),

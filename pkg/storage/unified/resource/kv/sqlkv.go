@@ -1,4 +1,4 @@
-package resource
+package kv
 
 import (
 	"bytes"
@@ -14,9 +14,9 @@ import (
 	"github.com/google/uuid"
 )
 
-var _ KV = &sqlKV{}
+var _ KV = &SQLKV{}
 
-type sqlKV struct {
+type SQLKV struct {
 	db         *sql.DB
 	dialect    Dialect
 	driverName string // TODO: remove when backwards compatibility is no longer needed.
@@ -32,32 +32,34 @@ func NewSQLKV(db *sql.DB, driverName string) (KV, error) {
 		return nil, err
 	}
 
-	return &sqlKV{
+	return &SQLKV{
 		db:         db,
 		dialect:    dialect,
 		driverName: driverName, // for usage in datastore
 	}, nil
 }
 
+// DriverName returns the driver name for backwards compatibility with datastore
+func (k *SQLKV) DriverName() string {
+	return k.driverName
+}
+
 // getQueryBuilder creates a query builder for the given section
-func (k *sqlKV) getQueryBuilder(section string) (*queryBuilder, error) {
+func (k *SQLKV) getQueryBuilder(section string) (*QueryBuilder, error) {
 	if section == "" {
 		return nil, fmt.Errorf("section is required")
 	}
 
-	if section != dataSection && section != eventsSection {
+	if section != DataSection && section != EventsSection {
 		return nil, fmt.Errorf("invalid section: %s", section)
 	}
 
 	tableName := "resource_events"
-	if section == dataSection {
+	if section == DataSection {
 		tableName = "resource_history"
 	}
 
-	return &queryBuilder{
-		dialect:   k.dialect,
-		tableName: tableName,
-	}, nil
+	return NewQueryBuilder(k.dialect, tableName), nil
 }
 
 // getKeyPath constructs a full key path from section and key
@@ -74,11 +76,11 @@ func getKeyPaths(section string, keys []string) []string {
 	return result
 }
 
-func (k *sqlKV) Ping(ctx context.Context) error {
+func (k *SQLKV) Ping(ctx context.Context) error {
 	return k.db.PingContext(ctx)
 }
 
-func (k *sqlKV) Keys(ctx context.Context, section string, opt ListOptions) iter.Seq2[string, error] {
+func (k *SQLKV) Keys(ctx context.Context, section string, opt ListOptions) iter.Seq2[string, error] {
 	return func(yield func(string, error) bool) {
 		qb, err := k.getQueryBuilder(section)
 		if err != nil {
@@ -96,7 +98,7 @@ func (k *sqlKV) Keys(ctx context.Context, section string, opt ListOptions) iter.
 
 		sortAsc := opt.Sort != SortOrderDesc
 
-		query, args := qb.buildKeysQuery(startKey, endKey, sortAsc, opt.Limit)
+		query, args := qb.BuildKeysQuery(startKey, endKey, sortAsc, opt.Limit)
 		rows, err := k.db.QueryContext(ctx, query, args...)
 		if err != nil {
 			yield("", err)
@@ -122,7 +124,7 @@ func (k *sqlKV) Keys(ctx context.Context, section string, opt ListOptions) iter.
 	}
 }
 
-func (k *sqlKV) Get(ctx context.Context, section string, key string) (io.ReadCloser, error) {
+func (k *SQLKV) Get(ctx context.Context, section string, key string) (io.ReadCloser, error) {
 	if key == "" {
 		return nil, fmt.Errorf("key is required")
 	}
@@ -133,7 +135,7 @@ func (k *sqlKV) Get(ctx context.Context, section string, key string) (io.ReadClo
 	}
 
 	keyPath := getKeyPath(section, key)
-	query, args := qb.buildGetQuery(keyPath)
+	query, args := qb.BuildGetQuery(keyPath)
 	row := k.db.QueryRowContext(ctx, query, args...)
 
 	var value []byte
@@ -147,7 +149,7 @@ func (k *sqlKV) Get(ctx context.Context, section string, key string) (io.ReadClo
 	return io.NopCloser(bytes.NewReader(value)), nil
 }
 
-func (k *sqlKV) BatchGet(ctx context.Context, section string, keys []string) iter.Seq2[KeyValue, error] {
+func (k *SQLKV) BatchGet(ctx context.Context, section string, keys []string) iter.Seq2[KeyValue, error] {
 	return func(yield func(KeyValue, error) bool) {
 		if len(keys) == 0 {
 			return
@@ -160,7 +162,7 @@ func (k *sqlKV) BatchGet(ctx context.Context, section string, keys []string) ite
 		}
 
 		keyPaths := getKeyPaths(section, keys)
-		query, args := qb.buildBatchGetQuery(keyPaths)
+		query, args := qb.BuildBatchGetQuery(keyPaths)
 		rows, err := k.db.QueryContext(ctx, query, args...)
 		if err != nil {
 			yield(KeyValue{}, err)
@@ -191,11 +193,11 @@ func (k *sqlKV) BatchGet(ctx context.Context, section string, keys []string) ite
 	}
 }
 
-func (k *sqlKV) Save(ctx context.Context, section string, key string) (io.WriteCloser, error) {
+func (k *SQLKV) Save(ctx context.Context, section string, key string) (io.WriteCloser, error) {
 	if section == "" {
 		return nil, fmt.Errorf("section is required")
 	}
-	if section != dataSection && section != eventsSection {
+	if section != DataSection && section != EventsSection {
 		return nil, fmt.Errorf("invalid section: %s", section)
 	}
 	if key == "" {
@@ -213,7 +215,7 @@ func (k *sqlKV) Save(ctx context.Context, section string, key string) (io.WriteC
 }
 
 type sqlWriteCloser struct {
-	kv      *sqlKV
+	kv      *SQLKV
 	ctx     context.Context
 	section string
 	key     string
@@ -250,8 +252,8 @@ func (w *sqlWriteCloser) Close() error {
 
 	// do regular kv save: simple key_path + value insert with conflict check.
 	// can only do this on resource_events for now, until we drop the columns in resource_history
-	if w.section == eventsSection {
-		query, args := qb.buildUpsertQuery(keyPath, value)
+	if w.section == EventsSection {
+		query, args := qb.BuildUpsertQuery(keyPath, value)
 		_, err := w.kv.db.ExecContext(w.ctx, query, args...)
 		if err != nil {
 			return fmt.Errorf("failed to save: %w", err)
@@ -266,7 +268,7 @@ func (w *sqlWriteCloser) Close() error {
 		// This can be simplified once resource_history columns are dropped
 		_, err := w.kv.Get(w.ctx, w.section, w.key)
 		if errors.Is(err, ErrNotFound) {
-			query, args := qb.buildInsertDatastoreQuery(keyPath, value, uuid.New().String())
+			query, args := qb.BuildInsertDatastoreQuery(keyPath, value, uuid.New().String())
 			_, err := w.kv.db.ExecContext(w.ctx, query, args...)
 			if err != nil {
 				return fmt.Errorf("failed to insert to datastore: %w", err)
@@ -278,7 +280,7 @@ func (w *sqlWriteCloser) Close() error {
 			return fmt.Errorf("failed to get for save: %w", err)
 		}
 
-		query, args := qb.buildUpdateDatastoreQuery(keyPath, value)
+		query, args := qb.BuildUpdateDatastoreQuery(keyPath, value)
 		_, err = w.kv.db.ExecContext(w.ctx, query, args...)
 		if err != nil {
 			return fmt.Errorf("failed to update to datastore: %w", err)
@@ -310,7 +312,7 @@ func (w *sqlWriteCloser) Close() error {
 		return fmt.Errorf("invalid action: %s", dataKey.Action)
 	}
 
-	query, args := qb.buildInsertDatastoreBackwardCompatQuery(value, dataKey.GUID, dataKey.Group, dataKey.Resource, dataKey.Namespace, dataKey.Name, dataKey.Folder, action)
+	query, args := qb.BuildInsertDatastoreBackwardCompatQuery(value, dataKey.GUID, dataKey.Group, dataKey.Resource, dataKey.Namespace, dataKey.Name, dataKey.Folder, action)
 	_, err = tx.ExecContext(w.ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("failed to save to resource_history: %w", err)
@@ -319,7 +321,7 @@ func (w *sqlWriteCloser) Close() error {
 	return nil
 }
 
-func (k *sqlKV) Delete(ctx context.Context, section string, key string) error {
+func (k *SQLKV) Delete(ctx context.Context, section string, key string) error {
 	if key == "" {
 		return fmt.Errorf("key is required")
 	}
@@ -330,7 +332,7 @@ func (k *sqlKV) Delete(ctx context.Context, section string, key string) error {
 	}
 
 	keyPath := getKeyPath(section, key)
-	query, args := qb.buildDeleteQuery(keyPath)
+	query, args := qb.BuildDeleteQuery(keyPath)
 	res, err := k.db.ExecContext(ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("failed to delete key: %w", err)
@@ -348,7 +350,7 @@ func (k *sqlKV) Delete(ctx context.Context, section string, key string) error {
 	return nil
 }
 
-func (k *sqlKV) BatchDelete(ctx context.Context, section string, keys []string) error {
+func (k *SQLKV) BatchDelete(ctx context.Context, section string, keys []string) error {
 	if len(keys) == 0 {
 		return nil
 	}
@@ -359,7 +361,7 @@ func (k *sqlKV) BatchDelete(ctx context.Context, section string, keys []string) 
 	}
 
 	keyPaths := getKeyPaths(section, keys)
-	query, args := qb.buildBatchDeleteQuery(keyPaths)
+	query, args := qb.BuildBatchDeleteQuery(keyPaths)
 	if _, err := k.db.ExecContext(ctx, query, args...); err != nil {
 		return fmt.Errorf("failed to batch delete keys: %w", err)
 	}
@@ -367,7 +369,7 @@ func (k *sqlKV) BatchDelete(ctx context.Context, section string, keys []string) 
 	return nil
 }
 
-func (k *sqlKV) UnixTimestamp(ctx context.Context) (int64, error) {
+func (k *SQLKV) UnixTimestamp(ctx context.Context) (int64, error) {
 	return time.Now().Unix(), nil
 }
 
