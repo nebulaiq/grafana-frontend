@@ -10,6 +10,7 @@ import { useDispatch, useSelector, UserOrg } from 'app/types';
 
 import { Branding } from '../../Branding/Branding';
 
+import { CustomerBranding } from './CustomerBranding';
 import { OrganizationSelect } from './OrganizationSelect';
 
 export function OrganizationSwitcher() {
@@ -34,11 +35,8 @@ export function OrganizationSwitcher() {
   }, [dispatch]);
 
   if (orgs?.length <= 1) {
-    return (
-      <span className={styles.brandTitle}>
-        <Text truncate>{Branding.AppTitle}</Text>
-      </span>
-    );
+    // Show customer co-branding when there's only one org (most common case)
+    return <CustomerBranding variant="full" />;
   }
 
   return <OrganizationSelect orgs={orgs} onSelectChange={onSelectChange} />;
