@@ -16,9 +16,10 @@
   - Visibility: Public
 
 - [x] Cloned successfully
-  - Location: `/Users/shailendra/WS/nebulaiq/grafana-frontend`
+  - Location: `/Users/shailendra/WS/nebulaiq/nebulaiq-telemetry-dashboard/grafana-frontend`
   - Files: 21,476 files
   - Size: ~2.8 GB
+  - **Note**: Organized as subproject within nebulaiq-telemetry-dashboard
 
 - [x] Upstream remote added
   ```bash

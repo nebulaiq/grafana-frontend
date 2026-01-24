@@ -2,6 +2,22 @@
 
 This is a customized Grafana frontend for NebulaIQ Telemetry Dashboard.
 
+## Project Location
+
+This is a **subproject** within the NebulaIQ Telemetry Dashboard:
+
+```
+nebulaiq-telemetry-dashboard/           (Parent project)
+├── grafana-frontend/                   (This project - Grafana fork)
+├── grafana-app/                        (Custom NebulaIQ app plugin)
+├── querier-datasource/                 (Custom datasource)
+├── vertamedia-clickhouse-datasource/   (ClickHouse datasource)
+├── nebulaiq-graph-panel/               (Custom panel plugin)
+└── PHASE_*.md                          (Implementation guides)
+```
+
+**Path**: `/Users/shailendra/WS/nebulaiq/nebulaiq-telemetry-dashboard/grafana-frontend/`
+
 ## Overview
 
 This fork is based on Grafana v11.5.0 and includes NebulaIQ-specific customizations for branding, navigation, and feature visibility.
@@ -18,8 +34,26 @@ This fork is based on Grafana v11.5.0 and includes NebulaIQ-specific customizati
 
 ### Installation
 
+**Option 1: Part of Telemetry Dashboard** (Recommended)
 ```bash
-# Clone the repository
+# If you already have the telemetry dashboard project
+cd /path/to/nebulaiq-telemetry-dashboard
+
+# Clone grafana-frontend as a subproject
+git clone https://github.com/nebulaiq/grafana-frontend.git
+cd grafana-frontend
+
+# Checkout the nebulaiq-main branch
+git checkout nebulaiq-main
+
+# Install dependencies
+yarn install
+go mod download
+```
+
+**Option 2: Standalone Development**
+```bash
+# Clone independently (if working only on Grafana frontend)
 git clone https://github.com/nebulaiq/grafana-frontend.git
 cd grafana-frontend
 
@@ -227,12 +261,19 @@ yarn build:tsc
 
 ## Documentation
 
-- [PHASE_1_FORK_AND_SETUP.md](../nebulaiq-telemetry-dashboard/PHASE_1_FORK_AND_SETUP.md) - Setup guide
-- [PHASE_2_CUSTOM_NAVIGATION.md](../nebulaiq-telemetry-dashboard/PHASE_2_CUSTOM_NAVIGATION.md) - Navigation customization
-- [PHASE_3_HIDE_FEATURES.md](../nebulaiq-telemetry-dashboard/PHASE_3_HIDE_FEATURES.md) - Feature hiding
-- [PHASE_4_BRANDING_THEME.md](../nebulaiq-telemetry-dashboard/PHASE_4_BRANDING_THEME.md) - Branding guide
-- [PHASE_5_BUILD_DEPLOY.md](../nebulaiq-telemetry-dashboard/PHASE_5_BUILD_DEPLOY.md) - Deployment guide
-- [PHASE_6_MAINTENANCE.md](../nebulaiq-telemetry-dashboard/PHASE_6_MAINTENANCE.md) - Maintenance procedures
+**Implementation Guides** (in parent project):
+- [PHASE_1_FORK_AND_SETUP.md](../PHASE_1_FORK_AND_SETUP.md) - Setup guide
+- [PHASE_2_CUSTOM_NAVIGATION.md](../PHASE_2_CUSTOM_NAVIGATION.md) - Navigation customization
+- [PHASE_3_HIDE_FEATURES.md](../PHASE_3_HIDE_FEATURES.md) - Feature hiding
+- [PHASE_4_BRANDING_THEME.md](../PHASE_4_BRANDING_THEME.md) - Branding guide
+- [PHASE_5_BUILD_DEPLOY.md](../PHASE_5_BUILD_DEPLOY.md) - Deployment guide
+- [PHASE_6_MAINTENANCE.md](../PHASE_6_MAINTENANCE.md) - Maintenance procedures
+
+**Project-Specific** (in this directory):
+- [README.nebulaiq.md](README.nebulaiq.md) - This file
+- [BUILD_BASELINE.md](BUILD_BASELINE.md) - Performance baseline
+- [PHASE_1_VERIFICATION.md](PHASE_1_VERIFICATION.md) - Phase 1 completion checklist
+- [.nebulaiq-versions](.nebulaiq-versions) - Build environment details
 
 ## Contributing
 
