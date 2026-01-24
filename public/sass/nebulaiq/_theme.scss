@@ -1,0 +1,601 @@
+// NebulaIQ Theme
+// Comprehensive branding and color theme for NebulaIQ Telemetry Dashboard
+
+// ==================================================
+// Brand Color Variables
+// ==================================================
+
+// Primary Colors
+$nebulaiq-primary: #4da6ff;
+$nebulaiq-primary-hover: #3d8ce6;
+$nebulaiq-primary-active: #2d7cd6;
+$nebulaiq-primary-light: #6bb8ff;
+$nebulaiq-primary-dark: #1d6cb6;
+
+// Secondary/Accent Colors
+$nebulaiq-secondary: #00d4aa;
+$nebulaiq-secondary-hover: #00c49a;
+$nebulaiq-secondary-active: #00b48a;
+
+// Status Colors
+$nebulaiq-success: #00d4aa;
+$nebulaiq-warning: #ffaa00;
+$nebulaiq-error: #ff4d4d;
+$nebulaiq-info: #4da6ff;
+
+// Backgrounds (Dark Theme)
+$nebulaiq-bg-primary: #0a0a0a;
+$nebulaiq-bg-secondary: #1a1a1a;
+$nebulaiq-bg-tertiary: #2a2a2a;
+$nebulaiq-bg-quaternary: #3a3a3a;
+
+// Sidebar/Navigation
+$nebulaiq-sidebar-bg: #1a1a1a;
+$nebulaiq-sidebar-hover: #2a2a2a;
+$nebulaiq-sidebar-active: #3a3a3a;
+
+// Text Colors (Dark Theme)
+$nebulaiq-text-primary: #ffffff;
+$nebulaiq-text-secondary: #e0e0e0;
+$nebulaiq-text-tertiary: #b0b0b0;
+$nebulaiq-text-muted: #808080;
+$nebulaiq-text-disabled: #606060;
+
+// Borders
+$nebulaiq-border: #3a3a3a;
+$nebulaiq-border-light: #4a4a4a;
+$nebulaiq-border-dark: #2a2a2a;
+$nebulaiq-border-subtle: #252525;
+
+// ==================================================
+// CSS Custom Properties (CSS Variables)
+// ==================================================
+
+:root {
+  // Primary colors
+  --nebulaiq-primary: #{$nebulaiq-primary};
+  --nebulaiq-primary-hover: #{$nebulaiq-primary-hover};
+  --nebulaiq-primary-active: #{$nebulaiq-primary-active};
+  --nebulaiq-secondary: #{$nebulaiq-secondary};
+
+  // Status colors
+  --nebulaiq-success: #{$nebulaiq-success};
+  --nebulaiq-warning: #{$nebulaiq-warning};
+  --nebulaiq-error: #{$nebulaiq-error};
+  --nebulaiq-info: #{$nebulaiq-info};
+
+  // Navigation
+  --nebulaiq-nav-bg: #{$nebulaiq-sidebar-bg};
+  --nebulaiq-nav-hover: #{$nebulaiq-sidebar-hover};
+  --nebulaiq-nav-active: #{$nebulaiq-sidebar-active};
+  --nebulaiq-nav-text: #{$nebulaiq-text-secondary};
+  --nebulaiq-nav-text-hover: #{$nebulaiq-text-primary};
+  --nebulaiq-nav-text-active: #{$nebulaiq-primary};
+  --nebulaiq-nav-divider: #{$nebulaiq-border};
+
+  // Backgrounds
+  --nebulaiq-bg-page: #{$nebulaiq-bg-primary};
+  --nebulaiq-bg-panel: #{$nebulaiq-bg-secondary};
+  --nebulaiq-bg-hover: #{$nebulaiq-bg-tertiary};
+
+  // Text
+  --nebulaiq-text-primary: #{$nebulaiq-text-primary};
+  --nebulaiq-text-secondary: #{$nebulaiq-text-secondary};
+  --nebulaiq-text-muted: #{$nebulaiq-text-muted};
+
+  // Borders
+  --nebulaiq-border: #{$nebulaiq-border};
+  --nebulaiq-border-light: #{$nebulaiq-border-light};
+}
+
+// ==================================================
+// Base Styles
+// ==================================================
+
+body {
+  background: $nebulaiq-bg-primary;
+  color: $nebulaiq-text-primary;
+}
+
+.main-view {
+  background: $nebulaiq-bg-primary;
+}
+
+// ==================================================
+// Navigation & Sidebar
+// ==================================================
+
+.sidemenu {
+  background: $nebulaiq-sidebar-bg !important;
+  border-right: 1px solid $nebulaiq-border !important;
+}
+
+.navbar {
+  background: $nebulaiq-bg-secondary;
+  border-bottom: 1px solid $nebulaiq-border;
+}
+
+// ==================================================
+// Panels & Cards
+// ==================================================
+
+.panel-container {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    border-color: $nebulaiq-primary;
+    box-shadow: 0 4px 16px rgba(77, 166, 255, 0.15);
+  }
+}
+
+.panel-title {
+  color: $nebulaiq-text-primary;
+  font-weight: 600;
+  border-bottom: 1px solid $nebulaiq-border;
+}
+
+.card-item {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $nebulaiq-primary;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 166, 255, 0.2);
+  }
+}
+
+// ==================================================
+// Buttons
+// ==================================================
+
+.btn-primary {
+  background: $nebulaiq-primary;
+  border-color: $nebulaiq-primary;
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: $nebulaiq-primary-hover;
+    border-color: $nebulaiq-primary-hover;
+    box-shadow: 0 2px 8px rgba(77, 166, 255, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    background: $nebulaiq-primary-active;
+    border-color: $nebulaiq-primary-active;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: $nebulaiq-border-light;
+  color: $nebulaiq-text-secondary;
+
+  &:hover:not(:disabled) {
+    background: $nebulaiq-bg-tertiary;
+    border-color: $nebulaiq-primary;
+    color: $nebulaiq-text-primary;
+  }
+}
+
+.btn-success {
+  background: $nebulaiq-success;
+  border-color: $nebulaiq-success;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background: $nebulaiq-secondary-hover;
+    border-color: $nebulaiq-secondary-hover;
+  }
+}
+
+.btn-danger {
+  background: $nebulaiq-error;
+  border-color: $nebulaiq-error;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background: #ff3333;
+    border-color: #ff3333;
+  }
+}
+
+// ==================================================
+// Links
+// ==================================================
+
+a {
+  color: $nebulaiq-primary;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $nebulaiq-primary-hover;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: $nebulaiq-primary-active;
+  }
+}
+
+// ==================================================
+// Tables
+// ==================================================
+
+.table {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+  overflow: hidden;
+
+  thead {
+    background: $nebulaiq-bg-tertiary;
+    border-bottom: 2px solid $nebulaiq-border;
+
+    th {
+      color: $nebulaiq-text-primary;
+      font-weight: 600;
+      border-bottom: 2px solid $nebulaiq-border;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $nebulaiq-border-subtle;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: $nebulaiq-bg-tertiary;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      color: $nebulaiq-text-secondary;
+    }
+  }
+}
+
+// ==================================================
+// Forms & Inputs
+// ==================================================
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+input[type='search'],
+textarea,
+select {
+  background: $nebulaiq-bg-tertiary;
+  border: 1px solid $nebulaiq-border;
+  color: $nebulaiq-text-primary;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: $nebulaiq-border-light;
+  }
+
+  &:focus {
+    border-color: $nebulaiq-primary;
+    box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.15);
+    outline: none;
+  }
+
+  &:disabled {
+    background: $nebulaiq-bg-secondary;
+    color: $nebulaiq-text-disabled;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: $nebulaiq-text-muted;
+  }
+}
+
+// Checkbox & Radio
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: $nebulaiq-primary;
+}
+
+// ==================================================
+// Dashboard Specific
+// ==================================================
+
+.dashboard-container {
+  background: $nebulaiq-bg-primary;
+}
+
+.panel-wrapper {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+}
+
+// Time series graph colors
+.graph-panel {
+  .graph-series-1 {
+    stroke: $nebulaiq-primary;
+  }
+  .graph-series-2 {
+    stroke: $nebulaiq-secondary;
+  }
+  .graph-series-3 {
+    stroke: #ff8c42;
+  }
+  .graph-series-4 {
+    stroke: #9d4edd;
+  }
+  .graph-series-5 {
+    stroke: #ff6b9d;
+  }
+  .graph-series-6 {
+    stroke: #06d6a0;
+  }
+  .graph-series-7 {
+    stroke: #ffd166;
+  }
+  .graph-series-8 {
+    stroke: #ef476f;
+  }
+}
+
+// Dashboard grid
+.react-grid-item {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+
+  &.react-grid-placeholder {
+    background: rgba(77, 166, 255, 0.1);
+    border: 2px dashed $nebulaiq-primary;
+  }
+}
+
+// ==================================================
+// Modals & Dialogs
+// ==================================================
+
+.modal-content {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+  background: $nebulaiq-bg-tertiary;
+  border-bottom: 1px solid $nebulaiq-border;
+  color: $nebulaiq-text-primary;
+}
+
+.modal-footer {
+  background: $nebulaiq-bg-tertiary;
+  border-top: 1px solid $nebulaiq-border;
+}
+
+// ==================================================
+// Alerts & Notifications
+// ==================================================
+
+.alert {
+  border-radius: 6px;
+  border-left: 4px solid;
+
+  &.alert-success {
+    background: rgba(0, 212, 170, 0.1);
+    border-left-color: $nebulaiq-success;
+    color: $nebulaiq-success;
+  }
+
+  &.alert-warning {
+    background: rgba(255, 170, 0, 0.1);
+    border-left-color: $nebulaiq-warning;
+    color: $nebulaiq-warning;
+  }
+
+  &.alert-error,
+  &.alert-danger {
+    background: rgba(255, 77, 77, 0.1);
+    border-left-color: $nebulaiq-error;
+    color: $nebulaiq-error;
+  }
+
+  &.alert-info {
+    background: rgba(77, 166, 255, 0.1);
+    border-left-color: $nebulaiq-info;
+    color: $nebulaiq-info;
+  }
+}
+
+// ==================================================
+// Dropdowns & Menus
+// ==================================================
+
+.dropdown-menu {
+  background: $nebulaiq-bg-secondary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+
+  .dropdown-item {
+    color: $nebulaiq-text-secondary;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: $nebulaiq-bg-tertiary;
+      color: $nebulaiq-text-primary;
+    }
+
+    &.active {
+      background: rgba(77, 166, 255, 0.15);
+      color: $nebulaiq-primary;
+    }
+  }
+
+  .dropdown-divider {
+    border-top-color: $nebulaiq-border;
+  }
+}
+
+// ==================================================
+// Tooltips
+// ==================================================
+
+.tooltip {
+  .tooltip-inner {
+    background: $nebulaiq-bg-quaternary;
+    color: $nebulaiq-text-primary;
+    border: 1px solid $nebulaiq-border-light;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .tooltip-arrow::before {
+    border-color: $nebulaiq-bg-quaternary transparent transparent transparent;
+  }
+}
+
+// ==================================================
+// Scrollbars
+// ==================================================
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: $nebulaiq-bg-primary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $nebulaiq-bg-quaternary;
+  border-radius: 6px;
+  border: 2px solid $nebulaiq-bg-primary;
+
+  &:hover {
+    background: rgba(77, 166, 255, 0.4);
+  }
+}
+
+// ==================================================
+// Loading States
+// ==================================================
+
+.loading-spinner {
+  border-color: rgba(77, 166, 255, 0.2);
+  border-top-color: $nebulaiq-primary;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $nebulaiq-bg-tertiary 0%,
+    $nebulaiq-bg-quaternary 50%,
+    $nebulaiq-bg-tertiary 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ==================================================
+// Code Blocks
+// ==================================================
+
+code {
+  background: $nebulaiq-bg-tertiary;
+  color: $nebulaiq-primary-light;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background: $nebulaiq-bg-tertiary;
+  border: 1px solid $nebulaiq-border;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-x: auto;
+
+  code {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+// ==================================================
+// Badges
+// ==================================================
+
+.badge {
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+
+  &.badge-primary {
+    background: rgba(77, 166, 255, 0.2);
+    color: $nebulaiq-primary-light;
+    border: 1px solid $nebulaiq-primary;
+  }
+
+  &.badge-success {
+    background: rgba(0, 212, 170, 0.2);
+    color: $nebulaiq-success;
+    border: 1px solid $nebulaiq-success;
+  }
+
+  &.badge-warning {
+    background: rgba(255, 170, 0, 0.2);
+    color: $nebulaiq-warning;
+    border: 1px solid $nebulaiq-warning;
+  }
+
+  &.badge-error {
+    background: rgba(255, 77, 77, 0.2);
+    color: $nebulaiq-error;
+    border: 1px solid $nebulaiq-error;
+  }
+}
+
+// ==================================================
+// Responsive Design
+// ==================================================
+
+@media (max-width: 768px) {
+  .panel-container {
+    border-radius: 6px;
+  }
+
+  .card-item {
+    border-radius: 4px;
+  }
+}

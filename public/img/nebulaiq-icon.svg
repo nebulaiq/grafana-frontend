@@ -1,0 +1,53 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- NebulaIQ Icon - Square App Icon (128x128) -->
+
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="url(#bg-gradient)"/>
+
+  <!-- Nebula Icon -->
+  <g id="nebula-icon" transform="translate(64, 64)">
+    <!-- Outer nebula glow -->
+    <ellipse cx="0" cy="0" rx="45" ry="36" fill="url(#icon-gradient1)" opacity="0.4"/>
+    <ellipse cx="0" cy="0" rx="36" ry="27" fill="url(#icon-gradient2)" opacity="0.6"/>
+
+    <!-- Core -->
+    <circle cx="0" cy="0" r="18" fill="url(#icon-gradient3)"/>
+
+    <!-- Data streams -->
+    <path d="M -24 0 Q -36 -12 -48 -15" stroke="#00D4AA" stroke-width="4" fill="none" opacity="0.8" stroke-linecap="round"/>
+    <path d="M 24 0 Q 36 12 48 15" stroke="#4DA6FF" stroke-width="4" fill="none" opacity="0.8" stroke-linecap="round"/>
+    <path d="M 0 -24 Q 0 -36 0 -48" stroke="#4DA6FF" stroke-width="4" fill="none" opacity="0.8" stroke-linecap="round"/>
+    <path d="M 0 24 Q 0 36 0 48" stroke="#00D4AA" stroke-width="4" fill="none" opacity="0.8" stroke-linecap="round"/>
+
+    <!-- Data points -->
+    <circle cx="-48" cy="-15" r="6" fill="#00D4AA"/>
+    <circle cx="48" cy="15" r="6" fill="#4DA6FF"/>
+    <circle cx="0" cy="-48" r="6" fill="#4DA6FF"/>
+    <circle cx="0" cy="48" r="6" fill="#00D4AA"/>
+
+    <!-- Center pulse -->
+    <circle cx="0" cy="0" r="8" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="0" cy="0" r="4" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0A0A"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+    <linearGradient id="icon-gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4DA6FF" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#00D4AA" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="icon-gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4DA6FF" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#00D4AA" stop-opacity="0.5"/>
+    </linearGradient>
+    <radialGradient id="icon-gradient3">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#4DA6FF"/>
+      <stop offset="100%" stop-color="#2D7CD6"/>
+    </radialGradient>
+  </defs>
+</svg>

@@ -1,0 +1,20 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- NebulaIQ Icon - Monochrome (32x32) for sidebar/small use -->
+
+  <g id="nebula-mono" transform="translate(16, 16)">
+    <!-- Simplified nebula shape -->
+    <circle cx="0" cy="0" r="12" fill="currentColor" opacity="0.15"/>
+    <circle cx="0" cy="0" r="8" fill="currentColor" opacity="0.3"/>
+    <circle cx="0" cy="0" r="4" fill="currentColor"/>
+
+    <!-- Data connection lines -->
+    <path d="M -6 0 L -12 -4" stroke="currentColor" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
+    <path d="M 6 0 L 12 4" stroke="currentColor" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
+    <path d="M 0 -6 L 0 -12" stroke="currentColor" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
+
+    <!-- Data points -->
+    <circle cx="-12" cy="-4" r="2" fill="currentColor"/>
+    <circle cx="12" cy="4" r="2" fill="currentColor"/>
+    <circle cx="0" cy="-12" r="2" fill="currentColor"/>
+  </g>
+</svg>

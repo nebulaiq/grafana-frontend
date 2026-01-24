@@ -1,0 +1,52 @@
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- NebulaIQ Logo - Light Theme (Light Background) -->
+
+  <!-- Icon: Stylized nebula/cloud with data streams -->
+  <g id="nebula-icon">
+    <!-- Outer nebula glow -->
+    <ellipse cx="20" cy="20" rx="15" ry="12" fill="url(#gradient1-light)" opacity="0.3"/>
+    <ellipse cx="20" cy="20" rx="12" ry="9" fill="url(#gradient2-light)" opacity="0.5"/>
+
+    <!-- Core -->
+    <circle cx="20" cy="20" r="6" fill="url(#gradient3-light)"/>
+
+    <!-- Data streams -->
+    <path d="M 12 20 Q 8 16 4 15" stroke="#00A080" stroke-width="1.5" fill="none" opacity="0.8"/>
+    <path d="M 28 20 Q 32 24 36 25" stroke="#1F62A2" stroke-width="1.5" fill="none" opacity="0.8"/>
+    <path d="M 20 12 Q 20 8 20 4" stroke="#1F62A2" stroke-width="1.5" fill="none" opacity="0.8"/>
+
+    <!-- Data points -->
+    <circle cx="4" cy="15" r="2" fill="#00A080"/>
+    <circle cx="36" cy="25" r="2" fill="#1F62A2"/>
+    <circle cx="20" cy="4" r="2" fill="#1F62A2"/>
+  </g>
+
+  <!-- Text: NebulaIQ -->
+  <g id="text">
+    <text x="45" y="28" font-family="'Inter', 'Helvetica', sans-serif" font-size="20" font-weight="700" fill="#1A1A1A">
+      Nebula<tspan fill="#1F62A2">IQ</tspan>
+    </text>
+  </g>
+
+  <!-- Subtitle: Telemetry -->
+  <text x="135" y="28" font-family="'Inter', 'Helvetica', sans-serif" font-size="11" font-weight="500" fill="#6C757D">
+    TELEMETRY
+  </text>
+
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient1-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1F62A2" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00A080" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="gradient2-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1F62A2" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#00A080" stop-opacity="0.4"/>
+    </linearGradient>
+    <radialGradient id="gradient3-light">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#1F62A2"/>
+      <stop offset="100%" stop-color="#144A7E"/>
+    </radialGradient>
+  </defs>
+</svg>

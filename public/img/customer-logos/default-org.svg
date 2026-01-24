@@ -1,0 +1,32 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Default Organization Logo -->
+  <rect width="48" height="48" rx="8" fill="url(#default-org-bg)"/>
+
+  <!-- Organization icon -->
+  <g transform="translate(24, 24)">
+    <!-- Building/Organization icon -->
+    <rect x="-12" y="-14" width="24" height="28" rx="2" fill="none" stroke="white" stroke-width="2"/>
+    <!-- Windows -->
+    <rect x="-9" y="-10" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="-3" y="-10" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="3" y="-10" width="4" height="4" fill="white" opacity="0.6"/>
+
+    <rect x="-9" y="-3" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="-3" y="-3" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="3" y="-3" width="4" height="4" fill="white" opacity="0.6"/>
+
+    <rect x="-9" y="4" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="-3" y="4" width="4" height="4" fill="white" opacity="0.6"/>
+    <rect x="3" y="4" width="4" height="4" fill="white" opacity="0.6"/>
+
+    <!-- Door -->
+    <rect x="-3" y="9" width="6" height="5" fill="white"/>
+  </g>
+
+  <defs>
+    <linearGradient id="default-org-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4DA6FF"/>
+      <stop offset="100%" stop-color="#2D7CD6"/>
+    </linearGradient>
+  </defs>
+</svg>

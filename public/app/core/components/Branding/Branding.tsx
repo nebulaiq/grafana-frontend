@@ -10,7 +10,7 @@ export interface BrandComponentProps {
 }
 
 export const LoginLogo: FC<BrandComponentProps & { logo?: string }> = ({ className, logo }) => {
-  return <img className={className} src={`${logo ? logo : 'public/img/grafana_icon.svg'}`} alt="Grafana" />;
+  return <img className={className} src={`${logo ? logo : 'public/img/nebulaiq-logo.svg'}`} alt="NebulaIQ Telemetry" />;
 };
 
 const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
@@ -24,18 +24,13 @@ const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
       right: 0,
       bottom: 0,
       top: 0,
-      background: `url(public/img/g8_login_${theme.isDark ? 'dark' : 'light'}.svg)`,
-      backgroundPosition: 'top center',
-      backgroundSize: 'auto',
+      background: `url(public/img/nebulaiq-login-bg.svg)`,
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
 
-      opacity: 0,
-      transition: 'opacity 3s ease-in-out',
-
-      [theme.breakpoints.up('md')]: {
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-      },
+      opacity: 1,
+      transition: 'opacity 0.3s ease-in-out',
     },
   });
 
@@ -43,7 +38,7 @@ const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
 };
 
 const MenuLogo: FC<BrandComponentProps> = ({ className }) => {
-  return <img className={className} src="public/img/grafana_icon.svg" alt="Grafana" />;
+  return <img className={className} src="public/img/nebulaiq-icon-mono.svg" alt="NebulaIQ" />;
 };
 
 const LoginBoxBackground = () => {
@@ -59,10 +54,10 @@ export class Branding {
   static LoginBackground = LoginBackground;
   static MenuLogo = MenuLogo;
   static LoginBoxBackground = LoginBoxBackground;
-  static AppTitle = 'Grafana';
-  static LoginTitle = 'Welcome to Grafana';
-  static HideEdition = false;
+  static AppTitle = 'NebulaIQ Telemetry';
+  static LoginTitle = 'Welcome to NebulaIQ';
+  static HideEdition = true;
   static GetLoginSubTitle = (): null | string => {
-    return null;
+    return 'Unified Observability for Modern Applications';
   };
 }

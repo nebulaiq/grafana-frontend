@@ -1,0 +1,68 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- NebulaIQ Login Background - Modern Abstract Gradient -->
+
+  <!-- Base gradient background -->
+  <rect width="1920" height="1080" fill="url(#login-bg-gradient)"/>
+
+  <!-- Abstract nebula clouds -->
+  <g opacity="0.15">
+    <ellipse cx="300" cy="200" rx="400" ry="300" fill="url(#cloud1)" filter="url(#blur)"/>
+    <ellipse cx="1600" cy="800" rx="500" ry="400" fill="url(#cloud2)" filter="url(#blur)"/>
+    <ellipse cx="960" cy="540" rx="600" ry="450" fill="url(#cloud3)" filter="url(#blur)"/>
+  </g>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03" stroke="#4DA6FF" stroke-width="0.5">
+    <line x1="0" y1="270" x2="1920" y2="270"/>
+    <line x1="0" y1="540" x2="1920" y2="540"/>
+    <line x1="0" y1="810" x2="1920" y2="810"/>
+    <line x1="480" y1="0" x2="480" y2="1080"/>
+    <line x1="960" y1="0" x2="960" y2="1080"/>
+    <line x1="1440" y1="0" x2="1440" y2="1080"/>
+  </g>
+
+  <!-- Floating data points -->
+  <g opacity="0.4">
+    <circle cx="150" cy="100" r="3" fill="#4DA6FF">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1800" cy="200" r="4" fill="#00D4AA">
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="300" cy="900" r="3" fill="#4DA6FF">
+      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1700" cy="950" r="4" fill="#00D4AA">
+      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Gradients and Filters -->
+  <defs>
+    <!-- Main background gradient -->
+    <linearGradient id="login-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0A0A"/>
+      <stop offset="50%" stop-color="#0F0F14"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+
+    <!-- Cloud gradients -->
+    <radialGradient id="cloud1">
+      <stop offset="0%" stop-color="#4DA6FF" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4DA6FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cloud2">
+      <stop offset="0%" stop-color="#00D4AA" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#00D4AA" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cloud3">
+      <stop offset="0%" stop-color="#2D7CD6" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#2D7CD6" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Blur filter for clouds -->
+    <filter id="blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="60"/>
+    </filter>
+  </defs>
+</svg>

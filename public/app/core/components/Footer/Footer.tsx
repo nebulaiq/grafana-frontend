@@ -17,25 +17,18 @@ export interface FooterLink {
 export let getFooterLinks = (): FooterLink[] => {
   return [
     {
-      target: '_blank',
+      target: '_self',
       id: 'documentation',
       text: t('nav.help/documentation', 'Documentation'),
       icon: 'document-info',
-      url: 'https://grafana.com/docs/grafana/latest/?utm_source=grafana_footer',
+      url: '/help',
     },
     {
-      target: '_blank',
+      target: '_self',
       id: 'support',
       text: t('nav.help/support', 'Support'),
       icon: 'question-circle',
-      url: 'https://grafana.com/products/enterprise/?utm_source=grafana_footer',
-    },
-    {
-      target: '_blank',
-      id: 'community',
-      text: t('nav.help/community', 'Community'),
-      icon: 'comments-alt',
-      url: 'https://community.grafana.com/?utm_source=grafana_footer',
+      url: '/support',
     },
   ];
 };
@@ -70,19 +63,19 @@ export function getVersionLinks(hideEdition?: boolean): FooterLink[] {
   const { hasReleaseNotes } = getVersionMeta(buildInfo.version);
 
   links.push({
-    target: '_blank',
+    target: '_self',
     id: 'version',
     text: buildInfo.versionString,
-    url: hasReleaseNotes ? `https://github.com/grafana/grafana/blob/main/CHANGELOG.md` : undefined,
+    url: undefined,
   });
 
   if (buildInfo.hasUpdate) {
     links.push({
-      target: '_blank',
+      target: '_self',
       id: 'updateVersion',
       text: `New version available!`,
       icon: 'download-alt',
-      url: 'https://grafana.com/grafana/download?utm_source=grafana_footer',
+      url: '/admin/upgrading',
     });
   }
 

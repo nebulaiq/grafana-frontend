@@ -112,11 +112,11 @@ export const getLoginStyles = (theme: GrafanaTheme2) => {
     }),
     loginLogo: css({
       width: '100%',
-      maxWidth: 60,
-      marginBottom: theme.spacing(2),
+      maxWidth: 180,
+      marginBottom: theme.spacing(3),
 
       [theme.breakpoints.up('sm')]: {
-        maxWidth: 100,
+        maxWidth: 200,
       },
     }),
     loginLogoWrapper: css({
@@ -130,18 +130,23 @@ export const getLoginStyles = (theme: GrafanaTheme2) => {
       textAlign: 'center',
     }),
     mainTitle: css({
-      fontSize: 22,
+      fontSize: 24,
+      fontWeight: 600,
+      color: theme.colors.text.primary,
+      marginBottom: theme.spacing(1),
 
       [theme.breakpoints.up('sm')]: {
-        fontSize: 32,
+        fontSize: 28,
       },
     }),
     subTitle: css({
-      fontSize: theme.typography.size.md,
+      fontSize: 14,
+      fontWeight: 400,
       color: theme.colors.text.secondary,
+      marginTop: theme.spacing(0.5),
     }),
     loginContent: css({
-      maxWidth: 478,
+      maxWidth: 500,
       width: `calc(100% - 2rem)`,
       display: 'flex',
       alignItems: 'stretch',
@@ -150,16 +155,22 @@ export const getLoginStyles = (theme: GrafanaTheme2) => {
       justifyContent: 'flex-start',
       zIndex: 1,
       minHeight: 320,
-      borderRadius: theme.shape.radius.default,
-      padding: theme.spacing(2, 0),
+      borderRadius: 12,
+      padding: theme.spacing(4, 0),
       opacity: 0,
+      border: `1px solid ${theme.isDark ? 'rgba(77, 166, 255, 0.2)' : 'rgba(31, 98, 162, 0.2)'}`,
+      boxShadow: theme.isDark
+        ? '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(77, 166, 255, 0.1)'
+        : '0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(31, 98, 162, 0.1)',
+      backdropFilter: 'blur(20px)',
       [theme.transitions.handleMotion('no-preference', 'reduce')]: {
         transition: 'opacity 0.5s ease-in-out',
       },
 
       [theme.breakpoints.up('sm')]: {
-        minHeight: theme.spacing(40),
+        minHeight: theme.spacing(50),
         justifyContent: 'center',
+        padding: theme.spacing(5, 0),
       },
     }),
     loginOuterBox: css({
