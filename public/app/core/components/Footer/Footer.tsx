@@ -43,18 +43,21 @@ export function getVersionMeta(version: string) {
 }
 
 export function getVersionLinks(hideEdition?: boolean): FooterLink[] {
+  // Hide all version links on login page (when hideEdition is true)
+  if (hideEdition) {
+    return [];
+  }
+
   const { buildInfo, licenseInfo } = config;
   const links: FooterLink[] = [];
   const stateInfo = licenseInfo.stateInfo ? ` (${licenseInfo.stateInfo})` : '';
 
-  if (!hideEdition) {
-    links.push({
-      target: '_blank',
-      id: 'license',
-      text: `${buildInfo.edition}${stateInfo}`,
-      url: licenseInfo.licenseUrl,
-    });
-  }
+  links.push({
+    target: '_blank',
+    id: 'license',
+    text: `${buildInfo.edition}${stateInfo}`,
+    url: licenseInfo.licenseUrl,
+  });
 
   if (buildInfo.hideVersion) {
     return links;

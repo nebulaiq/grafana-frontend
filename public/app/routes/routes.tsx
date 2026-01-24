@@ -4,6 +4,7 @@ import { Navigate, useLocation, useParams } from 'react-router-dom-v5-compat';
 import { isTruthy } from '@grafana/data';
 import { NavLandingPage } from 'app/core/components/NavLandingPage/NavLandingPage';
 import { PageNotFound } from 'app/core/components/PageNotFound/PageNotFound';
+import { HelpPage, SupportPage } from 'app/core/components/ComingSoon';
 import config from 'app/core/config';
 import { contextSrv } from 'app/core/services/context_srv';
 import LdapPage from 'app/features/admin/ldap/LdapPage';
@@ -520,6 +521,14 @@ export function getAppRoutes(): RouteDescriptor[] {
       component: SafeDynamicImport(
         () => import(/* webpackChunkName: "NotificationsPage"*/ 'app/features/notifications/NotificationsPage')
       ),
+    },
+    {
+      path: '/help',
+      component: () => <HelpPage />,
+    },
+    {
+      path: '/support',
+      component: () => <SupportPage />,
     },
     // REMOVED: Explore Metrics - NebulaIQ has custom metrics UI
     // config.featureToggles.exploreMetrics && {
