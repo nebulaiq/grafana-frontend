@@ -261,19 +261,24 @@ yarn build:tsc
 
 ## Documentation
 
-**Implementation Guides** (in parent project):
-- [PHASE_1_FORK_AND_SETUP.md](../PHASE_1_FORK_AND_SETUP.md) - Setup guide
-- [PHASE_2_CUSTOM_NAVIGATION.md](../PHASE_2_CUSTOM_NAVIGATION.md) - Navigation customization
-- [PHASE_3_HIDE_FEATURES.md](../PHASE_3_HIDE_FEATURES.md) - Feature hiding
-- [PHASE_4_BRANDING_THEME.md](../PHASE_4_BRANDING_THEME.md) - Branding guide
-- [PHASE_5_BUILD_DEPLOY.md](../PHASE_5_BUILD_DEPLOY.md) - Deployment guide
-- [PHASE_6_MAINTENANCE.md](../PHASE_6_MAINTENANCE.md) - Maintenance procedures
+**Implementation Guides** (in parent project `.working/`):
+- [Main Plan](../.working/plan/NEBULAIQ_GRAFANA_FORK_PLAN.md) - Overall strategy
+- [PHASE_1_FORK_AND_SETUP.md](../.working/phases/PHASE_1_FORK_AND_SETUP.md) - Setup guide
+- [PHASE_1_VERIFICATION.md](../.working/phases/PHASE_1_VERIFICATION.md) - Phase 1 completion checklist
+- [PHASE_2_CUSTOM_NAVIGATION.md](../.working/phases/PHASE_2_CUSTOM_NAVIGATION.md) - Navigation customization
+- [PHASE_3_HIDE_FEATURES.md](../.working/phases/PHASE_3_HIDE_FEATURES.md) - Feature hiding
+- [PHASE_4_BRANDING_THEME.md](../.working/phases/PHASE_4_BRANDING_THEME.md) - Branding guide
+- [PHASE_4.5_MODERN_UI_DESIGN.md](../.working/phases/PHASE_4.5_MODERN_UI_DESIGN.md) - UI design polish
+- [PHASE_5_BUILD_DEPLOY.md](../.working/phases/PHASE_5_BUILD_DEPLOY.md) - Deployment guide
+- [PHASE_6_MAINTENANCE.md](../.working/phases/PHASE_6_MAINTENANCE.md) - Maintenance procedures
 
 **Project-Specific** (in this directory):
 - [README.nebulaiq.md](README.nebulaiq.md) - This file
 - [BUILD_BASELINE.md](BUILD_BASELINE.md) - Performance baseline
-- [PHASE_1_VERIFICATION.md](PHASE_1_VERIFICATION.md) - Phase 1 completion checklist
 - [.nebulaiq-versions](.nebulaiq-versions) - Build environment details
+
+**Project Structure**:
+- [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md) - Complete repository structure and documentation
 
 ## Contributing
 
