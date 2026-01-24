@@ -1,0 +1,87 @@
+:root {
+  // Breakpoints (mobile-first)
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+// Utility mixins
+@mixin sm {
+  @media (min-width: 640px) { @content; }
+}
+
+@mixin md {
+  @media (min-width: 768px) { @content; }
+}
+
+@mixin lg {
+  @media (min-width: 1024px) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: 1280px) { @content; }
+}
+
+// Mobile navigation (hamburger menu)
+@media (max-width: 1023px) {
+  .nebulaiq-mega-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    transition: left var(--duration-normal) var(--ease-out);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+
+    &.open {
+      left: 0;
+    }
+  }
+
+  .nebulaiq-mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+
+    &.visible {
+      display: block;
+    }
+  }
+}
+
+// Dashboard responsive grid
+.nebulaiq-dashboard-grid {
+  display: grid;
+  gap: 16px;
+
+  // Mobile: single column
+  grid-template-columns: 1fr;
+
+  // Tablet: 2 columns
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop: 12-column grid
+  @include lg {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+// Responsive typography
+html {
+  font-size: 14px;
+
+  @include md {
+    font-size: 15px;
+  }
+
+  @include lg {
+    font-size: 16px;
+  }
+}

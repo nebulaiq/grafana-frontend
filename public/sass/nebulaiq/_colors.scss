@@ -1,0 +1,109 @@
+/**
+ * NebulaIQ Color System
+ *
+ * Principles:
+ * - Flat colors only (no gradients)
+ * - High contrast for readability
+ * - Semantic color usage
+ * - DataDog/Apple inspired
+ */
+
+:root {
+  // Neutrals - True grays (no blue tint)
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #171717;
+  --gray-950: #0a0a0a;
+
+  // Primary (NebulaIQ Blue) - Flat
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #4da6ff;
+  --primary-600: #3d8ce6;
+  --primary-700: #2d7cd6;
+  --primary-800: #1e6cc6;
+  --primary-900: #1a5cb6;
+
+  // Accent (Teal) - Flat
+  --accent-500: #00d4aa;
+  --accent-600: #00c49a;
+  --accent-700: #00b48a;
+
+  // Semantic - Flat, professional
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --warning-text: #92400e;
+
+  --error: #ef4444;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+
+  --info: #3b82f6;
+  --info-bg: #dbeafe;
+  --info-text: #1e3a8a;
+
+  // Background colors - Flat
+  --bg-primary: var(--gray-950);
+  --bg-secondary: var(--gray-900);
+  --bg-tertiary: var(--gray-800);
+  --bg-elevated: #1c1c1c; // 15% lighter than 900
+
+  // Border colors
+  --border-subtle: var(--gray-800);
+  --border-default: var(--gray-700);
+  --border-strong: var(--gray-600);
+
+  // Text colors
+  --text-primary: var(--gray-50);
+  --text-secondary: var(--gray-300);
+  --text-tertiary: var(--gray-500);
+  --text-disabled: var(--gray-600);
+}
+
+// NO gradients - examples of what NOT to do:
+// ❌ background: linear-gradient(...)
+// ❌ background: radial-gradient(...)
+// ✅ background: var(--bg-secondary) - flat color only
+
+// Hover states - subtle lightening/darkening
+.nebulaiq-button-primary {
+  background: var(--primary-500); // Flat
+
+  &:hover {
+    background: var(--primary-600); // Slightly darker flat color
+  }
+}
+
+// Focus states - use borders, not glows
+.nebulaiq-input:focus {
+  border-color: var(--primary-500);
+  // ❌ box-shadow: 0 0 20px var(--primary-500)
+  // ✅ box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2)
+  box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2); // Subtle ring
+}
+
+// Chart colors (flat, distinct)
+.nebulaiq-chart {
+  --chart-1: #4da6ff; // Blue
+  --chart-2: #00d4aa; // Teal
+  --chart-3: #f59e0b; // Amber
+  --chart-4: #8b5cf6; // Purple
+  --chart-5: #ec4899; // Pink
+  --chart-6: #10b981; // Green
+  --chart-7: #ef4444; // Red
+  --chart-8: #06b6d4; // Cyan
+}

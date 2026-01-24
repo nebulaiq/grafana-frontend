@@ -1,0 +1,55 @@
+// Focus indicators
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-500);
+  border-radius: 4px;
+}
+
+// Skip to main content
+.nebulaiq-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-500);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  z-index: 10000;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+// Screen reader only content
+.nebulaiq-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Ensure all interactive elements are keyboard accessible
+button, a, input, select, textarea {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-500);
+  }
+}
+
+// Reduced motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

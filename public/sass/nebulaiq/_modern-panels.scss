@@ -1,0 +1,444 @@
+/**
+ * Modern Panels
+ * Floating cards with elevation instead of borders
+ */
+
+// ==================================================
+// PANEL CONTAINER - Floating Card Design
+// ==================================================
+
+.panel-container,
+.panel,
+[class*='panel-'],
+.react-grid-item {
+  background: var(--bg-surface) !important;
+  border: none !important; // Remove heavy borders
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-sm) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  transition: all var(--transition-base) !important;
+
+  &:hover {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px);
+  }
+}
+
+// ==================================================
+// PANEL HEADER - Clean & Minimal
+// ==================================================
+
+.panel-header,
+.panel-title-container,
+[class*='panel-header'] {
+  padding: 16px 20px !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+
+  .panel-title,
+  .panel-heading,
+  h3 {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    letter-spacing: -0.014em !important;
+  }
+
+  .panel-description {
+    font-size: 13px !important;
+    color: var(--text-tertiary) !important;
+    margin: 4px 0 0 0 !important;
+    line-height: 1.4;
+  }
+
+  // Panel actions
+  .panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    button {
+      width: 32px !important;
+      height: 32px !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 6px !important;
+      color: var(--text-tertiary) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-base) !important;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      &:hover {
+        background: var(--bg-surface-raised) !important;
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+}
+
+// ==================================================
+// PANEL BODY - Data First
+// ==================================================
+
+.panel-content,
+.panel-body,
+[class*='panel-content'] {
+  padding: 20px !important;
+  background: transparent !important;
+
+  &.no-padding {
+    padding: 0 !important;
+  }
+}
+
+// ==================================================
+// DASHBOARD GRID - Spacious Layout
+// ==================================================
+
+.dashboard-container,
+.react-grid-layout {
+  padding: 24px !important;
+  background: transparent !important;
+  gap: 20px; // Space between panels
+
+  @media (max-width: 1024px) {
+    padding: 16px !important;
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px !important;
+    gap: 12px;
+  }
+}
+
+// Grid placeholder (when dragging)
+.react-grid-placeholder {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border: 2px dashed var(--accent-primary) !important;
+  border-radius: 12px !important;
+  opacity: 0.5;
+}
+
+// ==================================================
+// STAT PANELS - Clean Number Display
+// ==================================================
+
+.stat-panel,
+.single-stat-panel,
+[class*='stat-panel'] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px !important;
+  background: var(--bg-surface) !important;
+
+  .stat-value {
+    font-size: 48px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.03em !important;
+    margin: 0 !important;
+
+    // Gradient text effect for emphasis
+    &.primary {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .stat-label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--text-tertiary) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-top: 12px !important;
+  }
+
+  .stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    margin-top: 8px !important;
+    padding: 4px 10px;
+    border-radius: 6px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &.positive {
+      color: var(--accent-success) !important;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    &.negative {
+      color: var(--accent-error) !important;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    &.neutral {
+      color: var(--text-secondary) !important;
+      background: var(--bg-surface-raised);
+    }
+  }
+
+  // Sparkline
+  .stat-sparkline {
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    margin-top: 16px;
+    opacity: 0.8;
+  }
+}
+
+// ==================================================
+// TABLE PANELS - Clean Rows
+// ==================================================
+
+.table-panel,
+[class*='table-panel'] {
+  .table,
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      border-bottom: 1px solid var(--border-default) !important;
+
+      th {
+        padding: 12px 16px !important;
+        text-align: left !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        color: var(--text-tertiary) !important;
+        background: transparent !important;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid var(--border-subtle) !important;
+        transition: background var(--transition-base) !important;
+
+        &:hover {
+          background: var(--bg-surface-raised) !important;
+        }
+
+        &:last-child {
+          border-bottom: none !important;
+        }
+
+        td {
+          padding: 16px !important;
+          font-size: 14px !important;
+          color: var(--text-secondary) !important;
+
+          &:first-child {
+            font-weight: 500;
+            color: var(--text-primary);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ==================================================
+// CHART PANELS - Data First
+// ==================================================
+
+.graph-panel,
+.chart-panel,
+[class*='graph-panel'] {
+  .panel-content {
+    padding: 0 !important; // Charts use full width
+  }
+
+  // Chart container
+  .chart-container {
+    padding: 20px;
+  }
+
+  // Chart legend - Minimal
+  .graph-legend {
+    padding: 12px 20px !important;
+    border-top: 1px solid var(--border-subtle) !important;
+    background: transparent !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+
+      .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+      }
+
+      .legend-value {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+// ==================================================
+// EMPTY STATE - Helpful & Beautiful
+// ==================================================
+
+.panel-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  text-align: center;
+  color: var(--text-tertiary);
+
+  svg,
+  .empty-icon {
+    width: 64px;
+    height: 64px;
+    opacity: 0.3;
+    margin-bottom: 16px;
+  }
+
+  .empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .empty-message {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  .empty-action {
+    margin-top: 16px;
+  }
+}
+
+// ==================================================
+// PANEL LOADING STATE
+// ==================================================
+
+.panel-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 22, 29, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ==================================================
+// PANEL VARIANTS
+// ==================================================
+
+// Highlighted panel
+.panel-highlighted {
+  border: 1px solid var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+// Alert panel
+.panel-alert {
+  border-left: 4px solid var(--accent-error) !important;
+}
+
+// Success panel
+.panel-success {
+  border-left: 4px solid var(--accent-success) !important;
+}
+
+// Transparent panel (for special layouts)
+.panel-transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+
+  &:hover {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+
+// ==================================================
+// RESPONSIVE ADJUSTMENTS
+// ==================================================
+
+@media (max-width: 768px) {
+  .panel-header {
+    padding: 12px 16px !important;
+    min-height: 48px;
+
+    .panel-title {
+      font-size: 14px !important;
+    }
+  }
+
+  .panel-content {
+    padding: 16px !important;
+  }
+
+  .stat-panel {
+    padding: 24px 16px !important;
+
+    .stat-value {
+      font-size: 36px !important;
+    }
+  }
+}

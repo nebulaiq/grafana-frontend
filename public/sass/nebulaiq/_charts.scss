@@ -1,0 +1,83 @@
+/**
+ * Chart theming - DataDog style
+ * Clean, professional, data-first
+ */
+
+.nebulaiq-chart {
+  // Chart colors (flat, distinct)
+  --chart-1: #4da6ff; // Blue
+  --chart-2: #00d4aa; // Teal
+  --chart-3: #f59e0b; // Amber
+  --chart-4: #8b5cf6; // Purple
+  --chart-5: #ec4899; // Pink
+  --chart-6: #10b981; // Green
+  --chart-7: #ef4444; // Red
+  --chart-8: #06b6d4; // Cyan
+
+  // Grid lines - subtle
+  .chart-grid-line {
+    stroke: var(--gray-800);
+    stroke-width: 1px;
+    stroke-dasharray: none; // Solid lines, not dashed
+  }
+
+  // Axis lines
+  .chart-axis-line {
+    stroke: var(--gray-700);
+    stroke-width: 1px;
+  }
+
+  // Axis labels
+  .chart-axis-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    fill: var(--text-tertiary);
+  }
+
+  // Legend
+  .chart-legend {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    fill: var(--text-secondary);
+  }
+
+  // Tooltip
+  .chart-tooltip {
+    background: var(--gray-800); // Flat
+    border: 1px solid var(--gray-700);
+    border-radius: 6px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+
+  // No area chart gradients - use flat fill with opacity
+  .chart-area {
+    fill: var(--chart-1);
+    fill-opacity: 0.1; // Subtle, not gradient
+  }
+
+  .chart-line {
+    stroke: var(--chart-1);
+    stroke-width: 2px;
+    fill: none;
+  }
+
+  .chart-bar {
+    fill: var(--chart-1); // Flat color
+  }
+}
+
+// Apply chart colors to series
+.chart-series {
+  &-1 { stroke: var(--chart-1); fill: var(--chart-1); }
+  &-2 { stroke: var(--chart-2); fill: var(--chart-2); }
+  &-3 { stroke: var(--chart-3); fill: var(--chart-3); }
+  &-4 { stroke: var(--chart-4); fill: var(--chart-4); }
+  &-5 { stroke: var(--chart-5); fill: var(--chart-5); }
+  &-6 { stroke: var(--chart-6); fill: var(--chart-6); }
+  &-7 { stroke: var(--chart-7); fill: var(--chart-7); }
+  &-8 { stroke: var(--chart-8); fill: var(--chart-8); }
+}

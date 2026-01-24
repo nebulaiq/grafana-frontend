@@ -506,22 +506,32 @@ input[type='radio'] {
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    $nebulaiq-bg-tertiary 0%,
-    $nebulaiq-bg-quaternary 50%,
-    $nebulaiq-bg-tertiary 100%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
+  background: $nebulaiq-bg-tertiary; // Flat color only
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle shimmer effect using minimal gradient for animation only
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent
+    );
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  }
 }
 
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+@keyframes skeleton-shimmer {
+  to {
+    left: 100%;
   }
 }
 

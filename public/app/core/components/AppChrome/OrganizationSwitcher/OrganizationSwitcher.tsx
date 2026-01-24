@@ -1,4 +1,3 @@
-import { css } from '@emotion/css';
 import { useEffect } from 'react';
 
 import { SelectableValue } from '@grafana/data';
@@ -37,9 +36,3 @@ export function OrganizationSwitcher() {
 
   return <OrganizationSelect orgs={orgs} onSelectChange={onSelectChange} />;
 }
-
-const getStyles = (theme: GrafanaTheme2) => ({
-  brandTitle: css({
-    paddingLeft: theme.spacing(1),
-  }),
-});

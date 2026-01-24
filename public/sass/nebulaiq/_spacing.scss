@@ -1,0 +1,100 @@
+/**
+ * Spacing System - 8px base grid
+ * Consistent spacing creates visual harmony
+ */
+
+:root {
+  // Base unit: 8px
+  --spacing-0: 0;
+  --spacing-1: 4px;   // 0.5 unit
+  --spacing-2: 8px;   // 1 unit
+  --spacing-3: 12px;  // 1.5 units
+  --spacing-4: 16px;  // 2 units
+  --spacing-5: 20px;  // 2.5 units
+  --spacing-6: 24px;  // 3 units
+  --spacing-8: 32px;  // 4 units
+  --spacing-10: 40px; // 5 units
+  --spacing-12: 48px; // 6 units
+  --spacing-16: 64px; // 8 units
+  --spacing-20: 80px; // 10 units
+  --spacing-24: 96px; // 12 units
+}
+
+// Margin utilities
+.nebulaiq-m-0 { margin: var(--spacing-0); }
+.nebulaiq-m-1 { margin: var(--spacing-1); }
+.nebulaiq-m-2 { margin: var(--spacing-2); }
+.nebulaiq-m-3 { margin: var(--spacing-3); }
+.nebulaiq-m-4 { margin: var(--spacing-4); }
+.nebulaiq-m-6 { margin: var(--spacing-6); }
+.nebulaiq-m-8 { margin: var(--spacing-8); }
+
+// Padding utilities
+.nebulaiq-p-0 { padding: var(--spacing-0); }
+.nebulaiq-p-1 { padding: var(--spacing-1); }
+.nebulaiq-p-2 { padding: var(--spacing-2); }
+.nebulaiq-p-3 { padding: var(--spacing-3); }
+.nebulaiq-p-4 { padding: var(--spacing-4); }
+.nebulaiq-p-6 { padding: var(--spacing-6); }
+.nebulaiq-p-8 { padding: var(--spacing-8); }
+
+// Gap utilities (flexbox/grid)
+.nebulaiq-gap-0 { gap: var(--spacing-0); }
+.nebulaiq-gap-1 { gap: var(--spacing-1); }
+.nebulaiq-gap-2 { gap: var(--spacing-2); }
+.nebulaiq-gap-3 { gap: var(--spacing-3); }
+.nebulaiq-gap-4 { gap: var(--spacing-4); }
+.nebulaiq-gap-6 { gap: var(--spacing-6); }
+.nebulaiq-gap-8 { gap: var(--spacing-8); }
+
+// Common spacing patterns
+.nebulaiq-section {
+  padding: var(--spacing-6);
+
+  @media (min-width: 1024px) {
+    padding: var(--spacing-8);
+  }
+}
+
+.nebulaiq-card {
+  padding: var(--spacing-4);
+
+  &-header {
+    padding: var(--spacing-4);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  &-body {
+    padding: var(--spacing-4);
+  }
+
+  &-footer {
+    padding: var(--spacing-4);
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
+// Stack layout (vertical spacing)
+.nebulaiq-stack {
+  display: flex;
+  flex-direction: column;
+
+  &-1 { gap: var(--spacing-1); }
+  &-2 { gap: var(--spacing-2); }
+  &-3 { gap: var(--spacing-3); }
+  &-4 { gap: var(--spacing-4); }
+  &-6 { gap: var(--spacing-6); }
+  &-8 { gap: var(--spacing-8); }
+}
+
+// Inline layout (horizontal spacing)
+.nebulaiq-inline {
+  display: flex;
+  align-items: center;
+
+  &-1 { gap: var(--spacing-1); }
+  &-2 { gap: var(--spacing-2); }
+  &-3 { gap: var(--spacing-3); }
+  &-4 { gap: var(--spacing-4); }
+  &-6 { gap: var(--spacing-6); }
+}

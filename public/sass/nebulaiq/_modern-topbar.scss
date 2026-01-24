@@ -1,0 +1,384 @@
+/**
+ * Modern Top Bar
+ * Clean, minimal, distinctive
+ */
+
+// ==================================================
+// TOP BAR CONTAINER
+// ==================================================
+
+.navbar,
+.top-bar,
+[class*='navbar'],
+.navbar-page-btn {
+  height: var(--topbar-height) !important;
+  background: var(--topbar-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--topbar-border) !important;
+  padding: 0 24px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky !important;
+  top: 0;
+  z-index: 90;
+  margin-left: var(--sidebar-width-collapsed) !important;
+  transition: margin-left var(--transition-slow) !important;
+}
+
+// ==================================================
+// LEFT SECTION - Breadcrumbs / Page Title
+// ==================================================
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+// Mobile menu toggle (only visible on mobile)
+.mobile-menu-toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  &:hover {
+    background: var(--bg-surface-raised);
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+// Page title / Breadcrumb
+.page-title,
+.topbar-breadcrumb {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.014em !important;
+  margin: 0 !important;
+
+  // Breadcrumb separator
+  .separator {
+    margin: 0 8px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+
+  // Breadcrumb links
+  a {
+    color: var(--text-secondary) !important;
+
+    &:hover {
+      color: var(--text-primary) !important;
+    }
+  }
+}
+
+// ==================================================
+// CENTER SECTION - Search
+// ==================================================
+
+.topbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 600px;
+}
+
+// Global search
+.global-search {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+
+  input {
+    width: 100%;
+    height: 36px !important;
+    padding: 0 36px 0 36px !important;
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+    font-size: 14px !important;
+    transition: all var(--transition-base) !important;
+
+    &::placeholder {
+      color: var(--text-tertiary) !important;
+    }
+
+    &:focus {
+      border-color: var(--accent-primary) !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+      outline: none !important;
+    }
+  }
+
+  // Search icon
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  // Keyboard shortcut hint
+  .search-shortcut {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    background: var(--bg-surface-raised);
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+    pointer-events: none;
+  }
+}
+
+// ==================================================
+// RIGHT SECTION - Actions
+// ==================================================
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+// Action buttons (time range, refresh, etc.)
+.topbar-action {
+  height: 36px !important;
+  padding: 0 12px !important;
+  background: transparent !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition-base) !important;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: var(--bg-surface-raised) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--text-primary) !important;
+  }
+
+  &.active {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+  }
+}
+
+// Time range picker
+.time-range-picker {
+  min-width: 160px;
+}
+
+// Refresh button
+.refresh-button {
+  width: 36px !important;
+  padding: 0 !important;
+  justify-content: center;
+}
+
+// Notifications
+.notifications-button {
+  position: relative;
+  width: 36px !important;
+  padding: 0 !important;
+  justify-content: center;
+
+  .notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-error);
+    border-radius: 50%;
+    border: 2px solid var(--topbar-bg);
+  }
+}
+
+// User menu
+.user-menu-trigger {
+  height: 36px !important;
+  padding: 0 8px 0 8px !important;
+  min-width: auto !important;
+
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: white;
+  }
+
+  .user-name {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .chevron {
+    margin-left: 4px;
+    width: 12px;
+    height: 12px;
+    opacity: 0.6;
+  }
+}
+
+// ==================================================
+// DROPDOWNS (Time Picker, User Menu, etc.)
+// ==================================================
+
+.topbar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: var(--bg-surface-overlay) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-xl) !important;
+  padding: 8px !important;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: all var(--transition-base) !important;
+  z-index: 1000;
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    color: var(--text-secondary) !important;
+    font-size: 14px !important;
+    cursor: pointer;
+    transition: all var(--transition-base) !important;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 12px;
+      opacity: 0.7;
+    }
+
+    &:hover {
+      background: var(--bg-surface-raised) !important;
+      color: var(--text-primary) !important;
+
+      svg {
+        opacity: 1;
+      }
+    }
+
+    &.active {
+      background: rgba(59, 130, 246, 0.1) !important;
+      color: var(--accent-primary) !important;
+      font-weight: 500;
+    }
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 8px 0;
+  }
+
+  .dropdown-header {
+    padding: 8px 12px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+  }
+}
+
+// ==================================================
+// MOBILE RESPONSIVENESS
+// ==================================================
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 16px !important;
+    margin-left: 0 !important;
+  }
+
+  .topbar-center {
+    display: none;
+  }
+
+  .topbar-right {
+    gap: 4px;
+
+    .topbar-action {
+      padding: 0 8px !important;
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .time-range-picker span {
+    display: none;
+  }
+
+  .user-name {
+    display: none !important;
+  }
+}

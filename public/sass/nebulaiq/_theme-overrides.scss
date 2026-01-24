@@ -1,0 +1,487 @@
+/**
+ * NebulaIQ Theme Overrides
+ * Comprehensively overrides Grafana's default theme with Phase 4.5 design system
+ * This file ensures ALL Grafana components automatically get the new look & feel
+ */
+
+// ==================================================
+// OVERRIDE GRAFANA VARIABLES WITH PHASE 4.5 DESIGN
+// ==================================================
+
+// IMPORTANT: Override Grafana's generated variables
+// This ensures all existing components use Phase 4.5 design
+
+// Background Colors (Flat - No Gradients)
+$body-bg: #0a0a0a !default;                    // var(--gray-950)
+$panel-bg: #171717 !default;                   // var(--gray-900)
+$card-background: #171717 !default;            // var(--gray-900)
+$card-background-hover: #262626 !default;      // var(--gray-800)
+$layer2: #171717 !default;                     // var(--gray-900)
+
+// Page Header
+$page-header-bg: #0a0a0a !default;
+$page-header-border-color: #262626 !default;   // var(--gray-800)
+$page-header-shadow: none !default;            // No shadows on header
+
+// Text Colors (High Contrast)
+$text-color: #fafafa !default;                 // var(--gray-50) - Primary text
+$text-color-weak: #d4d4d4 !default;           // var(--gray-300) - Secondary text
+$text-color-emphasis: #ffffff !default;        // White - Emphasis
+$text-muted: #737373 !default;                // var(--gray-500) - Muted text
+
+// Link Colors (Accessible)
+$link-color: #4da6ff !default;                // var(--primary-500)
+$link-hover-color: #60a5fa !default;          // var(--primary-400)
+$link-color-disabled: #525252 !default;       // var(--gray-600)
+
+// Primary/Accent Colors
+$blue: #4da6ff !default;                      // var(--primary-500)
+$blue-base: #4da6ff !default;
+$green-base: #10b981 !default;                // var(--success)
+$red-base: #ef4444 !default;                  // var(--error)
+$yellow: #f59e0b !default;                    // var(--warning)
+
+// Dark Shades (Updated to match Phase 4.5)
+$dark-1: #0a0a0a !default;                    // var(--gray-950)
+$dark-3: #171717 !default;                    // var(--gray-900)
+$dark-6: #262626 !default;                    // var(--gray-800)
+$dark-9: #404040 !default;                    // var(--gray-700)
+$dark-10: #525252 !default;                   // var(--gray-600)
+
+// Gray Shades
+$gray-1: #525252 !default;                    // var(--gray-600)
+$gray-2: #737373 !default;                    // var(--gray-500)
+$gray-6: #fafafa !default;                    // var(--gray-50)
+
+// Forms & Inputs (Flat)
+$input-bg: #171717 !default;                  // var(--gray-900)
+$input-color: #fafafa !default;               // var(--gray-50)
+$input-border-color: #404040 !default;        // var(--gray-700)
+
+// Buttons (Flat - No Gradients)
+$btn-inverse-bg-hl: #262626 !default;         // var(--gray-800)
+$btn-divider-left: #404040 !default;
+$btn-divider-right: #171717 !default;
+
+// Dropdowns
+$dropdownBackground: #171717 !default;        // var(--gray-900)
+$dropdownBorder: #404040 !default;            // var(--gray-700)
+$dropdownLinkColorHover: #ffffff !default;
+$dropdownLinkBackgroundHover: #262626 !default; // var(--gray-800)
+
+// Menu Dropdowns
+$menu-dropdown-bg: #171717 !default;
+$menu-dropdown-hover-bg: #262626 !default;
+$menu-dropdown-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+
+// Alerts (Flat)
+$alert-error-bg: #ef4444 !default;            // var(--error)
+$alert-success-bg: #10b981 !default;          // var(--success)
+$alert-warning-bg: #f59e0b !default;          // var(--warning)
+$alert-info-bg: #3b82f6 !default;             // var(--info)
+
+// Tooltips & Popovers
+$tooltipBackground: #262626 !default;         // var(--gray-800)
+$tooltipColor: #fafafa !default;
+$popover-bg: #171717 !default;
+$popover-color: #fafafa !default;
+$popover-border-color: #404040 !default;
+$popover-header-bg: #262626 !default;
+$popover-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+
+// Tables
+$table-bg-accent: #171717 !default;
+
+// Scrollbars
+$scrollbarBackground: #404040 !default;
+$scrollbarBackground2: #525252 !default;
+
+// Switch/Toggle (Flat)
+$switch-bg: #171717 !default;
+$switch-slider-color: #262626 !default;
+$switch-slider-off-bg: #525252 !default;
+$switch-slider-on-bg: #4da6ff !default;       // var(--primary-500) - Flat
+$switch-slider-shadow: none !default;         // No shadow
+
+// Checkbox (Flat - Remove Gradient!)
+$checkbox-bg: #171717 !default;
+$checkbox-border: 1px solid #525252 !default;
+$checkbox-checked-bg: #4da6ff !default;       // FLAT COLOR - No gradient!
+$checkbox-color: #ffffff !default;
+
+// Card Shadows (Subtle, Apple-style)
+$card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+
+// Lists
+$list-item-bg: #171717 !default;
+$empty-list-cta-bg: #171717 !default;
+
+// ==================================================
+// GLOBAL STYLE OVERRIDES
+// ==================================================
+
+// Apply Phase 4.5 design system globally
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: $body-bg !important;
+  color: $text-color !important;
+}
+
+// ==================================================
+// COMPONENT OVERRIDES - FLAT DESIGN
+// ==================================================
+
+// Buttons - Flat design, no gradients
+.btn,
+button {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  // Remove any gradients
+  background-image: none !important;
+}
+
+.btn-primary {
+  background: #4da6ff !important;           // Flat
+  border-color: #4da6ff !important;
+  color: #ffffff !important;
+
+  &:hover:not(:disabled) {
+    background: #3d8ce6 !important;         // Flat darker
+    border-color: #3d8ce6 !important;
+  }
+
+  &:active:not(:disabled) {
+    background: #2d7cd6 !important;         // Even darker flat
+    border-color: #2d7cd6 !important;
+  }
+}
+
+.btn-secondary {
+  background: #262626 !important;           // Flat
+  border-color: #404040 !important;
+  color: #fafafa !important;
+
+  &:hover:not(:disabled) {
+    background: #404040 !important;
+    border-color: #525252 !important;
+  }
+}
+
+.btn-success {
+  background: #10b981 !important;           // Flat
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+
+  &:hover:not(:disabled) {
+    background: #059669 !important;
+  }
+}
+
+.btn-danger {
+  background: #ef4444 !important;           // Flat
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+
+  &:hover:not(:disabled) {
+    background: #dc2626 !important;
+  }
+}
+
+// Inputs - Flat design
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+input[type='search'],
+textarea,
+select,
+.gf-form-input {
+  background: #171717 !important;           // Flat
+  border: 1px solid #404040 !important;
+  color: #fafafa !important;
+  border-radius: 6px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+
+  &:hover:not(:disabled) {
+    border-color: #525252 !important;
+  }
+
+  &:focus {
+    border-color: #4da6ff !important;
+    box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.15) !important; // Subtle ring, no glow
+    outline: none !important;
+  }
+
+  &::placeholder {
+    color: #737373 !important;
+  }
+}
+
+// Panels - Flat design
+.panel-container,
+.panel,
+[class*='panel'] {
+  background: #171717 !important;           // Flat
+  border: 1px solid #262626 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;              // No shadow initially
+
+  &:hover {
+    border-color: #404040 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+// Cards - Flat design
+.card,
+[class*='card'] {
+  background: #171717 !important;
+  border: 1px solid #262626 !important;
+  border-radius: 8px !important;
+
+  &:hover {
+    border-color: #404040 !important;
+  }
+}
+
+// Tables - Flat design
+.table,
+table {
+  background: #171717 !important;
+
+  thead {
+    background: #262626 !important;
+    border-bottom: 1px solid #404040 !important;
+
+    th {
+      color: #fafafa !important;
+      font-weight: 600 !important;
+      border-bottom: 1px solid #404040 !important;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #262626 !important;
+
+      &:hover {
+        background: #262626 !important;
+      }
+    }
+
+    td {
+      color: #d4d4d4 !important;
+    }
+  }
+}
+
+// Dropdowns - Flat design
+.dropdown-menu {
+  background: #171717 !important;
+  border: 1px solid #404040 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+
+  .dropdown-item {
+    color: #d4d4d4 !important;
+
+    &:hover {
+      background: #262626 !important;
+      color: #fafafa !important;
+    }
+
+    &.active {
+      background: rgba(77, 166, 255, 0.15) !important;
+      color: #4da6ff !important;
+    }
+  }
+}
+
+// Modals - Flat design
+.modal-content {
+  background: #171717 !important;
+  border: 1px solid #404040 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-header {
+  background: #262626 !important;
+  border-bottom: 1px solid #404040 !important;
+  color: #fafafa !important;
+}
+
+.modal-footer {
+  background: #262626 !important;
+  border-top: 1px solid #404040 !important;
+}
+
+// Alerts - Flat design
+.alert {
+  border-radius: 6px !important;
+  border-left: 4px solid !important;
+
+  &.alert-success {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border-left-color: #10b981 !important;
+    color: #10b981 !important;
+  }
+
+  &.alert-warning {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-left-color: #f59e0b !important;
+    color: #f59e0b !important;
+  }
+
+  &.alert-error,
+  &.alert-danger {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-left-color: #ef4444 !important;
+    color: #ef4444 !important;
+  }
+
+  &.alert-info {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-left-color: #3b82f6 !important;
+    color: #3b82f6 !important;
+  }
+}
+
+// Badges - Flat design
+.badge {
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  padding: 4px 8px !important;
+
+  &.badge-primary {
+    background: rgba(77, 166, 255, 0.2) !important;
+    color: #4da6ff !important;
+    border: 1px solid #4da6ff !important;
+  }
+
+  &.badge-success {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #10b981 !important;
+    border: 1px solid #10b981 !important;
+  }
+}
+
+// Scrollbars - Match Phase 4.5 design
+::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040 !important;
+  border-radius: 6px !important;
+  border: 2px solid #0a0a0a !important;
+
+  &:hover {
+    background: rgba(77, 166, 255, 0.4) !important;
+  }
+}
+
+// Typography - Phase 4.5 scale
+h1, .h1 {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  color: #fafafa !important;
+}
+
+h2, .h2 {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.015em !important;
+  color: #fafafa !important;
+}
+
+h3, .h3 {
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  color: #fafafa !important;
+}
+
+h4, .h4 {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  color: #fafafa !important;
+}
+
+h5, .h5 {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  color: #fafafa !important;
+}
+
+h6, .h6 {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  color: #fafafa !important;
+}
+
+// Links
+a {
+  color: #4da6ff !important;
+  transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+  &:hover {
+    color: #60a5fa !important;
+    text-decoration: none !important;
+  }
+
+  &:active {
+    color: #3d8ce6 !important;
+  }
+}
+
+// Code blocks
+code {
+  background: #262626 !important;
+  color: #60a5fa !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace !important;
+  font-size: 0.9em !important;
+}
+
+pre {
+  background: #262626 !important;
+  border: 1px solid #404040 !important;
+  border-radius: 6px !important;
+  padding: 16px !important;
+
+  code {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+}
+
+// Remove all gradient backgrounds globally
+* {
+  background-image: none !important;
+}
+
+// Exception: Allow skeleton loader shimmer
+.nebulaiq-skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent) !important;
+}

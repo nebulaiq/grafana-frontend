@@ -1,0 +1,44 @@
+/**
+ * NebulaIQ Design System
+ * Main entry point for all NebulaIQ styles
+ *
+ * Import order is important:
+ * 1. Modern Theme (FIRST - New color palette and base styles)
+ * 2. Theme Overrides (Override Grafana variables with Phase 4.5 design)
+ * 3. Colors (base variables)
+ * 4. Typography (font definitions)
+ * 5. Spacing (layout utilities)
+ * 6. Modern UI Components (sidebar, topbar, panels)
+ * 7. Legacy Theme & Navigation (backwards compatibility)
+ * 8. Charts (data visualizations)
+ * 9. Animations (micro-interactions)
+ * 10. Accessibility (a11y features)
+ * 11. Responsive (media queries)
+ */
+
+// CRITICAL: Modern theme FIRST - Sets new color palette and refined base styles
+@import 'modern-theme';
+
+// Override Grafana's default theme with Phase 4.5 design
+@import 'theme-overrides';
+
+// Base design system
+@import 'colors';
+@import 'typography';
+@import 'spacing';
+
+// Modern UI Components (Phase 4.5 - Refined Data Command Center)
+@import 'modern-sidebar';   // Gmail-style collapsed navigation
+@import 'modern-topbar';    // Redesigned top bar with translucent background
+@import 'modern-panels';    // Floating card design with elevation
+
+// Legacy component styles (backwards compatibility)
+@import 'theme';
+@import 'navigation';
+@import 'panels';
+@import 'charts';
+
+// Interactions and behavior
+@import 'animations';
+@import 'accessibility';
+@import 'responsive';

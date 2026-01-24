@@ -1,0 +1,175 @@
+/**
+ * Animations & Micro-interactions
+ * Apple-inspired: smooth, purposeful, 60fps
+ */
+
+:root {
+  // Timing functions
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  // Durations
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+}
+
+// Hover lift effect (subtle)
+.nebulaiq-lift {
+  transition: transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Fade in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nebulaiq-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+// Slide in from right (for modals, sidebars)
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.nebulaiq-slide-in-right {
+  animation: slideInRight var(--duration-slow) var(--ease-out);
+}
+
+// Scale fade (for tooltips, popovers)
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nebulaiq-scale-fade {
+  animation: scaleFade var(--duration-fast) var(--ease-out);
+}
+
+// Loading spinner
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nebulaiq-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gray-700);
+  border-top-color: var(--primary-500);
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+}
+
+// Pulse (for loading states)
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.nebulaiq-pulse {
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+// Skeleton loading (no gradient - use subtle shimmer)
+.nebulaiq-skeleton {
+  background: var(--gray-800);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    left: 100%;
+  }
+}
+
+// Focus ring (accessible)
+.nebulaiq-focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-500);
+    border-radius: 6px;
+  }
+}
+
+// Ripple effect (for buttons, cards)
+.nebulaiq-ripple {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width var(--duration-slow), height var(--duration-slow);
+  }
+
+  &:active::after {
+    width: 200px;
+    height: 200px;
+  }
+}
