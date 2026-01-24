@@ -69,6 +69,7 @@ export interface BookmarkedDashboard {
  * Section 3: Explore
  * Main link goes to dashboard list (/dashboards)
  * Sub-items for ad-hoc data exploration with different data sources
+ * Note: Logs removed from here - already available as top-level NebulaIQ feature
  */
 export const EXPLORE_SECTION: NavModelItem = {
   id: 'explore',
@@ -88,12 +89,6 @@ export const EXPLORE_SECTION: NavModelItem = {
       text: 'Metrics',
       icon: 'chart-line',
       url: '/explore?left={"datasource":"prometheus","queries":[{"refId":"A"}]}',
-    },
-    {
-      id: 'explore-logs',
-      text: 'Logs',
-      icon: 'file-alt',
-      url: '/a/nebulaiq-telemetry-app/logs', // NebulaIQ custom logs page
     },
     {
       id: 'explore-profiles',
