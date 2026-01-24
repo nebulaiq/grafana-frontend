@@ -83,7 +83,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
   }),
   img: css({
     alignSelf: 'center',
-    height: '48px',
+    height: '56px',
     width: '84px',
     objectFit: 'contain',
   }),

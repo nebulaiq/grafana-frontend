@@ -140,7 +140,7 @@ const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
   }),
   img: css({
     alignSelf: 'center',
-    height: '48px',
+    height: '56px',
     width: '84px',
     objectFit: 'contain',
   }),
