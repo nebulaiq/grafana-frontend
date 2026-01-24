@@ -149,17 +149,16 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "DashboardListPage"*/ 'app/features/browse-dashboards/BrowseDashboardsPage')
       ),
     },
-    // REMOVED: Explore - NebulaIQ has custom logs/traces UI
-    // {
-    //   path: '/explore',
-    //   pageClass: 'page-explore',
-    //   roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
-    //   component: SafeDynamicImport(() =>
-    //     config.exploreEnabled
-    //       ? import(/* webpackChunkName: "explore" */ 'app/features/explore/ExplorePage')
-    //       : import(/* webpackChunkName: "explore-feature-toggle-page" */ 'app/features/explore/FeatureTogglePage')
-    //   ),
-    // },
+    {
+      path: '/explore',
+      pageClass: 'page-explore',
+      roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
+      component: SafeDynamicImport(() =>
+        config.exploreEnabled
+          ? import(/* webpackChunkName: "explore" */ 'app/features/explore/ExplorePage')
+          : import(/* webpackChunkName: "explore-feature-toggle-page" */ 'app/features/explore/FeatureTogglePage')
+      ),
+    },
     {
       path: '/apps',
       component: () => <NavLandingPage navId="apps" />,
@@ -322,13 +321,12 @@ export function getAppRoutes(): RouteDescriptor[] {
           )
         : () => <Navigate replace to="/admin" />,
     },
-    // REMOVED: Admin Settings - Simplified admin section
-    // {
-    //   path: '/admin/settings',
-    //   component: SafeDynamicImport(
-    //     () => import(/* webpackChunkName: "AdminSettings" */ 'app/features/admin/AdminSettings')
-    //   ),
-    // },
+    {
+      path: '/admin/settings',
+      component: SafeDynamicImport(
+        () => import(/* webpackChunkName: "AdminSettings" */ 'app/features/admin/AdminSettings')
+      ),
+    },
     // REMOVED: Admin Upgrading - Simplified admin section
     // {
     //   path: '/admin/upgrading',

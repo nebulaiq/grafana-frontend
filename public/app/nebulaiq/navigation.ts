@@ -68,7 +68,7 @@ export interface BookmarkedDashboard {
 /**
  * Section 3: Explore
  * Main link goes to dashboard list (/dashboards)
- * Sub-items removed - NebulaIQ has custom logs/traces UI
+ * Sub-items for ad-hoc data exploration with different data sources
  */
 export const EXPLORE_SECTION: NavModelItem = {
   id: 'explore',
@@ -76,33 +76,32 @@ export const EXPLORE_SECTION: NavModelItem = {
   icon: 'compass',
   url: '/dashboards', // Main link goes to dashboard list
   sortWeight: 100,
-  // REMOVED: Explore children - Using NebulaIQ custom logs/traces UI instead
-  // children: [
-  //   {
-  //     id: 'explore-query',
-  //     text: 'Query',
-  //     icon: 'search',
-  //     url: '/explore',
-  //   },
-  //   {
-  //     id: 'explore-metrics',
-  //     text: 'Metrics',
-  //     icon: 'chart-line',
-  //     url: '/explore?left={"datasource":"prometheus","queries":[{"refId":"A"}]}',
-  //   },
-  //   {
-  //     id: 'explore-logs',
-  //     text: 'Logs',
-  //     icon: 'file-alt',
-  //     url: '/explore?left={"datasource":"loki","queries":[{"refId":"A"}]}',
-  //   },
-  //   {
-  //     id: 'explore-profiles',
-  //     text: 'Profiles',
-  //     icon: 'fire',
-  //     url: '/explore?left={"datasource":"phlare","queries":[{"refId":"A"}]}',
-  //   },
-  // ],
+  children: [
+    {
+      id: 'explore-query',
+      text: 'Query',
+      icon: 'search',
+      url: '/explore',
+    },
+    {
+      id: 'explore-metrics',
+      text: 'Metrics',
+      icon: 'chart-line',
+      url: '/explore?left={"datasource":"prometheus","queries":[{"refId":"A"}]}',
+    },
+    {
+      id: 'explore-logs',
+      text: 'Logs',
+      icon: 'file-alt',
+      url: '/a/nebulaiq-telemetry-app/logs', // NebulaIQ custom logs page
+    },
+    {
+      id: 'explore-profiles',
+      text: 'Profiles',
+      icon: 'fire',
+      url: '/explore?left={"datasource":"phlare","queries":[{"refId":"A"}]}',
+    },
+  ],
 };
 
 /**
@@ -138,6 +137,12 @@ export const SETTINGS_SECTION: NavModelItem = {
       text: 'Plugins',
       icon: 'plug',
       url: '/plugins',
+    },
+    {
+      id: 'settings-server',
+      text: 'Server',
+      icon: 'cog',
+      url: '/admin/settings',
     },
   ],
 };
