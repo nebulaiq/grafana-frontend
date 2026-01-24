@@ -1,5 +1,4 @@
 import { css } from '@emotion/css';
-import React from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 
 import { GrafanaTheme2 } from '@grafana/data';

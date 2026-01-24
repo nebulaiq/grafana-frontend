@@ -15,7 +15,6 @@ import { buildBreadcrumbs } from '../../Breadcrumbs/utils';
 import { OrganizationSwitcher } from '../OrganizationSwitcher/OrganizationSwitcher';
 import { TOP_BAR_LEVEL_HEIGHT } from '../types';
 
-import { PageBreadcrumb } from './PageBreadcrumb';
 import { SignInLink } from './SignInLink';
 import { TopNavBarMenu } from './TopNavBarMenu';
 

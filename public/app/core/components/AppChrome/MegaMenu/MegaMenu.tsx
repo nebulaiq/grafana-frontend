@@ -7,7 +7,6 @@ import { GrafanaTheme2, NavModelItem } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Icon, IconName, ScrollContainer, useStyles2 } from '@grafana/ui';
 import { useGrafana } from 'app/core/context/GrafanaContext';
-import { t } from 'app/core/internationalization';
 
 // Import NebulaIQ navigation
 import {
