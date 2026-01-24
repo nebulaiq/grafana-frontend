@@ -33,8 +33,11 @@ export function getAppRoutes(): RouteDescriptor[] {
     ...getAppPluginRoutes(),
     {
       path: '/',
-      // NebulaIQ: Redirect to Service Performance as default landing page
-      component: () => <Navigate replace to="/a/nebulaiq-telemetry-app/service-performance" />,
+      pageClass: 'page-dashboard',
+      routeName: DashboardRoutes.Home,
+      component: SafeDynamicImport(
+        () => import(/* webpackChunkName: "DashboardPageProxy" */ '../features/dashboard/containers/DashboardPageProxy')
+      ),
     },
     {
       path: '/d/:uid/:slug?',

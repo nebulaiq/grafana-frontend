@@ -1,24 +1,26 @@
 import { css } from '@emotion/css';
 import { DOMAttributes } from '@react-types/shared';
-import { memo, forwardRef, useCallback } from 'react';
+import React, { memo, forwardRef, useState } from 'react';
 import { useLocation } from 'react-router-dom-v5-compat';
 
 import { GrafanaTheme2, NavModelItem } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
-import { config, reportInteraction } from '@grafana/runtime';
-import { ScrollContainer, useStyles2, Stack } from '@grafana/ui';
+import { Icon, IconName, ScrollContainer, useStyles2 } from '@grafana/ui';
 import { useGrafana } from 'app/core/context/GrafanaContext';
 import { t } from 'app/core/internationalization';
-import { setBookmark } from 'app/core/reducers/navBarTree';
-import { usePatchUserPreferencesMutation } from 'app/features/preferences/api/index';
-import { useDispatch, useSelector } from 'app/types';
+
+// Import NebulaIQ navigation
+import {
+  NEBULAIQ_FEATURES,
+  EXPLORE_SECTION,
+  SETTINGS_SECTION,
+  getActiveNavItem,
+} from 'app/nebulaiq/navigation';
+import { useBookmarkedDashboards } from 'app/nebulaiq/useBookmarkedDashboards';
 
 import { TOP_BAR_LEVEL_HEIGHT } from '../types';
 
 import { MegaMenuHeader } from './MegaMenuHeader';
-import { MegaMenuItem } from './MegaMenuItem';
-import { usePinnedItems } from './hooks';
-import { enrichWithInteractionTracking, findByUrl, getActiveItem } from './utils';
 
 export const MENU_WIDTH = '300px';
 
@@ -26,44 +28,23 @@ export interface Props extends DOMAttributes {
   onClose: () => void;
 }
 
+/**
+ * NebulaIQ MegaMenu - Modern SaaS Navigation Pattern
+ *
+ * Structure:
+ * 1. Built-in NebulaIQ Features (top-level, no hierarchy)
+ * 2. Bookmarked Dashboards (dynamic, user's starred dashboards)
+ * 3. Explore (expandable: dashboards, query, metrics, logs, profiles)
+ * 4. Settings (expandable: connections, users, orgs, plugins)
+ */
 export const MegaMenu = memo(
   forwardRef<HTMLDivElement, Props>(({ onClose, ...restProps }, ref) => {
-    const navTree = useSelector((state) => state.navBarTree);
     const styles = useStyles2(getStyles);
     const location = useLocation();
     const { chrome } = useGrafana();
-    const dispatch = useDispatch();
     const state = chrome.useState();
-    const [patchPreferences] = usePatchUserPreferencesMutation();
-    const pinnedItems = usePinnedItems();
-
-    // Remove profile + help from tree
-    const navItems = navTree
-      .filter((item) => item.id !== 'profile' && item.id !== 'help')
-      .map((item) => enrichWithInteractionTracking(item, state.megaMenuDocked));
-
-    if (config.featureToggles.pinNavItems) {
-      const bookmarksItem = findByUrl(navItems, '/bookmarks');
-      if (bookmarksItem) {
-        // Add children to the bookmarks section
-        bookmarksItem.children = pinnedItems.reduce((acc: NavModelItem[], url) => {
-          const item = findByUrl(navItems, url);
-          if (!item) {
-            return acc;
-          }
-          const newItem = {
-            id: item.id,
-            text: item.text,
-            url: item.url,
-            parentItem: { id: 'bookmarks', text: 'Bookmarks' },
-          };
-          acc.push(enrichWithInteractionTracking(newItem, state.megaMenuDocked));
-          return acc;
-        }, []);
-      }
-    }
-
-    const activeItem = getActiveItem(navItems, state.sectionNav.node, location.pathname);
+    const { bookmarks, loading } = useBookmarkedDashboards();
+    const activeNavItem = getActiveNavItem(location.pathname);
 
     const handleMegaMenu = () => {
       chrome.setMegaMenuOpen(!state.megaMenuOpen);
@@ -76,57 +57,54 @@ export const MegaMenu = memo(
       }
     };
 
-    const isPinned = useCallback(
-      (url?: string) => {
-        if (!url || !pinnedItems?.length) {
-          return false;
-        }
-        return pinnedItems?.includes(url);
-      },
-      [pinnedItems]
-    );
-
-    const onPinItem = (item: NavModelItem) => {
-      const url = item.url;
-      if (url && config.featureToggles.pinNavItems) {
-        const isSaved = isPinned(url);
-        const newItems = isSaved ? pinnedItems.filter((i) => url !== i) : [...pinnedItems, url];
-        const interactionName = isSaved ? 'grafana_nav_item_unpinned' : 'grafana_nav_item_pinned';
-        reportInteraction(interactionName, {
-          path: url,
-        });
-        patchPreferences({
-          patchPrefsCmd: {
-            navbar: {
-              bookmarkUrls: newItems,
-            },
-          },
-        }).then((data) => {
-          if (!data.error) {
-            dispatch(setBookmark({ item: item, isSaved: !isSaved }));
-          }
-        });
-      }
-    };
-
     return (
       <div data-testid={selectors.components.NavMenu.Menu} ref={ref} {...restProps}>
         <MegaMenuHeader handleDockedMenu={handleDockedMenu} handleMegaMenu={handleMegaMenu} onClose={onClose} />
         <nav className={styles.content}>
           <ScrollContainer height="100%" overflowX="hidden" showScrollIndicators>
-            <ul className={styles.itemList} aria-label={t('navigation.megamenu.list-label', 'Navigation')}>
-              {navItems.map((link, index) => (
-                <Stack key={link.text} direction={index === 0 ? 'row-reverse' : 'row'} alignItems="start">
-                  <MegaMenuItem
-                    link={link}
-                    isPinned={isPinned}
+            <div className="nebulaiq-mega-menu">
+              <div className="nebulaiq-nav-list">
+                {/* Section 1: NebulaIQ Features */}
+                {NEBULAIQ_FEATURES.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    isActive={activeNavItem === item.id}
                     onClick={state.megaMenuDocked ? undefined : onClose}
-                    activeItem={activeItem}
-                    onPin={onPinItem}
                   />
-                </Stack>
-              ))}
-            </ul>
+                ))}
+
+                {/* Divider */}
+                <NavDivider />
+
+                {/* Section 2: Bookmarked Dashboards */}
+                <BookmarkedSection
+                  bookmarks={bookmarks}
+                  loading={loading}
+                  onClick={state.megaMenuDocked ? undefined : onClose}
+                />
+
+                {/* Divider */}
+                <NavDivider />
+
+                {/* Section 3: Explore */}
+                <NavItemExpandable
+                  item={EXPLORE_SECTION}
+                  isActive={activeNavItem === 'explore'}
+                  onClick={state.megaMenuDocked ? undefined : onClose}
+                />
+
+                {/* Divider */}
+                <NavDivider />
+
+                {/* Section 4: Settings */}
+                <NavItemExpandable
+                  item={SETTINGS_SECTION}
+                  isActive={activeNavItem === 'settings'}
+                  onClick={state.megaMenuDocked ? undefined : onClose}
+                />
+              </div>
+            </div>
           </ScrollContainer>
         </nav>
       </div>
@@ -136,6 +114,133 @@ export const MegaMenu = memo(
 
 MegaMenu.displayName = 'MegaMenu';
 
+/**
+ * Simple navigation item (no children)
+ */
+interface NavItemProps {
+  item: NavModelItem;
+  isActive: boolean;
+  onClick?: () => void;
+}
+
+function NavItem({ item, isActive, onClick }: NavItemProps) {
+  return (
+    <a
+      href={item.url}
+      className={`nebulaiq-nav-item ${isActive ? 'active' : ''}`}
+      title={item.text}
+      onClick={onClick}
+    >
+      {item.icon && <Icon name={item.icon as IconName} />}
+      <span className="nebulaiq-nav-item-text">{item.text}</span>
+    </a>
+  );
+}
+
+/**
+ * Expandable navigation item (with children)
+ */
+interface NavItemExpandableProps {
+  item: NavModelItem;
+  isActive: boolean;
+  onClick?: () => void;
+}
+
+function NavItemExpandable({ item, isActive, onClick }: NavItemExpandableProps) {
+  const [isOpen, setIsOpen] = useState(isActive);
+
+  const toggleOpen = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className="nebulaiq-nav-section">
+      <div className={`nebulaiq-nav-item nebulaiq-nav-item-expandable ${isActive ? 'active' : ''}`}>
+        <a href={item.url} onClick={onClick} className="nebulaiq-nav-item-link">
+          {item.icon && <Icon name={item.icon as IconName} />}
+          <span className="nebulaiq-nav-item-text">{item.text}</span>
+        </a>
+        <button onClick={toggleOpen} className="nebulaiq-nav-item-chevron-button" aria-label="Toggle submenu">
+          <Icon name={isOpen ? 'angle-down' : 'angle-right'} className="nebulaiq-nav-item-chevron" />
+        </button>
+      </div>
+      {isOpen && item.children && (
+        <div className="nebulaiq-nav-children">
+          {item.children.map((child) => (
+            <a key={child.id} href={child.url} className="nebulaiq-nav-child-link" onClick={onClick}>
+              {child.icon && <Icon name={child.icon as IconName} size="sm" />}
+              <span>{child.text}</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Bookmarked dashboards section
+ */
+interface BookmarkedSectionProps {
+  bookmarks: any[];
+  loading: boolean;
+  onClick?: () => void;
+}
+
+function BookmarkedSection({ bookmarks, loading, onClick }: BookmarkedSectionProps) {
+  if (loading) {
+    return (
+      <div className="nebulaiq-nav-section">
+        <div className="nebulaiq-nav-section-loading">Loading bookmarks...</div>
+      </div>
+    );
+  }
+
+  if (bookmarks.length === 0) {
+    return (
+      <div className="nebulaiq-nav-section">
+        <a href="/dashboards" className="nebulaiq-nav-item nebulaiq-nav-item-action" onClick={onClick}>
+          <Icon name="star" />
+          <span className="nebulaiq-nav-item-text">Bookmark Dashboard</span>
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className="nebulaiq-nav-section">
+      {/* Bookmarked dashboards */}
+      {bookmarks.map((bookmark) => (
+        <a
+          key={bookmark.uid}
+          href={bookmark.url}
+          className="nebulaiq-nav-item nebulaiq-nav-item-bookmark"
+          title={bookmark.title}
+          onClick={onClick}
+        >
+          <Icon name="star" className="nebulaiq-bookmark-icon" />
+          <span className="nebulaiq-nav-item-text">{bookmark.title}</span>
+        </a>
+      ))}
+
+      {/* Action to add more */}
+      <a href="/dashboards" className="nebulaiq-nav-item nebulaiq-nav-item-action" onClick={onClick}>
+        <Icon name="plus" />
+        <span className="nebulaiq-nav-item-text">Bookmark Dashboard</span>
+      </a>
+    </div>
+  );
+}
+
+/**
+ * Divider between navigation sections
+ */
+function NavDivider() {
+  return <div className="nebulaiq-nav-divider" />;
+}
+
 const getStyles = (theme: GrafanaTheme2) => {
   return {
     content: css({
@@ -144,35 +249,6 @@ const getStyles = (theme: GrafanaTheme2) => {
       height: `calc(100% - ${TOP_BAR_LEVEL_HEIGHT}px)`,
       minHeight: 0,
       position: 'relative',
-    }),
-    mobileHeader: css({
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: theme.spacing(1, 1, 1, 2),
-      borderBottom: `1px solid ${theme.colors.border.weak}`,
-
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    }),
-    itemList: css({
-      boxSizing: 'border-box',
-      display: 'flex',
-      flexDirection: 'column',
-      listStyleType: 'none',
-      padding: theme.spacing(1, 1, 2, 1),
-      [theme.breakpoints.up('md')]: {
-        width: MENU_WIDTH,
-      },
-    }),
-    dockMenuButton: css({
-      display: 'none',
-      position: 'relative',
-      top: theme.spacing(1),
-
-      [theme.breakpoints.up('xl')]: {
-        display: 'inline-flex',
-      },
     }),
   };
 };

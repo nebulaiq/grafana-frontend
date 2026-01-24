@@ -1,0 +1,316 @@
+// NebulaIQ Navigation Styles
+// Modern SaaS-style navigation with clean aesthetics
+
+.nebulaiq-mega-menu {
+  height: 100%;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.nebulaiq-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+// Navigation sections
+.nebulaiq-nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+// Simple navigation item (no children)
+.nebulaiq-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: var(--nebulaiq-nav-text, #e0e0e0);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  border-radius: 6px;
+  margin: 0 8px;
+  gap: 12px;
+  position: relative;
+
+  &:hover {
+    background: var(--nebulaiq-nav-hover, rgba(42, 130, 228, 0.15));
+    color: var(--nebulaiq-nav-text-hover, #ffffff);
+  }
+
+  &.active {
+    background: var(--nebulaiq-nav-active, rgba(42, 130, 228, 0.25));
+    color: var(--nebulaiq-nav-text-active, #4da6ff);
+    font-weight: 600;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: var(--nebulaiq-primary, #4da6ff);
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  svg {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+}
+
+.nebulaiq-nav-item-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Expandable navigation item
+.nebulaiq-nav-item-expandable {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 10px 16px;
+  margin: 0 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: var(--nebulaiq-nav-hover, rgba(42, 130, 228, 0.15));
+  }
+
+  &.active {
+    background: var(--nebulaiq-nav-active, rgba(42, 130, 228, 0.25));
+    color: var(--nebulaiq-nav-text-active, #4da6ff);
+    font-weight: 600;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 60%;
+      background: var(--nebulaiq-primary, #4da6ff);
+      border-radius: 0 2px 2px 0;
+    }
+  }
+
+  .nebulaiq-nav-item-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+
+    svg {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+  }
+
+  .nebulaiq-nav-item-chevron-button {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    margin-left: 4px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+  }
+}
+
+.nebulaiq-nav-item-chevron {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+// Child navigation items
+.nebulaiq-nav-children {
+  display: flex;
+  flex-direction: column;
+  padding-left: 44px;
+  margin-top: 2px;
+  gap: 2px;
+}
+
+.nebulaiq-nav-child-link {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  margin-right: 8px;
+  color: var(--nebulaiq-nav-child-text, #b0b0b0);
+  text-decoration: none;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+  gap: 10px;
+
+  svg {
+    font-size: 14px;
+  }
+
+  &:hover {
+    background: var(--nebulaiq-nav-hover, rgba(42, 130, 228, 0.15));
+    color: var(--nebulaiq-nav-text-hover, #ffffff);
+  }
+}
+
+// Bookmarked dashboards
+.nebulaiq-nav-item-bookmark {
+  .nebulaiq-bookmark-icon {
+    color: #ffd700; // Gold star
+  }
+}
+
+// Action item (+ Bookmark Dashboard)
+.nebulaiq-nav-item-action {
+  opacity: 0.7;
+  font-style: italic;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// Loading state
+.nebulaiq-nav-section-loading {
+  padding: 10px 16px;
+  margin: 0 8px;
+  font-size: 13px;
+  color: var(--nebulaiq-nav-text-tertiary, #808080);
+  font-style: italic;
+}
+
+// Divider between sections
+.nebulaiq-nav-divider {
+  height: 1px;
+  background: var(--nebulaiq-nav-divider, rgba(255, 255, 255, 0.1));
+  margin: 12px 16px;
+}
+
+// Top Bar Customizations
+.nebulaiq-top-bar {
+  height: 52px;
+  background: var(--nebulaiq-bg-panel, #1a1a1a);
+  border-bottom: 1px solid var(--nebulaiq-border, rgba(255, 255, 255, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.nebulaiq-org-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    object-fit: contain;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--nebulaiq-text-primary, #ffffff);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  svg {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}
+
+.nebulaiq-page-breadcrumb {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--nebulaiq-text-primary, #ffffff);
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .nebulaiq-nav-item {
+    padding: 12px 16px;
+    margin: 0 4px;
+  }
+
+  .nebulaiq-nav-item-expandable {
+    padding: 12px 16px;
+    margin: 0 4px;
+  }
+
+  .nebulaiq-nav-children {
+    padding-left: 36px;
+  }
+
+  .nebulaiq-nav-divider {
+    margin: 8px 12px;
+  }
+}
+
+// Dark theme (default)
+:root {
+  --nebulaiq-nav-bg: #1a1a1a;
+  --nebulaiq-nav-text: #e0e0e0;
+  --nebulaiq-nav-text-hover: #ffffff;
+  --nebulaiq-nav-text-active: #4da6ff;
+  --nebulaiq-nav-child-text: #b0b0b0;
+  --nebulaiq-nav-text-tertiary: #808080;
+  --nebulaiq-nav-hover: rgba(42, 130, 228, 0.15);
+  --nebulaiq-nav-active: rgba(42, 130, 228, 0.25);
+  --nebulaiq-nav-divider: rgba(255, 255, 255, 0.1);
+  --nebulaiq-primary: #4da6ff;
+  --nebulaiq-bg-panel: #1a1a1a;
+  --nebulaiq-border: rgba(255, 255, 255, 0.1);
+  --nebulaiq-text-primary: #ffffff;
+}
+
+// Light theme
+[data-theme='light'] {
+  --nebulaiq-nav-bg: #f7f8fa;
+  --nebulaiq-nav-text: #2c3e50;
+  --nebulaiq-nav-text-hover: #1a252f;
+  --nebulaiq-nav-text-active: #1f62a2;
+  --nebulaiq-nav-child-text: #6c757d;
+  --nebulaiq-nav-text-tertiary: #adb5bd;
+  --nebulaiq-nav-hover: rgba(31, 98, 162, 0.1);
+  --nebulaiq-nav-active: rgba(31, 98, 162, 0.2);
+  --nebulaiq-nav-divider: rgba(0, 0, 0, 0.1);
+  --nebulaiq-primary: #1f62a2;
+  --nebulaiq-bg-panel: #ffffff;
+  --nebulaiq-border: rgba(0, 0, 0, 0.1);
+  --nebulaiq-text-primary: #2c3e50;
+}

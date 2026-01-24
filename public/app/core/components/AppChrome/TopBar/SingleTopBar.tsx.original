@@ -1,8 +1,10 @@
 import { css } from '@emotion/css';
+import { cloneDeep } from 'lodash';
 import { memo } from 'react';
 
 import { GrafanaTheme2, NavModelItem } from '@grafana/data';
 import { Dropdown, Icon, Stack, ToolbarButton, useStyles2 } from '@grafana/ui';
+import { config } from 'app/core/config';
 import { useGrafana } from 'app/core/context/GrafanaContext';
 import { contextSrv } from 'app/core/core';
 import { t } from 'app/core/internationalization';
@@ -12,12 +14,15 @@ import { useSelector } from 'app/types';
 import { Branding } from '../../Branding/Branding';
 import { Breadcrumbs } from '../../Breadcrumbs/Breadcrumbs';
 import { buildBreadcrumbs } from '../../Breadcrumbs/utils';
-import { OrganizationSwitcher } from '../OrganizationSwitcher/OrganizationSwitcher';
+import { HistoryContainer } from '../History/HistoryContainer';
+import { enrichHelpItem } from '../MegaMenu/utils';
+import { NewsContainer } from '../News/NewsContainer';
+import { QuickAdd } from '../QuickAdd/QuickAdd';
 import { TOP_BAR_LEVEL_HEIGHT } from '../types';
 
-import { PageBreadcrumb } from './PageBreadcrumb';
 import { SignInLink } from './SignInLink';
 import { TopNavBarMenu } from './TopNavBarMenu';
+import { TopSearchBarCommandPaletteTrigger } from './TopSearchBarCommandPaletteTrigger';
 
 export const MEGA_MENU_TOGGLE_ID = 'mega-menu-toggle';
 
@@ -28,23 +33,6 @@ interface Props {
   onToggleKioskMode(): void;
 }
 
-/**
- * NebulaIQ Single Top Bar - Simplified, minimal design
- *
- * Removed:
- * - Search bar (will add AI-powered search later)
- * - "Create" / QuickAdd button
- * - News menu
- * - Help menu
- * - Time range picker (context-aware, only on dashboards)
- *
- * Kept:
- * - Menu toggle with logo
- * - Page breadcrumbs/title
- * - Organization switcher (customer branding)
- * - User profile dropdown
- * - Kiosk mode toggle
- */
 export const SingleTopBar = memo(function SingleTopBar({
   onToggleMegaMenu,
   onToggleKioskMode,
@@ -57,13 +45,15 @@ export const SingleTopBar = memo(function SingleTopBar({
   const styles = useStyles2(getStyles, menuDockedAndOpen);
   const navIndex = useSelector((state) => state.navIndex);
 
+  const helpNode = cloneDeep(navIndex['help']);
+  const enrichedHelpNode = helpNode ? enrichHelpItem(helpNode) : undefined;
   const profileNode = navIndex['profile'];
   const homeNav = useSelector((state) => state.navIndex)[HOME_NAV_ID];
   const breadcrumbs = buildBreadcrumbs(sectionNav, pageNav, homeNav);
+  const unifiedHistoryEnabled = config.featureToggles.unifiedHistory;
 
   return (
     <div className={styles.layout}>
-      {/* Left side - Menu toggle + Breadcrumbs */}
       <Stack minWidth={0} gap={0.5} alignItems="center">
         {!menuDockedAndOpen && (
           <ToolbarButton
@@ -78,28 +68,26 @@ export const SingleTopBar = memo(function SingleTopBar({
             </Stack>
           </ToolbarButton>
         )}
-        {/* Use existing breadcrumbs or our custom PageBreadcrumb */}
         <Breadcrumbs breadcrumbs={breadcrumbs} className={styles.breadcrumbsWrapper} />
-        {/* <PageBreadcrumb /> */}
       </Stack>
 
-      {/* Right side - Customer org + User profile */}
-      <Stack gap={1} alignItems="center">
-        {/* Organization Switcher - Customer Branding */}
-        <OrganizationSwitcher />
-
-        {/* Kiosk Mode Toggle (optional, can remove if not needed) */}
+      <Stack gap={0.5} alignItems="center">
+        <TopSearchBarCommandPaletteTrigger />
+        {unifiedHistoryEnabled && <HistoryContainer />}
+        <QuickAdd />
+        {enrichedHelpNode && (
+          <Dropdown overlay={() => <TopNavBarMenu node={enrichedHelpNode} />} placement="bottom-end">
+            <ToolbarButton iconOnly icon="question-circle" aria-label="Help" />
+          </Dropdown>
+        )}
+        {config.newsFeedEnabled && <NewsContainer />}
         <ToolbarButton
           icon="monitor"
           className={styles.kioskToggle}
           onClick={onToggleKioskMode}
           tooltip="Enable kiosk mode"
         />
-
-        {/* Sign In Link (if not signed in) */}
         {!contextSrv.user.isSignedIn && <SignInLink />}
-
-        {/* User Profile Dropdown */}
         {profileNode && (
           <Dropdown overlay={() => <TopNavBarMenu node={profileNode} />} placement="bottom-end">
             <ToolbarButton
@@ -121,15 +109,15 @@ const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
     display: 'flex',
     gap: theme.spacing(2),
     alignItems: 'center',
-    padding: theme.spacing(0, 1.5),
+    padding: theme.spacing(0, 1),
     paddingLeft: menuDockedAndOpen ? theme.spacing(3.5) : theme.spacing(0.75),
     borderBottom: `1px solid ${theme.colors.border.weak}`,
     justifyContent: 'space-between',
-    background: theme.colors.background.primary,
 
     [theme.breakpoints.up('lg')]: {
-      display: 'flex',
-      justifyContent: 'space-between',
+      gridTemplateColumns: '2fr minmax(550px, 1fr)',
+      display: 'grid',
+      justifyContent: 'flex-start',
     },
   }),
   breadcrumbsWrapper: css({
