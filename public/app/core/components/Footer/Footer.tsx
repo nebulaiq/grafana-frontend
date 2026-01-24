@@ -63,8 +63,6 @@ export function getVersionLinks(hideEdition?: boolean): FooterLink[] {
     return links;
   }
 
-  const { hasReleaseNotes } = getVersionMeta(buildInfo.version);
-
   links.push({
     target: '_self',
     id: 'version',

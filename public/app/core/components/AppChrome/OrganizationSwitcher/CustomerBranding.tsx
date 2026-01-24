@@ -33,51 +33,57 @@ export function CustomerBranding({ variant = 'full' }: CustomerBrandingProps) {
   if (variant === 'compact') {
     return (
       <Tooltip content={displayFormat.tooltip}>
-        <Stack gap={1} alignItems="center" className={styles.compactContainer}>
-          {customerLogoPath && (
-            <img
-              src={customerLogoPath}
-              alt={currentOrg}
-              className={styles.customerLogoCompact}
-              onError={(e) => {
-                // Hide image if logo doesn't exist
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          )}
-          <div className={styles.brandTextCompact}>
-            <Text truncate className={styles.customerName}>{displayFormat.shortName}</Text>
-          </div>
-        </Stack>
+        <div className={styles.compactContainer}>
+          <Stack gap={1} alignItems="center">
+            {customerLogoPath && (
+              <img
+                src={customerLogoPath}
+                alt={currentOrg}
+                className={styles.customerLogoCompact}
+                onError={(e) => {
+                  // Hide image if logo doesn't exist
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            <div className={styles.brandTextCompact}>
+              <div className={styles.customerName}>
+                <Text truncate>{displayFormat.shortName}</Text>
+              </div>
+            </div>
+          </Stack>
+        </div>
       </Tooltip>
     );
   }
 
   return (
-    <Stack gap={1.5} alignItems="center" className={styles.container}>
-      {/* Customer Logo */}
-      {customerLogoPath && (
-        <img
-          src={customerLogoPath}
-          alt={currentOrg}
-          className={styles.customerLogo}
-          onError={(e) => {
-            // Hide image if logo doesn't exist
-            e.currentTarget.style.display = 'none';
-          }}
-        />
-      )}
+    <div className={styles.container}>
+      <Stack gap={1.5} alignItems="center">
+        {/* Customer Logo */}
+        {customerLogoPath && (
+          <img
+            src={customerLogoPath}
+            alt={currentOrg}
+            className={styles.customerLogo}
+            onError={(e) => {
+              // Hide image if logo doesn't exist
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        )}
 
-      {/* Branding Text */}
-      <div className={styles.brandText}>
-        <Text truncate className={styles.customerName}>
-          {displayFormat.customerName}
-        </Text>
-        <Text className={styles.poweredBy}>
-          {displayFormat.attribution}
-        </Text>
-      </div>
-    </Stack>
+        {/* Branding Text */}
+        <div className={styles.brandText}>
+          <div className={styles.customerName}>
+            <Text truncate>{displayFormat.customerName}</Text>
+          </div>
+          <div className={styles.poweredBy}>
+            <Text>{displayFormat.attribution}</Text>
+          </div>
+        </div>
+      </Stack>
+    </div>
   );
 }
 
@@ -135,6 +141,8 @@ function getDisplayFormat(orgName: string) {
 
 const getStyles = (theme: GrafanaTheme2) => ({
   container: css({
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0.5, 1.5),
     borderRadius: theme.shape.radius.default,
     background: theme.colors.background.secondary,
@@ -142,6 +150,8 @@ const getStyles = (theme: GrafanaTheme2) => ({
     minHeight: '32px',
   }),
   compactContainer: css({
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0.5, 1),
     borderRadius: theme.shape.radius.default,
     background: theme.colors.background.secondary,

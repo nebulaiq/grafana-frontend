@@ -14,8 +14,6 @@ export const LoginLogo: FC<BrandComponentProps & { logo?: string }> = ({ classNa
 };
 
 const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
-  const theme = useTheme2();
-
   const background = css({
     '&:before': {
       content: '""',
