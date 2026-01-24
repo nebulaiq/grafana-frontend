@@ -86,6 +86,8 @@ const getStyles = (theme: GrafanaTheme2) => ({
     height: '36px',
     width: '36px',
     objectFit: 'contain',
+    display: 'block',
+    overflow: 'visible',
   }),
   mobileCloseButton: css({
     [theme.breakpoints.up('md')]: {

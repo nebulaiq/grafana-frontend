@@ -143,6 +143,8 @@ const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
     height: '36px',
     width: '36px',
     objectFit: 'contain',
+    display: 'block',
+    overflow: 'visible',
   }),
   profileButton: css({
     padding: theme.spacing(0, 0.5),
