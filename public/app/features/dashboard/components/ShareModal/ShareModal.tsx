@@ -35,23 +35,25 @@ function getTabs(canEditDashboard: boolean, panel?: PanelModel, activeTab?: stri
   const linkLabel = t('share-modal.tab-title.link', 'Link');
   const tabs: ShareModalTabModel[] = [{ label: linkLabel, value: shareDashboardType.link, component: ShareLink }];
 
-  if (
-    contextSrv.isSignedIn &&
-    config.snapshotEnabled &&
-    contextSrv.hasPermission(AccessControlAction.SnapshotsCreate)
-  ) {
-    const snapshotLabel = t('share-modal.tab-title.snapshot', 'Snapshot');
-    tabs.push({ label: snapshotLabel, value: shareDashboardType.snapshot, component: ShareSnapshot });
-  }
+  // REMOVED: Snapshot tab - Not using snapshots
+  // if (
+  //   contextSrv.isSignedIn &&
+  //   config.snapshotEnabled &&
+  //   contextSrv.hasPermission(AccessControlAction.SnapshotsCreate)
+  // ) {
+  //   const snapshotLabel = t('share-modal.tab-title.snapshot', 'Snapshot');
+  //   tabs.push({ label: snapshotLabel, value: shareDashboardType.snapshot, component: ShareSnapshot });
+  // }
 
   if (panel) {
     const embedLabel = t('share-modal.tab-title.embed', 'Embed');
     tabs.push({ label: embedLabel, value: shareDashboardType.embed, component: ShareEmbed });
 
-    if (!isPanelModelLibraryPanel(panel)) {
-      const libraryPanelLabel = t('share-modal.tab-title.library-panel', 'Library panel');
-      tabs.push({ label: libraryPanelLabel, value: shareDashboardType.libraryPanel, component: ShareLibraryPanel });
-    }
+    // REMOVED: Library panel tab - Not using library panels
+    // if (!isPanelModelLibraryPanel(panel)) {
+    //   const libraryPanelLabel = t('share-modal.tab-title.library-panel', 'Library panel');
+    //   tabs.push({ label: libraryPanelLabel, value: shareDashboardType.libraryPanel, component: ShareLibraryPanel });
+    // }
     tabs.push(...customPanelTabs);
   } else {
     const exportLabel = t('share-modal.tab-title.export', 'Export');
@@ -62,13 +64,14 @@ function getTabs(canEditDashboard: boolean, panel?: PanelModel, activeTab?: stri
     });
     tabs.push(...customDashboardTabs);
 
-    if (isPublicDashboardsEnabled()) {
-      tabs.push({
-        label: t('share-modal.tab-title.public-dashboard-title', 'Public dashboard'),
-        value: shareDashboardType.publicDashboard,
-        component: SharePublicDashboard,
-      });
-    }
+    // REMOVED: Public dashboard tab - Not using public dashboards
+    // if (isPublicDashboardsEnabled()) {
+    //   tabs.push({
+    //     label: t('share-modal.tab-title.public-dashboard-title', 'Public dashboard'),
+    //     value: shareDashboardType.publicDashboard,
+    //     component: SharePublicDashboard,
+    //   });
+    // }
   }
 
   const at = tabs.find((t) => t.value === activeTab);

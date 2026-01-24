@@ -133,18 +133,19 @@ export function getPanelMenu(
     shortcut: 'p s',
   });
 
-  if (
-    contextSrv.hasAccessToExplore() &&
-    !(panel.plugin && panel.plugin.meta.skipDataQuery) &&
-    panel.datasource?.uid !== SHARED_DASHBOARD_QUERY
-  ) {
-    menu.push({
-      text: t('panel.header-menu.explore', `Explore`),
-      iconClassName: 'compass',
-      onClick: onNavigateToExplore,
-      shortcut: 'p x',
-    });
-  }
+  // REMOVED: Explore menu item - Not using Grafana Explore, using NebulaIQ custom logs/traces UI
+  // if (
+  //   contextSrv.hasAccessToExplore() &&
+  //   !(panel.plugin && panel.plugin.meta.skipDataQuery) &&
+  //   panel.datasource?.uid !== SHARED_DASHBOARD_QUERY
+  // ) {
+  //   menu.push({
+  //     text: t('panel.header-menu.explore', `Explore`),
+  //     iconClassName: 'compass',
+  //     onClick: onNavigateToExplore,
+  //     shortcut: 'p x',
+  //   });
+  // }
 
   const inspectMenu: PanelMenuItem[] = [];
 

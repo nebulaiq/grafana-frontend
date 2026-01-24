@@ -337,18 +337,22 @@ export function panelMenuBehavior(menu: VizPanelMenu, isRepeat = false) {
 
 export const repeatPanelMenuBehavior = (menu: VizPanelMenu) => panelMenuBehavior(menu, true);
 
+// REMOVED: Explore menu item - Not using Grafana Explore, using NebulaIQ custom logs/traces UI
 async function getExploreMenuItem(panel: VizPanel): Promise<PanelMenuItem | undefined> {
-  const exploreUrl = await tryGetExploreUrlForPanel(panel);
-  if (!exploreUrl) {
-    return undefined;
-  }
+  // Always return undefined to hide Explore menu item
+  return undefined;
 
-  return {
-    text: t('panel.header-menu.explore', `Explore`),
-    iconClassName: 'compass',
-    shortcut: 'p x',
-    href: exploreUrl,
-  };
+  // const exploreUrl = await tryGetExploreUrlForPanel(panel);
+  // if (!exploreUrl) {
+  //   return undefined;
+  // }
+  //
+  // return {
+  //   text: t('panel.header-menu.explore', `Explore`),
+  //   iconClassName: 'compass',
+  //   shortcut: 'p x',
+  //   href: exploreUrl,
+  // };
 }
 
 function getInspectMenuItem(

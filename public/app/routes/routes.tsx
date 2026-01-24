@@ -7,7 +7,8 @@ import { PageNotFound } from 'app/core/components/PageNotFound/PageNotFound';
 import config from 'app/core/config';
 import { contextSrv } from 'app/core/services/context_srv';
 import LdapPage from 'app/features/admin/ldap/LdapPage';
-import { getAlertingRoutes } from 'app/features/alerting/routes';
+// REMOVED: Alerting routes - Not using Grafana alerting
+// import { getAlertingRoutes } from 'app/features/alerting/routes';
 import { isAdmin, isLocalDevEnv, isOpenSourceEdition } from 'app/features/alerting/unified/utils/misc';
 import { ConnectionsRedirectNotice } from 'app/features/connections/components/ConnectionsRedirectNotice';
 import { ROUTES as CONNECTIONS_ROUTES } from 'app/features/connections/constants';
@@ -21,7 +22,8 @@ import { AccessControlAction, DashboardRoutes } from 'app/types';
 
 import { SafeDynamicImport } from '../core/components/DynamicImports/SafeDynamicImport';
 import { RouteDescriptor } from '../core/navigation/types';
-import { getPublicDashboardRoutes } from '../features/dashboard/routes';
+// REMOVED: Public Dashboards - Not using
+// import { getPublicDashboardRoutes } from '../features/dashboard/routes';
 
 const isDevEnv = config.buildInfo.env === 'development';
 export const extraRoutes: RouteDescriptor[] = [];
@@ -147,31 +149,33 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "DashboardListPage"*/ 'app/features/browse-dashboards/BrowseDashboardsPage')
       ),
     },
-    {
-      path: '/explore',
-      pageClass: 'page-explore',
-      roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
-      component: SafeDynamicImport(() =>
-        config.exploreEnabled
-          ? import(/* webpackChunkName: "explore" */ 'app/features/explore/ExplorePage')
-          : import(/* webpackChunkName: "explore-feature-toggle-page" */ 'app/features/explore/FeatureTogglePage')
-      ),
-    },
+    // REMOVED: Explore - NebulaIQ has custom logs/traces UI
+    // {
+    //   path: '/explore',
+    //   pageClass: 'page-explore',
+    //   roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
+    //   component: SafeDynamicImport(() =>
+    //     config.exploreEnabled
+    //       ? import(/* webpackChunkName: "explore" */ 'app/features/explore/ExplorePage')
+    //       : import(/* webpackChunkName: "explore-feature-toggle-page" */ 'app/features/explore/FeatureTogglePage')
+    //   ),
+    // },
     {
       path: '/apps',
       component: () => <NavLandingPage navId="apps" />,
     },
-    {
-      path: '/alerts-and-incidents',
-      component: () => {
-        return (
-          <NavLandingPage
-            navId="alerts-and-incidents"
-            header={(!isOpenSourceEdition() && isAdmin()) || isLocalDevEnv() ? <ConfigureIRM /> : undefined}
-          />
-        );
-      },
-    },
+    // REMOVED: Alerts and Incidents landing page - Not using Grafana alerting
+    // {
+    //   path: '/alerts-and-incidents',
+    //   component: () => {
+    //     return (
+    //       <NavLandingPage
+    //         navId="alerts-and-incidents"
+    //         header={(!isOpenSourceEdition() && isAdmin()) || isLocalDevEnv() ? <ConfigureIRM /> : undefined}
+    //       />
+    //     );
+    //   },
+    // },
     {
       path: '/testing-and-synthetics',
       component: () => <NavLandingPage navId="testing-and-synthetics" />,
@@ -318,16 +322,18 @@ export function getAppRoutes(): RouteDescriptor[] {
           )
         : () => <Navigate replace to="/admin" />,
     },
-    {
-      path: '/admin/settings',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "AdminSettings" */ 'app/features/admin/AdminSettings')
-      ),
-    },
-    {
-      path: '/admin/upgrading',
-      component: SafeDynamicImport(() => import('app/features/admin/UpgradePage')),
-    },
+    // REMOVED: Admin Settings - Simplified admin section
+    // {
+    //   path: '/admin/settings',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "AdminSettings" */ 'app/features/admin/AdminSettings')
+    //   ),
+    // },
+    // REMOVED: Admin Upgrading - Simplified admin section
+    // {
+    //   path: '/admin/upgrading',
+    //   component: SafeDynamicImport(() => import('app/features/admin/UpgradePage')),
+    // },
     {
       path: '/admin/users',
       component: SafeDynamicImport(
@@ -358,20 +364,22 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "AdminEditOrgPage" */ 'app/features/admin/AdminEditOrgPage')
       ),
     },
-    {
-      path: '/admin/featuretoggles',
-      component: config.featureToggles.featureToggleAdminPage
-        ? SafeDynamicImport(
-            () => import(/* webpackChunkName: "AdminFeatureTogglesPage" */ 'app/features/admin/AdminFeatureTogglesPage')
-          )
-        : () => <Navigate replace to="/admin" />,
-    },
-    {
-      path: '/admin/stats',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "ServerStats" */ 'app/features/admin/ServerStats')
-      ),
-    },
+    // REMOVED: Admin Feature Toggles - Simplified admin section
+    // {
+    //   path: '/admin/featuretoggles',
+    //   component: config.featureToggles.featureToggleAdminPage
+    //     ? SafeDynamicImport(
+    //         () => import(/* webpackChunkName: "AdminFeatureTogglesPage" */ 'app/features/admin/AdminFeatureTogglesPage')
+    //       )
+    //     : () => <Navigate replace to="/admin" />,
+    // },
+    // REMOVED: Admin Stats - Simplified admin section
+    // {
+    //   path: '/admin/stats',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "ServerStats" */ 'app/features/admin/ServerStats')
+    //   ),
+    // },
     config.featureToggles.onPremToCloudMigrations && {
       path: '/admin/migrate-to-cloud',
       roles: () => contextSrv.evaluatePermission([AccessControlAction.MigrationAssistantMigrate]),
@@ -432,13 +440,14 @@ export function getAppRoutes(): RouteDescriptor[] {
       pageClass: 'login-page',
       chromeless: true,
     },
-    {
-      path: '/dashboard/snapshots',
-      roles: () => contextSrv.evaluatePermission([AccessControlAction.SnapshotsRead]),
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "SnapshotListPage" */ 'app/features/manage-dashboards/SnapshotListPage')
-      ),
-    },
+    // REMOVED: Snapshots - Not using
+    // {
+    //   path: '/dashboard/snapshots',
+    //   roles: () => contextSrv.evaluatePermission([AccessControlAction.SnapshotsRead]),
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "SnapshotListPage" */ 'app/features/manage-dashboards/SnapshotListPage')
+    //   ),
+    // },
     config.featureToggles.dashboardRestore && {
       path: '/dashboard/recently-deleted',
       roles: () => ['Admin', 'ServerAdmin'],
@@ -446,30 +455,31 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "RecentlyDeletedPage" */ 'app/features/browse-dashboards/RecentlyDeletedPage')
       ),
     },
-    {
-      path: '/playlists',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "PlaylistPage"*/ 'app/features/playlist/PlaylistPage')
-      ),
-    },
-    {
-      path: '/playlists/play/:uid',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "PlaylistStartPage"*/ 'app/features/playlist/PlaylistStartPage')
-      ),
-    },
-    {
-      path: '/playlists/new',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "PlaylistNewPage"*/ 'app/features/playlist/PlaylistNewPage')
-      ),
-    },
-    {
-      path: '/playlists/edit/:uid',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "PlaylistEditPage"*/ 'app/features/playlist/PlaylistEditPage')
-      ),
-    },
+    // REMOVED: Playlists - Not using
+    // {
+    //   path: '/playlists',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "PlaylistPage"*/ 'app/features/playlist/PlaylistPage')
+    //   ),
+    // },
+    // {
+    //   path: '/playlists/play/:uid',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "PlaylistStartPage"*/ 'app/features/playlist/PlaylistStartPage')
+    //   ),
+    // },
+    // {
+    //   path: '/playlists/new',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "PlaylistNewPage"*/ 'app/features/playlist/PlaylistNewPage')
+    //   ),
+    // },
+    // {
+    //   path: '/playlists/edit/:uid',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "PlaylistEditPage"*/ 'app/features/playlist/PlaylistEditPage')
+    //   ),
+    // },
     {
       path: '/sandbox/benchmarks',
       component: SafeDynamicImport(
@@ -482,42 +492,46 @@ export function getAppRoutes(): RouteDescriptor[] {
         () => import(/* webpackChunkName: "TestStuffPage"*/ 'app/features/sandbox/TestStuffPage')
       ),
     },
-    {
-      path: '/dashboards/f/:uid/:slug/library-panels',
-      component: SafeDynamicImport(
-        () =>
-          import(
-            /* webpackChunkName: "FolderLibraryPanelsPage"*/ 'app/features/browse-dashboards/BrowseFolderLibraryPanelsPage'
-          )
-      ),
-    },
-    {
-      path: '/dashboards/f/:uid/:slug/alerting',
-      roles: () => contextSrv.evaluatePermission([AccessControlAction.AlertingRuleRead]),
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "FolderAlerting"*/ 'app/features/browse-dashboards/BrowseFolderAlertingPage')
-      ),
-    },
-    {
-      path: '/library-panels',
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "LibraryPanelsPage"*/ 'app/features/library-panels/LibraryPanelsPage')
-      ),
-    },
+    // REMOVED: Folder Library Panels - Not using
+    // {
+    //   path: '/dashboards/f/:uid/:slug/library-panels',
+    //   component: SafeDynamicImport(
+    //     () =>
+    //       import(
+    //         /* webpackChunkName: "FolderLibraryPanelsPage"*/ 'app/features/browse-dashboards/BrowseFolderLibraryPanelsPage'
+    //       )
+    //   ),
+    // },
+    // REMOVED: Folder Alerting - Not using Grafana alerting
+    // {
+    //   path: '/dashboards/f/:uid/:slug/alerting',
+    //   roles: () => contextSrv.evaluatePermission([AccessControlAction.AlertingRuleRead]),
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "FolderAlerting"*/ 'app/features/browse-dashboards/BrowseFolderAlertingPage')
+    //   ),
+    // },
+    // REMOVED: Library Panels - Not using
+    // {
+    //   path: '/library-panels',
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "LibraryPanelsPage"*/ 'app/features/library-panels/LibraryPanelsPage')
+    //   ),
+    // },
     {
       path: '/notifications',
       component: SafeDynamicImport(
         () => import(/* webpackChunkName: "NotificationsPage"*/ 'app/features/notifications/NotificationsPage')
       ),
     },
-    config.featureToggles.exploreMetrics && {
-      path: '/explore/metrics/*',
-      chromeless: false,
-      roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
-      component: SafeDynamicImport(
-        () => import(/* webpackChunkName: "DataTrailsPage"*/ 'app/features/trails/DataTrailsPage')
-      ),
-    },
+    // REMOVED: Explore Metrics - NebulaIQ has custom metrics UI
+    // config.featureToggles.exploreMetrics && {
+    //   path: '/explore/metrics/*',
+    //   chromeless: false,
+    //   roles: () => contextSrv.evaluatePermission([AccessControlAction.DataSourcesExplore]),
+    //   component: SafeDynamicImport(
+    //     () => import(/* webpackChunkName: "DataTrailsPage"*/ 'app/features/trails/DataTrailsPage')
+    //   ),
+    // },
     {
       path: '/bookmarks',
       component: SafeDynamicImport(
@@ -526,10 +540,12 @@ export function getAppRoutes(): RouteDescriptor[] {
     },
     ...getPluginCatalogRoutes(),
     ...getSupportBundleRoutes(),
-    ...getAlertingRoutes(),
+    // REMOVED: Alerting routes - Not using Grafana alerting
+    // ...getAlertingRoutes(),
     ...getProfileRoutes(),
     ...extraRoutes,
-    ...getPublicDashboardRoutes(),
+    // REMOVED: Public Dashboard routes - Not using
+    // ...getPublicDashboardRoutes(),
     ...getDataConnectionsRoutes(),
     {
       path: '/goto/*',
