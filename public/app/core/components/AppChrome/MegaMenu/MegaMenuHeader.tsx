@@ -83,8 +83,8 @@ const getStyles = (theme: GrafanaTheme2) => ({
   }),
   img: css({
     alignSelf: 'center',
-    height: '56px',
-    width: '84px',
+    height: '50px',
+    width: '70px',
     objectFit: 'contain',
   }),
   mobileCloseButton: css({
