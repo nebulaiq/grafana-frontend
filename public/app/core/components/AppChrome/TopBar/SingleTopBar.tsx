@@ -140,8 +140,8 @@ const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
   }),
   img: css({
     alignSelf: 'center',
-    height: '50px',
-    width: '50px',
+    height: '36px',
+    width: '36px',
     objectFit: 'contain',
   }),
   profileButton: css({
