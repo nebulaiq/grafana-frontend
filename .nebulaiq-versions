@@ -1,0 +1,38 @@
+# NebulaIQ Grafana Frontend - Build Environment
+# Generated: Sat Jan 24 10:53:52 IST 2026
+
+## System Information
+OS: Darwin MacBook-Pro.local 25.1.0 Darwin Kernel Version 25.1.0: Mon Oct 20 19:33:00 PDT 2025; root:xnu-12377.41.6~2/RELEASE_ARM64_T6020 arm64 arm Darwin
+Hostname: MacBook-Pro.local
+
+## Build Tools
+Node: v22.14.0
+Yarn: 4.6.0
+Go: go version go1.23.5 darwin/arm64
+Git: git version 2.50.1 (Apple Git-155)
+Make: GNU Make 3.81
+
+## Grafana Version
+Base Version: v11.5.0
+Fork: nebulaiq/grafana-frontend
+Branch: nebulaiq-main
+
+## Git Information
+Commit: f7a938db9ad71c1558e93d8e29e69f42c8a5f50b
+Commit Date: Fri Jan 24 21:45:00 2025 -0500
+Author: Brian Gann <bkgann@gmail.com>
+
+## Build Performance Baseline
+Build Date: Sat Jan 24 10:53:52 IST 2026
+Build Time: ~2-3 minutes (production)
+Bundle Size: ~160MB (with source maps)
+Memory Peak: ~8GB
+Dependencies Installed: Sat Jan 24 10:49:43 IST 2026
+
+## Environment
+NODE_OPTIONS: --max-old-space-size=8192
+PATH: /opt/homebrew/opt/postgresql@16/bin:/Users/shailendra/.swarmstudio/scripts:/opt/anaconda3/bin:/opt/anaconda3/condabin:/Users/shailendra/.rd/bin:/Users/shailendra/WS/nebulaiq/customer-setup/tools:/Users/shailendra/WS/nebulaiq/customer-setup/vm-tools:/Users/shailendra/.codeium/windsurf/bin:/opt/homebrew/bin:/Users/shailendra/.nvm/versions/node/v22.14.0/bin:/Users/shailendra/bin:/Users/shailendra/go/bin:/opt/homebrew/opt/llvm/bin:/opt/homebrew/opt/findutils/libexec/gnubin:/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/grep/libexec/gnubin:/opt/homebrew/opt/gawk/libexec/gnubin:/opt/homebrew/opt/gnu-tar/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Users/shailendra/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/shailendra/.local/bin:/Users/shailendra/.orbstack/bin:/Users/shailendra/Library/Application Support/JetBrains/Toolbox/scripts:/Users/shailendra/.local/bin
+
+## Phase 1 Completion
+Status: Complete ✅
+Completed: Sat Jan 24 10:53:52 IST 2026
