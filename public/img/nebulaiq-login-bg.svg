@@ -1,68 +1,191 @@
 <svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- NebulaIQ Login Background - Modern Abstract Gradient -->
+  <!-- NebulaIQ Login Background - Vibrant Cosmic Nebula -->
 
-  <!-- Base gradient background -->
-  <rect width="1920" height="1080" fill="url(#login-bg-gradient)"/>
+  <!-- Deep space background -->
+  <rect width="1920" height="1080" fill="url(#space-gradient)"/>
 
-  <!-- Abstract nebula clouds -->
-  <g opacity="0.15">
-    <ellipse cx="300" cy="200" rx="400" ry="300" fill="url(#cloud1)" filter="url(#blur)"/>
-    <ellipse cx="1600" cy="800" rx="500" ry="400" fill="url(#cloud2)" filter="url(#blur)"/>
-    <ellipse cx="960" cy="540" rx="600" ry="450" fill="url(#cloud3)" filter="url(#blur)"/>
+  <!-- Main nebula clouds - vibrant and visible -->
+  <g opacity="0.6">
+    <ellipse cx="400" cy="300" rx="600" ry="400" fill="url(#nebula-purple)" filter="url(#glow)"/>
+    <ellipse cx="1500" cy="700" rx="700" ry="500" fill="url(#nebula-blue)" filter="url(#glow)"/>
+    <ellipse cx="800" cy="800" rx="500" ry="350" fill="url(#nebula-cyan)" filter="url(#glow)"/>
+    <ellipse cx="1200" cy="200" rx="450" ry="300" fill="url(#nebula-teal)" filter="url(#glow)"/>
   </g>
 
-  <!-- Subtle grid pattern -->
-  <g opacity="0.03" stroke="#4DA6FF" stroke-width="0.5">
-    <line x1="0" y1="270" x2="1920" y2="270"/>
-    <line x1="0" y1="540" x2="1920" y2="540"/>
-    <line x1="0" y1="810" x2="1920" y2="810"/>
-    <line x1="480" y1="0" x2="480" y2="1080"/>
-    <line x1="960" y1="0" x2="960" y2="1080"/>
-    <line x1="1440" y1="0" x2="1440" y2="1080"/>
-  </g>
-
-  <!-- Floating data points -->
+  <!-- Secondary nebula layer for depth -->
   <g opacity="0.4">
-    <circle cx="150" cy="100" r="3" fill="#4DA6FF">
-      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+    <ellipse cx="200" cy="600" rx="400" ry="300" fill="url(#nebula-violet)" filter="url(#glow)"/>
+    <ellipse cx="1700" cy="300" rx="350" ry="250" fill="url(#nebula-indigo)" filter="url(#glow)"/>
+    <ellipse cx="1000" cy="500" rx="550" ry="400" fill="url(#nebula-blue-light)" filter="url(#glow)"/>
+  </g>
+
+  <!-- Bright nebula highlights -->
+  <g opacity="0.5">
+    <ellipse cx="600" cy="400" rx="200" ry="150" fill="url(#nebula-bright-cyan)" filter="url(#strong-glow)"/>
+    <ellipse cx="1400" cy="650" rx="250" ry="180" fill="url(#nebula-bright-blue)" filter="url(#strong-glow)"/>
+  </g>
+
+  <!-- Star field - multiple layers for depth -->
+  <g opacity="0.8">
+    <!-- Large stars -->
+    <circle cx="150" cy="120" r="2.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="1800" cy="200" r="4" fill="#00D4AA">
-      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="4s" repeatCount="indefinite"/>
+    <circle cx="1800" cy="180" r="2" fill="#E0F7FF">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="3s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="300" cy="900" r="3" fill="#4DA6FF">
-      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite"/>
+    <circle cx="300" cy="850" r="2.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2.5s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="1700" cy="950" r="4" fill="#00D4AA">
-      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4.5s" repeatCount="indefinite"/>
+    <circle cx="1650" cy="920" r="2" fill="#D4F1FF">
+      <animate attributeName="opacity" values="0.6;0.95;0.6" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="900" cy="100" r="2" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1200" cy="950" r="2.5" fill="#E8F8FF">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Medium stars -->
+    <circle cx="450" cy="250" r="1.5" fill="#FFFFFF" opacity="0.7"/>
+    <circle cx="1100" cy="400" r="1.5" fill="#D0EFFF" opacity="0.6"/>
+    <circle cx="750" cy="650" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="1500" cy="500" r="1.5" fill="#E0F5FF" opacity="0.7"/>
+    <circle cx="200" cy="400" r="1.5" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="1750" cy="750" r="1.5" fill="#D8F2FF" opacity="0.7"/>
+
+    <!-- Small stars -->
+    <circle cx="550" cy="150" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="850" cy="300" r="1" fill="#E0F0FF" opacity="0.6"/>
+    <circle cx="1350" cy="250" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="650" cy="550" r="1" fill="#D5F0FF" opacity="0.6"/>
+    <circle cx="1250" cy="700" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="400" cy="750" r="1" fill="#E5F5FF" opacity="0.6"/>
+    <circle cx="1600" cy="450" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="100" cy="300" r="1" fill="#DCF3FF" opacity="0.6"/>
+    <circle cx="1850" cy="600" r="1" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="950" cy="800" r="1" fill="#E0F3FF" opacity="0.6"/>
+  </g>
+
+  <!-- Dust particles with color variation -->
+  <g opacity="0.3">
+    <circle cx="300" cy="200" r="1.5" fill="#4DA6FF">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1700" cy="300" r="1.5" fill="#00D4AA">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="500" cy="900" r="1.5" fill="#6B8CFF">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1500" cy="950" r="1.5" fill="#3DDECA">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="5.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="800" cy="150" r="1.5" fill="#5596FF">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1300" cy="800" r="1.5" fill="#20CCB8">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="4.8s" repeatCount="indefinite"/>
     </circle>
   </g>
+
+  <!-- Energy streams/cosmic rays -->
+  <g opacity="0.15" stroke="url(#stream-gradient)" stroke-width="2" fill="none" filter="url(#glow)">
+    <path d="M 0,400 Q 480,300 960,450 T 1920,500"/>
+    <path d="M 0,600 Q 480,550 960,650 T 1920,700"/>
+  </g>
+
+  <!-- Vignette effect -->
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
 
   <!-- Gradients and Filters -->
   <defs>
-    <!-- Main background gradient -->
-    <linearGradient id="login-bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0A0A0A"/>
-      <stop offset="50%" stop-color="#0F0F14"/>
-      <stop offset="100%" stop-color="#1A1A1A"/>
+    <!-- Deep space background -->
+    <radialGradient id="space-gradient" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="50%" stop-color="#0A0E14"/>
+      <stop offset="100%" stop-color="#06080B"/>
+    </radialGradient>
+
+    <!-- Nebula cloud gradients - vibrant colors -->
+    <radialGradient id="nebula-purple">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#6366F1" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-blue">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#2563EB" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-cyan">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#0891B2" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0E7490" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-teal">
+      <stop offset="0%" stop-color="#14B8A6" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#0D9488" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0F766E" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-violet">
+      <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#6D28D9" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#5B21B6" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-indigo">
+      <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#4338CA" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#3730A3" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-blue-light">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bright highlights -->
+    <radialGradient id="nebula-bright-cyan">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0891B2" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebula-bright-blue">
+      <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2563EB" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Stream gradient -->
+    <linearGradient id="stream-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4DA6FF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#4DA6FF" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00D4AA" stop-opacity="0"/>
     </linearGradient>
 
-    <!-- Cloud gradients -->
-    <radialGradient id="cloud1">
-      <stop offset="0%" stop-color="#4DA6FF" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#4DA6FF" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="cloud2">
-      <stop offset="0%" stop-color="#00D4AA" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#00D4AA" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="cloud3">
-      <stop offset="0%" stop-color="#2D7CD6" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#2D7CD6" stop-opacity="0"/>
+    <!-- Vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
     </radialGradient>
 
-    <!-- Blur filter for clouds -->
-    <filter id="blur">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="60"/>
+    <!-- Glow filter -->
+    <filter id="glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="80"/>
+    </filter>
+
+    <!-- Stronger glow for highlights -->
+    <filter id="strong-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="50"/>
     </filter>
   </defs>
 </svg>
