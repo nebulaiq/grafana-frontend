@@ -132,10 +132,10 @@
   --bg-surface-overlay: #221F2E;
   --bg-surface-highlight: #2A2639;
 
-  // Sidebar specific
+  // Sidebar specific - white-based, NOT purple
   --bg-sidebar: #0A0910;
-  --bg-sidebar-hover: rgba(139, 92, 246, 0.08);
-  --bg-sidebar-active: rgba(139, 92, 246, 0.12);
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.08);
 
   // ═══════════════════════════════════════════════
   // BORDER COLORS
@@ -157,9 +157,10 @@
   --text-disabled: rgba(255, 255, 255, 0.20);
   --text-inverse: #08070B;
 
-  --text-accent: var(--primary-500);
-  --text-link: var(--primary-500);
-  --text-link-hover: var(--primary-400);
+  // Text links and accents - use white tones, NOT purple
+  --text-accent: rgba(255, 255, 255, 0.95);
+  --text-link: rgba(255, 255, 255, 0.85);
+  --text-link-hover: rgba(255, 255, 255, 1);
 
   // ═══════════════════════════════════════════════
   // CHART/DATA VISUALIZATION COLORS

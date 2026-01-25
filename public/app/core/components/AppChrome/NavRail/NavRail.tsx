@@ -333,17 +333,18 @@ function getAbbrev(text: string): string {
   return words[0].substring(0, 7) + '…';
 }
 
-// Color constants for consistent theming
+// Color constants for consistent theming - NO PURPLE for text/icons
 const COLORS = {
   primaryText: '#FFFFFF',           // Bright white for primary text
   secondaryText: 'rgba(255, 255, 255, 0.65)', // Less white for secondary
   tertiaryText: 'rgba(255, 255, 255, 0.45)',  // Even less white for tertiary
-  purple: '#8b5cf6',                // Purple accent for live content
-  purpleGlow: 'rgba(139, 92, 246, 0.4)',
+  liveGreen: '#22c55e',             // Green for live/updating indicators
+  liveGreenGlow: 'rgba(34, 197, 94, 0.4)',
+  accent: 'rgba(255, 255, 255, 0.1)', // Subtle accent for active/hover backgrounds
   background: '#0a0910',
-  border: 'rgba(255, 255, 255, 0.04)',
-  hoverBg: 'rgba(139, 92, 246, 0.08)',
-  activeBg: 'rgba(139, 92, 246, 0.12)',
+  border: 'rgba(255, 255, 255, 0.06)',
+  hoverBg: 'rgba(255, 255, 255, 0.06)',
+  activeBg: 'rgba(255, 255, 255, 0.08)',
 };
 
 /**
@@ -456,7 +457,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     width: 32,
     height: 32,
     borderRadius: '50%',
-    border: `2px solid ${COLORS.purple}`,
+    border: `2px solid ${COLORS.secondaryText}`,
     flexShrink: 0,
   }),
 
@@ -464,7 +465,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     width: 32,
     height: 32,
     borderRadius: '50%',
-    background: COLORS.purple,
+    background: 'rgba(255, 255, 255, 0.15)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -551,10 +552,10 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
 
   itemActive: css({
     background: COLORS.activeBg,
-    color: COLORS.purple,
+    color: COLORS.primaryText,
 
     '&:hover': {
-      background: 'rgba(139, 92, 246, 0.15)',
+      background: 'rgba(255, 255, 255, 0.10)',
     },
   }),
 
@@ -577,7 +578,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     flexShrink: 0,
   }),
 
-  // Purple pulsing dot for live content
+  // Green pulsing dot for live content
   liveIndicator: css({
     position: 'absolute',
     top: -2,
@@ -585,8 +586,8 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     width: 6,
     height: 6,
     borderRadius: '50%',
-    background: COLORS.purple,
-    boxShadow: `0 0 6px ${COLORS.purpleGlow}`,
+    background: COLORS.liveGreen,
+    boxShadow: `0 0 6px ${COLORS.liveGreenGlow}`,
     animation: 'pulse 2s ease-in-out infinite',
 
     '@keyframes pulse': {
@@ -632,7 +633,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     transform: 'translateY(-50%)',
     width: 3,
     height: 24,
-    background: COLORS.purple,
+    background: COLORS.primaryText,
     borderRadius: '0 2px 2px 0',
   }),
 
@@ -705,7 +706,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     fontSize: 13,
 
     '&:hover': {
-      background: 'rgba(139, 92, 246, 0.06)',
+      background: COLORS.hoverBg,
       color: COLORS.primaryText,
     },
   }),

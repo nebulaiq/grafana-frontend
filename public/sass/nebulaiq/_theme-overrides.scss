@@ -28,9 +28,9 @@ $text-color-weak: rgba(255,255,255,0.65) !default; // --text-secondary
 $text-color-emphasis: #ffffff !default;
 $text-muted: rgba(255,255,255,0.40) !default;  // --text-tertiary
 
-// Link Colors - Violet accent
-$link-color: #8B5CF6 !default;                 // --accent-primary
-$link-hover-color: #A78BFA !default;           // --accent-primary-hover
+// Link Colors - White tones (NOT purple)
+$link-color: rgba(255,255,255,0.85) !default;  // --text-link
+$link-hover-color: rgba(255,255,255,1) !default; // --text-link-hover
 $link-color-disabled: rgba(255,255,255,0.20) !default;
 
 // Primary/Accent Colors - Violet palette
@@ -367,8 +367,8 @@ table,
 
     &.active,
     &[aria-selected='true'] {
-      background: var(--accent-primary-subtle) !important;
-      color: var(--accent-primary) !important;
+      background: rgba(255, 255, 255, 0.10) !important;
+      color: var(--text-primary) !important;
     }
   }
 
@@ -572,31 +572,45 @@ input[type='radio'] {
 }
 
 // ==================================================
-// TAB OVERRIDES
+// TAB OVERRIDES - Pill-style buttons
 // ==================================================
 
 .nav-tabs,
 [class*='Tabs'],
-[class*='TabList'] {
-  border-bottom: 1px solid var(--border-subtle) !important;
+[class*='TabList'],
+[role='tablist'] {
+  border-bottom: none !important;
+  display: flex !important;
+  gap: 4px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  padding: 4px !important;
+  border-radius: 10px !important;
+  width: fit-content !important;
 
   .nav-link,
-  [class*='Tab'] {
-    color: var(--text-tertiary) !important;
+  [class*='Tab'],
+  [role='tab'] {
+    color: var(--text-secondary) !important;
     border: none !important;
-    padding: 12px 16px !important;
-    margin-bottom: -1px !important;
-    transition: all 120ms !important;
+    padding: 8px 16px !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    transition: all 150ms ease !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    background: transparent !important;
+    white-space: nowrap !important;
 
     &:hover {
-      color: var(--text-secondary) !important;
+      color: var(--text-primary) !important;
+      background: rgba(255, 255, 255, 0.06) !important;
     }
 
     &.active,
     &[aria-selected='true'] {
-      color: var(--accent-primary) !important;
-      border-bottom: 2px solid var(--accent-primary) !important;
-      background: transparent !important;
+      color: var(--text-primary) !important;
+      background: rgba(255, 255, 255, 0.10) !important;
+      border-bottom: none !important;
     }
   }
 }
@@ -711,4 +725,75 @@ pre {
   background: var(--bg-surface) !important;
   border-radius: 10px !important;
   border: none !important;
+}
+
+// ==================================================
+// BREADCRUMB OVERRIDES - White text, NO purple
+// ==================================================
+
+nav[aria-label="Breadcrumbs"],
+[class*='Breadcrumb'] {
+  a,
+  [class*='BreadcrumbLink'] {
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    transition: color 150ms ease !important;
+
+    &:hover {
+      color: var(--text-primary) !important;
+    }
+  }
+
+  // Current page (last item)
+  span:last-child,
+  [class*='BreadcrumbItem']:last-child {
+    color: var(--text-primary) !important;
+  }
+
+  // Separator
+  [class*='separator'],
+  svg {
+    color: var(--text-tertiary) !important;
+  }
+}
+
+// ==================================================
+// LINK OVERRIDES - White tones, NOT purple
+// ==================================================
+
+a:not([class*='Button']):not([class*='btn']) {
+  color: var(--text-link) !important;
+
+  &:hover {
+    color: var(--text-link-hover) !important;
+    text-decoration: underline !important;
+  }
+}
+
+// Table cell links should be white
+table td a,
+[class*='Table'] td a {
+  color: var(--text-primary) !important;
+
+  &:hover {
+    color: var(--text-primary) !important;
+    text-decoration: underline !important;
+  }
+}
+
+// ==================================================
+// MONOSPACE FONTS FOR METRICS/DATA
+// ==================================================
+
+.metric-value,
+[class*='metric'],
+[class*='Metric'],
+[class*='stat-value'],
+[class*='BigValue'],
+[class*='gauge-value'],
+td[class*='number'],
+td[class*='value'],
+.font-mono {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace !important;
+  font-variant-numeric: tabular-nums !important;
 }
