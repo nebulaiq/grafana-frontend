@@ -2,16 +2,14 @@ import { css } from '@emotion/css';
 import { memo } from 'react';
 
 import { GrafanaTheme2, NavModelItem } from '@grafana/data';
-import { Dropdown, Icon, Stack, ToolbarButton, useStyles2 } from '@grafana/ui';
+import { Dropdown, Stack, ToolbarButton, useStyles2 } from '@grafana/ui';
 import { useGrafana } from 'app/core/context/GrafanaContext';
 import { contextSrv } from 'app/core/core';
-import { t } from 'app/core/internationalization';
 import { HOME_NAV_ID } from 'app/core/reducers/navModel';
 import { useSelector } from 'app/types';
 
-import { Branding } from '../../Branding/Branding';
 import { Breadcrumbs } from '../../Breadcrumbs/Breadcrumbs';
-import { buildBreadcrumbs } from '../../Breadcrumbs/utils';
+import { buildSimpleBreadcrumbs } from '../../Breadcrumbs/utils';
 import { OrganizationSwitcher } from '../OrganizationSwitcher/OrganizationSwitcher';
 import { TOP_BAR_LEVEL_HEIGHT } from '../types';
 
@@ -23,7 +21,7 @@ export const MEGA_MENU_TOGGLE_ID = 'mega-menu-toggle';
 interface Props {
   sectionNav: NavModelItem;
   pageNav?: NavModelItem;
-  onToggleMegaMenu(): void;
+  onToggleMegaMenu?: () => void; // Kept for API compatibility but no longer used
   onToggleKioskMode(): void;
 }
 
@@ -45,7 +43,6 @@ interface Props {
  * - Kiosk mode toggle
  */
 export const SingleTopBar = memo(function SingleTopBar({
-  onToggleMegaMenu,
   onToggleKioskMode,
   pageNav,
   sectionNav,
@@ -58,28 +55,14 @@ export const SingleTopBar = memo(function SingleTopBar({
 
   const profileNode = navIndex['profile'];
   const homeNav = useSelector((state) => state.navIndex)[HOME_NAV_ID];
-  const breadcrumbs = buildBreadcrumbs(sectionNav, pageNav, homeNav);
+  // Use simplified breadcrumbs: Home > Current page only
+  const breadcrumbs = buildSimpleBreadcrumbs(sectionNav, pageNav, homeNav);
 
   return (
     <div className={styles.layout}>
-      {/* Left side - Menu toggle + Breadcrumbs */}
+      {/* Left side - Breadcrumbs only (logo now in NavRail) */}
       <Stack minWidth={0} gap={0.5} alignItems="center">
-        {!menuDockedAndOpen && (
-          <ToolbarButton
-            narrow
-            id={MEGA_MENU_TOGGLE_ID}
-            onClick={onToggleMegaMenu}
-            tooltip={t('navigation.megamenu.open', 'Open menu')}
-          >
-            <Stack gap={0} alignItems="center">
-              <Branding.MenuLogo className={styles.img} />
-              <Icon size="sm" name="angle-down" />
-            </Stack>
-          </ToolbarButton>
-        )}
-        {/* Use existing breadcrumbs or our custom PageBreadcrumb */}
         <Breadcrumbs breadcrumbs={breadcrumbs} className={styles.breadcrumbsWrapper} />
-        {/* <PageBreadcrumb /> */}
       </Stack>
 
       {/* Right side - Customer org + User profile */}
@@ -137,14 +120,6 @@ const getStyles = (theme: GrafanaTheme2, menuDockedAndOpen: boolean) => ({
     [theme.breakpoints.down('sm')]: {
       minWidth: '40%',
     },
-  }),
-  img: css({
-    alignSelf: 'center',
-    height: '28px',
-    width: '28px',
-    objectFit: 'contain',
-    display: 'block',
-    overflow: 'visible',
   }),
   profileButton: css({
     padding: theme.spacing(0, 0.5),

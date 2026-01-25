@@ -106,7 +106,7 @@ export function NavRail({ className }: NavRailProps) {
       <NavRailItemExpandable
         icon={EXPLORE_SECTION.icon as IconName}
         label={EXPLORE_SECTION.text}
-        abbrev="Exp"
+        abbrev="Explore"
         href={EXPLORE_SECTION.url || '/dashboards'}
         children={EXPLORE_SECTION.children || []}
         isActive={activeNavItem === 'explore'}
@@ -120,7 +120,7 @@ export function NavRail({ className }: NavRailProps) {
       <NavRailItemExpandable
         icon={SETTINGS_SECTION.icon as IconName}
         label={SETTINGS_SECTION.text}
-        abbrev="Set"
+        abbrev="Settings"
         href="#"
         children={SETTINGS_SECTION.children || []}
         isActive={activeNavItem === 'settings'}
@@ -229,15 +229,39 @@ function NavRailItemExpandable({
 }
 
 /**
- * Get abbreviation for a label (max 4 chars)
+ * Mapping for better short labels in collapsed state
+ * These are readable short forms, not abbreviations
+ */
+const SHORT_LABELS: Record<string, string> = {
+  'Service Performance': 'Services',
+  'Infrastructure': 'Infra',
+  'Logs': 'Logs',
+  'Traces': 'Traces',
+  'Architecture Insights': 'Insights',
+  'Explore': 'Explore',
+  'Settings': 'Settings',
+  'Bookmark Dashboard': 'Starred',
+};
+
+/**
+ * Get short label for collapsed state
+ * Uses predefined mappings for known items, falls back to truncation
  */
 function getAbbrev(text: string): string {
+  // Use predefined short label if available
+  if (SHORT_LABELS[text]) {
+    return SHORT_LABELS[text];
+  }
+  // For bookmarked dashboards and other dynamic items, truncate intelligently
   const words = text.split(' ');
   if (words.length === 1) {
-    return text.substring(0, 4);
+    return text.length <= 8 ? text : text.substring(0, 7) + '…';
   }
-  // Use first letter of each word
-  return words.map((w) => w[0]).join('').substring(0, 4);
+  // Multi-word: use first word if short enough, otherwise abbreviate
+  if (words[0].length <= 8) {
+    return words[0];
+  }
+  return words[0].substring(0, 7) + '…';
 }
 
 /**
@@ -353,11 +377,16 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
   }),
 
   abbrev: css({
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: 500,
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    opacity: 0.7,
+    textTransform: 'none',
+    letterSpacing: '0.2px',
+    opacity: 0.85,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '100%',
+    textAlign: 'center',
   }),
 
   activeIndicator: css({

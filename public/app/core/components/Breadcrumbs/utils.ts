@@ -2,6 +2,35 @@ import { NavModelItem } from '@grafana/data';
 
 import { Breadcrumb } from './types';
 
+/**
+ * Build simplified breadcrumbs: Home > Current page only
+ * This is the NebulaIQ style - minimal, clean navigation
+ */
+export function buildSimpleBreadcrumbs(
+  sectionNav: NavModelItem,
+  pageNav?: NavModelItem,
+  homeNav?: NavModelItem
+): Breadcrumb[] {
+  const crumbs: Breadcrumb[] = [];
+
+  // Always add Home as the first breadcrumb
+  if (homeNav) {
+    crumbs.push({ text: 'Home', href: homeNav.url ?? '/' });
+  }
+
+  // Get the current page title - prefer pageNav, fallback to sectionNav
+  const currentPage = pageNav || sectionNav;
+  if (currentPage && currentPage.text) {
+    // Don't duplicate if current page is Home
+    if (homeNav && currentPage.url === homeNav.url) {
+      return crumbs;
+    }
+    crumbs.push({ text: currentPage.text, href: currentPage.url ?? '' });
+  }
+
+  return crumbs;
+}
+
 export function buildBreadcrumbs(
   sectionNav: NavModelItem,
   pageNav?: NavModelItem,
