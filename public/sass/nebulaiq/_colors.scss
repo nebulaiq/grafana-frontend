@@ -1,109 +1,228 @@
 /**
- * NebulaIQ Color System
+ * NebulaIQ Color System v2.0
+ * "Obsidian Command Center" Palette
  *
  * Principles:
+ * - Violet-tinted darks (not pure black/gray)
  * - Flat colors only (no gradients)
  * - High contrast for readability
- * - Semantic color usage
- * - DataDog/Apple inspired
+ * - Distinctive accent colors
  */
 
 :root {
-  // Neutrals - True grays (no blue tint)
-  --gray-50: #fafafa;
-  --gray-100: #f5f5f5;
-  --gray-200: #e5e5e5;
-  --gray-300: #d4d4d4;
-  --gray-400: #a3a3a3;
-  --gray-500: #737373;
-  --gray-600: #525252;
-  --gray-700: #404040;
-  --gray-800: #262626;
-  --gray-900: #171717;
-  --gray-950: #0a0a0a;
+  // ═══════════════════════════════════════════════
+  // OBSIDIAN NEUTRALS - Violet-tinted darks
+  // ═══════════════════════════════════════════════
 
-  // Primary (NebulaIQ Blue) - Flat
-  --primary-50: #eff6ff;
-  --primary-100: #dbeafe;
-  --primary-200: #bfdbfe;
-  --primary-300: #93c5fd;
-  --primary-400: #60a5fa;
-  --primary-500: #4da6ff;
-  --primary-600: #3d8ce6;
-  --primary-700: #2d7cd6;
-  --primary-800: #1e6cc6;
-  --primary-900: #1a5cb6;
+  // Legacy gray scale (mapped to obsidian palette)
+  --gray-50: #F8F7FA;
+  --gray-100: #EDEDF2;
+  --gray-200: #DCDBE3;
+  --gray-300: #B8B7C3;
+  --gray-400: #8A899A;
+  --gray-500: #5E5D6E;
+  --gray-600: #413F52;
+  --gray-700: #2A2639;   // --bg-surface-highlight
+  --gray-800: #1A1823;   // --bg-surface-raised
+  --gray-900: #13111A;   // --bg-surface
+  --gray-950: #0C0A10;   // --bg-app
 
-  // Accent (Teal) - Flat
-  --accent-500: #00d4aa;
-  --accent-600: #00c49a;
-  --accent-700: #00b48a;
+  // New obsidian scale (violet undertones)
+  --obsidian-50: #F8F7FA;
+  --obsidian-100: #EDEDF2;
+  --obsidian-200: #DCDBE3;
+  --obsidian-300: #B8B7C3;
+  --obsidian-400: #8A899A;
+  --obsidian-500: #5E5D6E;
+  --obsidian-600: #413F52;
+  --obsidian-700: #2A2639;
+  --obsidian-800: #221F2E;
+  --obsidian-850: #1A1823;
+  --obsidian-900: #13111A;
+  --obsidian-950: #0C0A10;
+  --obsidian-1000: #08070B;
 
-  // Semantic - Flat, professional
-  --success: #10b981;
-  --success-bg: #d1fae5;
-  --success-text: #065f46;
+  // ═══════════════════════════════════════════════
+  // PRIMARY - Electric Violet (distinctive accent)
+  // ═══════════════════════════════════════════════
 
-  --warning: #f59e0b;
-  --warning-bg: #fef3c7;
-  --warning-text: #92400e;
+  --primary-50: #F5F3FF;
+  --primary-100: #EDE9FE;
+  --primary-200: #DDD6FE;
+  --primary-300: #C4B5FD;
+  --primary-400: #A78BFA;
+  --primary-500: #8B5CF6;   // Main brand color (violet)
+  --primary-600: #7C3AED;
+  --primary-700: #6D28D9;
+  --primary-800: #5B21B6;
+  --primary-900: #4C1D95;
 
-  --error: #ef4444;
-  --error-bg: #fee2e2;
-  --error-text: #991b1b;
+  // ═══════════════════════════════════════════════
+  // SECONDARY - Warm Coral/Orange
+  // ═══════════════════════════════════════════════
 
-  --info: #3b82f6;
-  --info-bg: #dbeafe;
-  --info-text: #1e3a8a;
+  --secondary-50: #FFF7ED;
+  --secondary-100: #FFEDD5;
+  --secondary-200: #FED7AA;
+  --secondary-300: #FDBA74;
+  --secondary-400: #FB923C;
+  --secondary-500: #F97316;   // Secondary accent (warm)
+  --secondary-600: #EA580C;
+  --secondary-700: #C2410C;
+  --secondary-800: #9A3412;
+  --secondary-900: #7C2D12;
 
-  // Background colors - Flat
-  --bg-primary: var(--gray-950);
-  --bg-secondary: var(--gray-900);
-  --bg-tertiary: var(--gray-800);
-  --bg-elevated: #1c1c1c; // 15% lighter than 900
+  // ═══════════════════════════════════════════════
+  // TERTIARY - Cyan/Teal (for data)
+  // ═══════════════════════════════════════════════
 
-  // Border colors
-  --border-subtle: var(--gray-800);
-  --border-default: var(--gray-700);
-  --border-strong: var(--gray-600);
+  --tertiary-50: #ECFEFF;
+  --tertiary-100: #CFFAFE;
+  --tertiary-200: #A5F3FC;
+  --tertiary-300: #67E8F9;
+  --tertiary-400: #22D3EE;
+  --tertiary-500: #06B6D4;   // Tertiary accent (data)
+  --tertiary-600: #0891B2;
+  --tertiary-700: #0E7490;
+  --tertiary-800: #155E75;
+  --tertiary-900: #164E63;
 
-  // Text colors
-  --text-primary: var(--gray-50);
-  --text-secondary: var(--gray-300);
-  --text-tertiary: var(--gray-500);
-  --text-disabled: var(--gray-600);
+  // Legacy accent (now tertiary)
+  --accent-500: #06B6D4;
+  --accent-600: #0891B2;
+  --accent-700: #0E7490;
+
+  // ═══════════════════════════════════════════════
+  // SEMANTIC COLORS
+  // ═══════════════════════════════════════════════
+
+  --success: #10B981;
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --success-text: #10B981;
+  --success-muted: rgba(16, 185, 129, 0.15);
+
+  --warning: #FBBF24;
+  --warning-bg: rgba(251, 191, 36, 0.15);
+  --warning-text: #FBBF24;
+  --warning-muted: rgba(251, 191, 36, 0.15);
+
+  --error: #EF4444;
+  --error-bg: rgba(239, 68, 68, 0.15);
+  --error-text: #EF4444;
+  --error-muted: rgba(239, 68, 68, 0.15);
+
+  --info: #8B5CF6;
+  --info-bg: rgba(139, 92, 246, 0.15);
+  --info-text: #8B5CF6;
+  --info-muted: rgba(139, 92, 246, 0.15);
+
+  // ═══════════════════════════════════════════════
+  // BACKGROUND HIERARCHY (Obsidian)
+  // ═══════════════════════════════════════════════
+
+  --bg-base: #08070B;        // Deepest layer
+  --bg-app: #0C0A10;         // App background
+  --bg-primary: #0C0A10;     // Legacy alias
+  --bg-secondary: #13111A;   // Legacy alias
+  --bg-tertiary: #1A1823;    // Legacy alias
+  --bg-elevated: #1A1823;    // Elevated surfaces
+
+  --bg-surface: #13111A;
+  --bg-surface-raised: #1A1823;
+  --bg-surface-overlay: #221F2E;
+  --bg-surface-highlight: #2A2639;
+
+  // Sidebar specific
+  --bg-sidebar: #0A0910;
+  --bg-sidebar-hover: rgba(139, 92, 246, 0.08);
+  --bg-sidebar-active: rgba(139, 92, 246, 0.12);
+
+  // ═══════════════════════════════════════════════
+  // BORDER COLORS
+  // ═══════════════════════════════════════════════
+
+  --border-transparent: transparent;
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --border-focus: var(--primary-500);
+
+  // ═══════════════════════════════════════════════
+  // TEXT COLORS
+  // ═══════════════════════════════════════════════
+
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-tertiary: rgba(255, 255, 255, 0.40);
+  --text-disabled: rgba(255, 255, 255, 0.20);
+  --text-inverse: #08070B;
+
+  --text-accent: var(--primary-500);
+  --text-link: var(--primary-500);
+  --text-link-hover: var(--primary-400);
+
+  // ═══════════════════════════════════════════════
+  // CHART/DATA VISUALIZATION COLORS
+  // ═══════════════════════════════════════════════
+
+  --chart-1: #8B5CF6;   // Violet (primary)
+  --chart-2: #06B6D4;   // Cyan
+  --chart-3: #F97316;   // Orange
+  --chart-4: #10B981;   // Emerald
+  --chart-5: #EC4899;   // Pink
+  --chart-6: #FBBF24;   // Amber
+  --chart-7: #6366F1;   // Indigo
+  --chart-8: #14B8A6;   // Teal
+  --chart-9: #EF4444;   // Red
+  --chart-10: #84CC16;  // Lime
 }
 
-// NO gradients - examples of what NOT to do:
+// ═══════════════════════════════════════════════
+// CHART COLOR CLASS
+// ═══════════════════════════════════════════════
+
+.nebulaiq-chart {
+  --chart-1: #8B5CF6;
+  --chart-2: #06B6D4;
+  --chart-3: #F97316;
+  --chart-4: #10B981;
+  --chart-5: #EC4899;
+  --chart-6: #FBBF24;
+  --chart-7: #6366F1;
+  --chart-8: #14B8A6;
+}
+
+// ═══════════════════════════════════════════════
+// COLOR UTILITY CLASSES
+// ═══════════════════════════════════════════════
+
+// Text colors
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-tertiary { color: var(--text-tertiary) !important; }
+.text-disabled { color: var(--text-disabled) !important; }
+.text-accent { color: var(--text-accent) !important; }
+.text-success { color: var(--success) !important; }
+.text-warning { color: var(--warning) !important; }
+.text-error { color: var(--error) !important; }
+
+// Background colors
+.bg-base { background: var(--bg-base) !important; }
+.bg-app { background: var(--bg-app) !important; }
+.bg-surface { background: var(--bg-surface) !important; }
+.bg-surface-raised { background: var(--bg-surface-raised) !important; }
+.bg-surface-overlay { background: var(--bg-surface-overlay) !important; }
+
+// Status backgrounds
+.bg-success { background: var(--success-muted) !important; }
+.bg-warning { background: var(--warning-muted) !important; }
+.bg-error { background: var(--error-muted) !important; }
+.bg-info { background: var(--info-muted) !important; }
+
+// ═══════════════════════════════════════════════
+// NO GRADIENTS REMINDER
+// ═══════════════════════════════════════════════
+
 // ❌ background: linear-gradient(...)
 // ❌ background: radial-gradient(...)
-// ✅ background: var(--bg-secondary) - flat color only
-
-// Hover states - subtle lightening/darkening
-.nebulaiq-button-primary {
-  background: var(--primary-500); // Flat
-
-  &:hover {
-    background: var(--primary-600); // Slightly darker flat color
-  }
-}
-
-// Focus states - use borders, not glows
-.nebulaiq-input:focus {
-  border-color: var(--primary-500);
-  // ❌ box-shadow: 0 0 20px var(--primary-500)
-  // ✅ box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2)
-  box-shadow: 0 0 0 2px rgba(77, 166, 255, 0.2); // Subtle ring
-}
-
-// Chart colors (flat, distinct)
-.nebulaiq-chart {
-  --chart-1: #4da6ff; // Blue
-  --chart-2: #00d4aa; // Teal
-  --chart-3: #f59e0b; // Amber
-  --chart-4: #8b5cf6; // Purple
-  --chart-5: #ec4899; // Pink
-  --chart-6: #10b981; // Green
-  --chart-7: #ef4444; // Red
-  --chart-8: #06b6d4; // Cyan
-}
+// ✅ background: var(--bg-surface) - flat color only

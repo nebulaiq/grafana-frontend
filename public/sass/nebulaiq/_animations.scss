@@ -1,37 +1,43 @@
 /**
- * Animations & Micro-interactions
- * Apple-inspired: smooth, purposeful, 60fps
+ * NebulaIQ Animations v2.0
+ * "Obsidian Command Center" - Smooth, Purposeful Motion
+ *
+ * Inspired by Linear, Vercel, Raycast
+ * 60fps, refined, Apple-quality animations
  */
 
+// ==================================================
+// TIMING FUNCTIONS - Refined Easing
+// ==================================================
+
 :root {
-  // Timing functions
+  // Primary easings
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  // Spring easing (for micro-interactions)
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   // Durations
-  --duration-fast: 150ms;
-  --duration-normal: 200ms;
-  --duration-slow: 300ms;
+  --duration-instant: 75ms;
+  --duration-fast: 120ms;
+  --duration-normal: 180ms;
+  --duration-base: 180ms;
+  --duration-medium: 250ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
 }
 
-// Hover lift effect (subtle)
-.nebulaiq-lift {
-  transition: transform var(--duration-normal) var(--ease-out),
-              box-shadow var(--duration-normal) var(--ease-out);
+// ==================================================
+// FADE ANIMATIONS
+// ==================================================
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-// Fade in animation
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -43,25 +49,100 @@
   }
 }
 
-.nebulaiq-fade-in {
-  animation: fadeIn var(--duration-normal) var(--ease-out);
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
-// Slide in from right (for modals, sidebars)
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nebulaiq-fade-in,
+.fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out-expo);
+}
+
+.fade-in-up {
+  animation: fadeInUp var(--duration-base) var(--ease-out-expo);
+}
+
+.fade-in-scale {
+  animation: fadeInScale var(--duration-base) var(--ease-out-expo);
+}
+
+// ==================================================
+// SLIDE ANIMATIONS
+// ==================================================
+
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
+    opacity: 0;
   }
   to {
     transform: translateX(0);
+    opacity: 1;
   }
 }
 
-.nebulaiq-slide-in-right {
-  animation: slideInRight var(--duration-slow) var(--ease-out);
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-// Scale fade (for tooltips, popovers)
+@keyframes slideInSubtle {
+  from {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.nebulaiq-slide-in-right,
+.slide-in-right {
+  animation: slideInRight var(--duration-slow) var(--ease-out-expo);
+}
+
+.slide-in-left {
+  animation: slideInLeft var(--duration-slow) var(--ease-out-expo);
+}
+
+// ==================================================
+// SCALE ANIMATIONS
+// ==================================================
+
 @keyframes scaleFade {
   from {
     opacity: 0;
@@ -73,11 +154,85 @@
   }
 }
 
-.nebulaiq-scale-fade {
-  animation: scaleFade var(--duration-fast) var(--ease-out);
+@keyframes popIn {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-// Loading spinner
+.nebulaiq-scale-fade,
+.scale-fade {
+  animation: scaleFade var(--duration-fast) var(--ease-out-expo);
+}
+
+.pop-in {
+  animation: popIn var(--duration-medium) var(--ease-spring);
+}
+
+// ==================================================
+// HOVER INTERACTIONS
+// ==================================================
+
+// Subtle lift on hover
+.nebulaiq-lift,
+.hover-lift {
+  transition: transform var(--duration-fast) var(--ease-out-expo),
+              box-shadow var(--duration-fast) var(--ease-out-expo);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// Scale on hover
+.hover-scale {
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Glow on hover (subtle violet)
+.hover-glow {
+  transition: box-shadow var(--duration-fast) var(--ease-out-expo);
+
+  &:hover {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  }
+}
+
+// Background highlight
+.hover-highlight {
+  transition: background var(--duration-fast) var(--ease-out-expo);
+
+  &:hover {
+    background: var(--bg-surface-raised);
+  }
+}
+
+// ==================================================
+// LOADING ANIMATIONS
+// ==================================================
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -87,17 +242,31 @@
   }
 }
 
-.nebulaiq-spinner {
+.nebulaiq-spinner,
+.spinner,
+.loading-spinner {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--gray-700);
-  border-top-color: var(--primary-500);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
-  animation: spin 600ms linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 
-// Pulse (for loading states)
+.spinner-sm {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+}
+
+// Pulse
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -107,14 +276,61 @@
   }
 }
 
-.nebulaiq-pulse {
-  animation: pulse 2s var(--ease-in-out) infinite;
+.nebulaiq-pulse,
+.pulse {
+  animation: pulse 1.5s var(--ease-in-out-sine) infinite;
 }
 
-// Skeleton loading (no gradient - use subtle shimmer)
-.nebulaiq-skeleton {
-  background: var(--gray-800);
-  border-radius: 4px;
+// Dot loader
+@keyframes dotPulse {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dot-loader {
+  display: flex;
+  gap: 4px;
+
+  span {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    animation: dotPulse 1.2s var(--ease-in-out) infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+// ==================================================
+// SKELETON LOADING
+// ==================================================
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.nebulaiq-skeleton,
+.skeleton {
+  background: var(--bg-surface-raised);
+  border-radius: 6px;
   position: relative;
   overflow: hidden;
 
@@ -122,9 +338,9 @@
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: linear-gradient(
       90deg,
       transparent,
@@ -135,23 +351,109 @@
   }
 }
 
-@keyframes shimmer {
-  to {
-    left: 100%;
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 8px;
+
+  &.skeleton-title {
+    height: 20px;
+    width: 60%;
+  }
+
+  &.skeleton-subtitle {
+    height: 16px;
+    width: 40%;
   }
 }
 
-// Focus ring (accessible)
-.nebulaiq-focus-ring {
+// ==================================================
+// STAGGER ANIMATIONS
+// ==================================================
+
+.stagger-children > * {
+  animation: fadeInUp var(--duration-base) var(--ease-out-expo) both;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 40}ms;
+    }
+  }
+}
+
+// ==================================================
+// MODAL/DIALOG ANIMATIONS
+// ==================================================
+
+.modal-enter {
+  animation: fadeInScale var(--duration-medium) var(--ease-out-expo);
+}
+
+.modal-exit {
+  animation: fadeOut var(--duration-fast) var(--ease-in-out);
+}
+
+// Backdrop
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+  }
+}
+
+.backdrop-enter {
+  animation: backdropFadeIn var(--duration-medium) var(--ease-out-expo) forwards;
+}
+
+// ==================================================
+// DROPDOWN ANIMATIONS
+// ==================================================
+
+.dropdown-enter {
+  animation: slideInSubtle var(--duration-fast) var(--ease-out-expo);
+}
+
+// ==================================================
+// TOAST ANIMATIONS
+// ==================================================
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-enter {
+  animation: toastSlideIn var(--duration-slow) var(--ease-out-expo);
+}
+
+// ==================================================
+// FOCUS RING
+// ==================================================
+
+.nebulaiq-focus-ring,
+.focus-ring {
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--primary-500);
-    border-radius: 6px;
+    box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-primary);
+    border-radius: 8px;
   }
 }
 
-// Ripple effect (for buttons, cards)
-.nebulaiq-ripple {
+// ==================================================
+// RIPPLE EFFECT
+// ==================================================
+
+.nebulaiq-ripple,
+.ripple {
   position: relative;
   overflow: hidden;
 
@@ -171,5 +473,49 @@
   &:active::after {
     width: 200px;
     height: 200px;
+  }
+}
+
+// ==================================================
+// PROGRESS ANIMATIONS
+// ==================================================
+
+@keyframes progressIndeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.progress-indeterminate {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--accent-primary);
+    animation: progressIndeterminate 1.5s var(--ease-in-out) infinite;
+  }
+}
+
+// ==================================================
+// REDUCED MOTION
+// ==================================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
