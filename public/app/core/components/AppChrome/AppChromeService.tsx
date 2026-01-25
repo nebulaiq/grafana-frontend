@@ -57,14 +57,15 @@ export class AppChromeService {
     returnToPrevious: this.returnToPreviousData,
   });
 
+  // NebulaIQ: Single unified top bar - always 52px regardless of actions
+  // Actions are rendered inline with breadcrumbs, not in a separate row
   public headerHeightObservable = this.state
     .pipe(
-      map(({ actions, chromeless, kioskMode }) => {
+      map(({ chromeless, kioskMode }) => {
         if (kioskMode || chromeless) {
           return 0;
-        } else if (actions) {
-          return TOP_BAR_LEVEL_HEIGHT * 2;
         } else {
+          // Single top bar height - actions are inline, not in separate row
           return TOP_BAR_LEVEL_HEIGHT;
         }
       })
