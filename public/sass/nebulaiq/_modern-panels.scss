@@ -26,6 +26,20 @@
 }
 
 // ==================================================
+// LIST PANEL STYLING (NebulaIQ plugin tables)
+// ==================================================
+
+// List panels in the NebulaIQ plugin (My APIs, Services tables, etc.)
+// Uses same visual styling as VizPanel for consistency
+.nebulaiq-list-panel {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  background-color: rgb(26, 24, 35);
+  overflow: hidden;
+}
+
+// ==================================================
 // PANEL HOVER EFFECTS
 // ==================================================
 
