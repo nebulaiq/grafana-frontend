@@ -339,9 +339,9 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
   item: css({
     position: 'relative',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     padding: '8px 6px',
     margin: '2px 4px',
     borderRadius: 8,
@@ -397,6 +397,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     opacity: 0.85,
     writingMode: 'vertical-rl',
     textOrientation: 'mixed',
+    transform: 'rotate(180deg)',
     whiteSpace: 'nowrap',
     maxHeight: 50,
     overflow: 'hidden',
@@ -420,8 +421,8 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
   }),
 
   expandableItemCollapsed: css({
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    flexDirection: 'row-reverse',
+    justifyContent: 'flex-end',
     gap: 4,
   }),
 
@@ -435,7 +436,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
 
   expandableLink: css({
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     flex: 1,
     textDecoration: 'none',
