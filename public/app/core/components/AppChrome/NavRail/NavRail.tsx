@@ -148,14 +148,14 @@ function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded }: NavRai
   return (
     <a
       href={href}
-      className={cx(styles.item, isActive && styles.itemActive)}
+      className={cx(styles.item, isExpanded && styles.itemExpanded, isActive && styles.itemActive)}
       title={label}
     >
       <Icon name={icon} className={styles.icon} />
       {isExpanded ? (
         <span className={styles.label}>{label}</span>
       ) : (
-        <span className={styles.abbrev}>{abbrev}</span>
+        <span className={styles.abbrevVertical}>{abbrev}</span>
       )}
       {isActive && <div className={styles.activeIndicator} />}
     </a>
@@ -189,13 +189,17 @@ function NavRailItemExpandable({
 
   return (
     <div className={styles.expandableContainer}>
-      <div className={cx(styles.item, styles.expandableItem, isActive && styles.itemActive)}>
-        <a href={href} className={styles.expandableLink} title={label}>
+      <div className={cx(
+        styles.item,
+        isExpanded ? styles.expandableItemExpanded : styles.expandableItemCollapsed,
+        isActive && styles.itemActive
+      )}>
+        <a href={href} className={cx(styles.expandableLink, isExpanded && styles.expandableLinkExpanded)} title={label}>
           <Icon name={icon} className={styles.icon} />
           {isExpanded ? (
             <span className={styles.label}>{label}</span>
           ) : (
-            <span className={styles.abbrev}>{abbrev}</span>
+            <span className={styles.abbrevVertical}>{abbrev}</span>
           )}
         </a>
         {isExpanded && (
@@ -335,22 +339,32 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
   item: css({
     position: 'relative',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px 8px',
-    margin: '2px 8px',
+    justifyContent: 'flex-start',
+    padding: '8px 6px',
+    margin: '2px 4px',
     borderRadius: 8,
     textDecoration: 'none',
     color: 'rgba(255, 255, 255, 0.65)',
-    transition: 'all 0.15s ease',
-    minHeight: 52,
+    transition: 'all 0.2s ease',
+    minHeight: 44,
     cursor: 'pointer',
+    gap: 4,
 
     '&:hover': {
       background: 'rgba(139, 92, 246, 0.08)',
       color: 'rgba(255, 255, 255, 0.95)',
     },
+  }),
+
+  itemExpanded: css({
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '10px 8px',
+    margin: '2px 8px',
+    minHeight: 52,
+    gap: 2,
   }),
 
   itemActive: css({
@@ -363,8 +377,8 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
   }),
 
   icon: css({
-    fontSize: 20,
-    marginBottom: 2,
+    fontSize: 18,
+    flexShrink: 0,
   }),
 
   label: css({
@@ -376,17 +390,17 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     maxWidth: '100%',
   }),
 
-  abbrev: css({
-    fontSize: 10,
+  abbrevVertical: css({
+    fontSize: 9,
     fontWeight: 500,
-    textTransform: 'none',
-    letterSpacing: '0.2px',
+    letterSpacing: '0.5px',
     opacity: 0.85,
+    writingMode: 'vertical-rl',
+    textOrientation: 'mixed',
     whiteSpace: 'nowrap',
+    maxHeight: 50,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    maxWidth: '100%',
-    textAlign: 'center',
   }),
 
   activeIndicator: css({
@@ -405,21 +419,34 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     flexDirection: 'column',
   }),
 
-  expandableItem: css({
+  expandableItemCollapsed: css({
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: 4,
+  }),
+
+  expandableItemExpanded: css({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     gap: 8,
     paddingLeft: 12,
+    minHeight: 52,
   }),
 
   expandableLink: css({
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     textDecoration: 'none',
     color: 'inherit',
     minWidth: 0,
+    gap: 4,
+  }),
+
+  expandableLinkExpanded: css({
+    flexDirection: 'column',
+    gap: 2,
   }),
 
   chevronButton: css({
