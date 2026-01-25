@@ -1,650 +1,92 @@
 /**
- * NebulaIQ Modern Panels v2.0
- * "Floating Canvas Cards"
+ * NebulaIQ Modern Panels v3.0 - Minimal
  *
- * Features:
- * - No visible borders (borderless design)
- * - Soft shadows for depth/elevation
- * - Subtle color differentiation
- * - Clean, floating appearance
+ * Panel border and shadow defaults are now in:
+ * - packages/grafana-data/src/themes/createComponents.ts
+ *
+ * This file contains panel-specific enhancements that can't be done via the theme.
  */
 
 // ==================================================
-// PANEL CONTAINER - Borderless Floating Card
+// VIZPANEL STYLING (@grafana/scenes-react)
+// ==================================================
+
+// VizPanel components use [data-viz-panel-key] attribute
+// Apply consistent rounded borders and background matching theme
+[data-viz-panel-key] {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 8px !important;
+  background-color: rgb(26, 24, 35) !important;
+  overflow: hidden;
+}
+
+// Override nested panel-container background to allow parent background to show through
+[data-viz-panel-key] [class*="panel-container"] {
+  background-color: transparent !important;
+}
+
+// ==================================================
+// PANEL HOVER EFFECTS
 // ==================================================
 
 .panel-container,
-.panel,
-[class*='panel-']:not(.panel-content):not(.panel-header):not(.panel-body):not(.panel-title):not(.panel-actions),
 .react-grid-item,
 .dashboard-panel {
-  background: var(--bg-surface) !important;
-  border: none !important; // BORDERLESS
-  border-radius: var(--panel-radius) !important;
-  box-shadow: var(--shadow-sm) !important;
-  overflow: hidden !important;
-  transition: all var(--transition-base) !important;
-  position: relative !important;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease;
 
-  // Subtle top highlight for depth
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.04),
-      transparent
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  // Hover state - subtle lift
   &:hover {
-    box-shadow: var(--shadow-md) !important;
     transform: translateY(-2px);
 
     .panel-header .panel-actions {
-      opacity: 1 !important;
+      opacity: 1;
     }
-  }
-
-  // Focus state (when editing)
-  &:focus-within,
-  &.panel-focused {
-    box-shadow: var(--shadow-lg), 0 0 0 2px var(--accent-primary-muted) !important;
   }
 }
 
 // ==================================================
-// PANEL HEADER - Clean & Minimal
+// PANEL HEADER - Hidden actions until hover
 // ==================================================
 
-.panel-header,
-.panel-title-container,
-[class*='panel-header'] {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  padding: 16px var(--panel-padding) !important;
-  background: transparent !important;
-  border-bottom: none !important; // NO SEPARATOR
-  min-height: 52px !important;
-  position: relative !important;
-
-  // Subtle separator using gradient (barely visible)
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: var(--panel-padding);
-    right: var(--panel-padding);
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      var(--border-subtle),
-      var(--border-default),
-      var(--border-subtle)
-    );
-    opacity: 0.5;
-  }
-
-  // Title area
-  .panel-title-text {
-    flex: 1;
-    min-width: 0;
-  }
-
-  // Panel title
-  .panel-title,
-  .panel-heading,
-  h3,
-  h4 {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: var(--text-primary) !important;
-    letter-spacing: -0.01em !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  // Panel description (subtitle)
-  .panel-description {
-    font-size: 12px !important;
-    color: var(--text-tertiary) !important;
-    margin-top: 2px !important;
-    line-height: 1.4 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  // Panel actions (hidden by default, shown on hover)
+.panel-header {
   .panel-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 2px !important;
-    opacity: 0 !important;
-    transition: opacity var(--transition-fast) !important;
-
-    button,
-    .action-btn {
-      width: 28px !important;
-      height: 28px !important;
-      padding: 0 !important;
-      background: transparent !important;
-      border: none !important;
-      border-radius: 6px !important;
-      color: var(--text-tertiary) !important;
-      cursor: pointer !important;
-      transition: all var(--transition-fast) !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-
-      svg {
-        width: 14px !important;
-        height: 14px !important;
-      }
-
-      &:hover {
-        background: var(--bg-surface-raised) !important;
-        color: var(--text-primary) !important;
-      }
-    }
+    opacity: 0;
+    transition: opacity 150ms ease;
   }
 }
 
 // ==================================================
-// PANEL BODY / CONTENT - Data First
-// ==================================================
-
-.panel-content,
-.panel-body,
-[class*='panel-content'] {
-  padding: var(--panel-padding) !important;
-  background: transparent !important;
-  position: relative !important;
-
-  // No padding variant (for full-bleed charts)
-  &.no-padding,
-  &.panel-content-no-padding {
-    padding: 0 !important;
-  }
-
-  // Tight padding variant
-  &.tight {
-    padding: 12px !important;
-  }
-}
-
-// ==================================================
-// DASHBOARD GRID - Generous Spacing
-// ==================================================
-
-.dashboard-container,
-.react-grid-layout,
-.dashboard-grid {
-  padding: 20px !important;
-  background: transparent !important;
-  min-height: calc(100vh - var(--topbar-height)) !important;
-
-  @media (max-width: 1024px) {
-    padding: 16px !important;
-  }
-
-  @media (max-width: 768px) {
-    padding: 12px !important;
-  }
-}
-
-// Grid placeholder (drag target)
-.react-grid-placeholder {
-  background: var(--accent-primary-subtle) !important;
-  border: 2px dashed var(--accent-primary) !important;
-  border-radius: var(--panel-radius) !important;
-  opacity: 0.6 !important;
-}
-
-// ==================================================
-// STAT PANELS - Hero Numbers
+// STAT PANELS - Large numbers
 // ==================================================
 
 .stat-panel,
 .single-stat-panel,
-[class*='stat-panel'],
-.singlestat-panel {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  padding: 28px 20px !important;
-  background: var(--bg-surface) !important;
-  min-height: 140px !important;
-
-  // Main value
+[class*='stat-panel'] {
   .stat-value,
   .single-stat-value {
-    font-size: 42px !important;
-    font-weight: 700 !important;
-    line-height: 1 !important;
-    color: var(--text-primary) !important;
-    letter-spacing: -0.03em !important;
-    margin: 0 !important;
-
-    // Colored variants
-    &.primary,
-    &.accent {
-      color: var(--accent-primary) !important;
-    }
-
-    &.success {
-      color: var(--color-success) !important;
-    }
-
-    &.warning {
-      color: var(--color-warning) !important;
-    }
-
-    &.error {
-      color: var(--color-error) !important;
-    }
-  }
-
-  // Label
-  .stat-label {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    color: var(--text-tertiary) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
-    margin-top: 10px !important;
-  }
-
-  // Delta indicator (change)
-  .stat-delta,
-  .stat-change {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 4px !important;
-    padding: 4px 10px !important;
-    margin-top: 10px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    border-radius: 6px !important;
-
-    svg {
-      width: 12px !important;
-      height: 12px !important;
-    }
-
-    &.positive,
-    &.up {
-      background: var(--color-success-muted) !important;
-      color: var(--color-success) !important;
-    }
-
-    &.negative,
-    &.down {
-      background: var(--color-error-muted) !important;
-      color: var(--color-error) !important;
-    }
-
-    &.neutral {
-      background: var(--bg-surface-raised) !important;
-      color: var(--text-secondary) !important;
-    }
-  }
-
-  // Mini sparkline
-  .stat-sparkline {
-    width: 100% !important;
-    max-width: 180px !important;
-    height: 36px !important;
-    margin-top: 14px !important;
-    opacity: 0.7 !important;
-
-    path {
-      stroke: var(--accent-tertiary) !important;
-      fill: none !important;
-    }
-
-    .area {
-      fill: var(--accent-tertiary-muted) !important;
-    }
+    font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
   }
 }
 
 // ==================================================
-// TABLE PANELS - Clean Rows
+// CHART LEGENDS
 // ==================================================
 
-.table-panel,
-[class*='table-panel'] {
-  .table,
-  table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    border-spacing: 0 !important;
+.graph-legend,
+.chart-legend {
+  .legend-item,
+  .legend-series {
+    cursor: pointer;
+    transition: opacity 150ms ease;
 
-    // Table header
-    thead {
-      tr {
-        background: transparent !important;
-      }
-
-      th {
-        padding: 10px 16px !important;
-        text-align: left !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.06em !important;
-        color: var(--text-disabled) !important;
-        background: transparent !important;
-        border: none !important;
-        border-bottom: 1px solid var(--border-subtle) !important;
-        white-space: nowrap !important;
-      }
+    &:hover {
+      opacity: 0.8;
     }
 
-    // Table body
-    tbody {
-      tr {
-        background: transparent !important;
-        border: none !important;
-        transition: background var(--transition-fast) !important;
-
-        &:hover {
-          background: var(--bg-surface-raised) !important;
-        }
-
-        // Zebra striping (subtle)
-        &:nth-child(even) {
-          background: rgba(255, 255, 255, 0.01) !important;
-
-          &:hover {
-            background: var(--bg-surface-raised) !important;
-          }
-        }
-
-        td {
-          padding: 14px 16px !important;
-          font-size: 13px !important;
-          color: var(--text-secondary) !important;
-          border: none !important;
-          border-bottom: 1px solid var(--border-subtle) !important;
-
-          // First column - emphasized
-          &:first-child {
-            font-weight: 500 !important;
-            color: var(--text-primary) !important;
-          }
-        }
-
-        // Last row - no bottom border
-        &:last-child td {
-          border-bottom: none !important;
-        }
-      }
+    &.disabled {
+      opacity: 0.4;
+      text-decoration: line-through;
     }
   }
-}
-
-// ==================================================
-// CHART PANELS - Full-Width Data
-// ==================================================
-
-.graph-panel,
-.chart-panel,
-[class*='graph-panel'],
-.timeseries-panel {
-  // Remove padding for full-width charts
-  .panel-content,
-  .panel-body {
-    padding: 0 !important;
-  }
-
-  // Chart container
-  .chart-container,
-  .graph-container {
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 200px !important;
-  }
-
-  // Legend
-  .graph-legend,
-  .chart-legend {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 16px !important;
-    padding: 12px var(--panel-padding) !important;
-    border-top: 1px solid var(--border-subtle) !important;
-    background: transparent !important;
-
-    .legend-item,
-    .legend-series {
-      display: flex !important;
-      align-items: center !important;
-      gap: 6px !important;
-      font-size: 12px !important;
-      color: var(--text-secondary) !important;
-      cursor: pointer !important;
-      transition: opacity var(--transition-fast) !important;
-
-      &:hover {
-        opacity: 0.8 !important;
-      }
-
-      &.disabled {
-        opacity: 0.4 !important;
-        text-decoration: line-through !important;
-      }
-
-      // Color indicator
-      .legend-color,
-      .legend-marker {
-        width: 10px !important;
-        height: 10px !important;
-        border-radius: 2px !important;
-        flex-shrink: 0 !important;
-      }
-
-      // Value
-      .legend-value {
-        font-weight: 600 !important;
-        color: var(--text-primary) !important;
-        margin-left: 4px !important;
-      }
-    }
-  }
-}
-
-// ==================================================
-// EMPTY STATE
-// ==================================================
-
-.panel-empty-state,
-.empty-state {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 48px 24px !important;
-  text-align: center !important;
-  min-height: 200px !important;
-
-  svg,
-  .empty-icon {
-    width: 48px !important;
-    height: 48px !important;
-    color: var(--text-disabled) !important;
-    opacity: 0.5 !important;
-    margin-bottom: 16px !important;
-  }
-
-  .empty-title {
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    color: var(--text-secondary) !important;
-    margin-bottom: 6px !important;
-  }
-
-  .empty-message {
-    font-size: 13px !important;
-    color: var(--text-tertiary) !important;
-    max-width: 280px !important;
-    line-height: 1.5 !important;
-  }
-
-  .empty-action {
-    margin-top: 16px !important;
-  }
-}
-
-// ==================================================
-// LOADING STATE
-// ==================================================
-
-.panel-loading,
-.loading-overlay {
-  position: absolute !important;
-  inset: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: rgba(19, 17, 26, 0.85) !important;
-  backdrop-filter: blur(4px) !important;
-  z-index: 10 !important;
-
-  .loading-spinner {
-    width: 28px !important;
-    height: 28px !important;
-    border: 3px solid var(--border-default) !important;
-    border-top-color: var(--accent-primary) !important;
-    border-radius: 50% !important;
-    animation: panel-spin 0.8s linear infinite !important;
-  }
-}
-
-@keyframes panel-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-// ==================================================
-// PANEL VARIANTS
-// ==================================================
-
-// Highlighted/Alert panel
-.panel-highlighted,
-.panel-alert {
-  background: var(--bg-surface) !important;
-  box-shadow: var(--shadow-md), inset 0 0 0 1px var(--color-error-muted) !important;
-
-  .panel-header::after {
-    background: var(--color-error) !important;
-    opacity: 0.3 !important;
-  }
-}
-
-// Success panel
-.panel-success {
-  box-shadow: var(--shadow-md), inset 0 0 0 1px var(--color-success-muted) !important;
-}
-
-// Transparent panel (for special layouts)
-.panel-transparent,
-.panel-no-bg {
-  background: transparent !important;
-  box-shadow: none !important;
-
-  &::before {
-    display: none !important;
-  }
-
-  &:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-}
-
-// Compact panel
-.panel-compact {
-  .panel-header {
-    padding: 12px 16px !important;
-    min-height: 44px !important;
-  }
-
-  .panel-content {
-    padding: 16px !important;
-  }
-}
-
-// ==================================================
-// RESPONSIVE ADJUSTMENTS
-// ==================================================
-
-@media (max-width: 768px) {
-  .panel-container,
-  .panel {
-    border-radius: 12px !important;
-  }
-
-  .panel-header {
-    padding: 12px 14px !important;
-    min-height: 44px !important;
-
-    .panel-title {
-      font-size: 13px !important;
-    }
-
-    .panel-actions {
-      opacity: 1 !important; // Always visible on mobile
-    }
-  }
-
-  .panel-content {
-    padding: 14px !important;
-  }
-
-  .stat-panel {
-    padding: 20px 14px !important;
-    min-height: 120px !important;
-
-    .stat-value {
-      font-size: 32px !important;
-    }
-  }
-
-  .dashboard-container {
-    padding: 10px !important;
-  }
-}
-
-// ==================================================
-// CHART COLORS OVERRIDE
-// ==================================================
-
-:root {
-  // Distinctive chart color palette
-  --chart-1: #8B5CF6;  // Violet
-  --chart-2: #06B6D4;  // Cyan
-  --chart-3: #F97316;  // Orange
-  --chart-4: #10B981;  // Emerald
-  --chart-5: #EC4899;  // Pink
-  --chart-6: #FBBF24;  // Amber
-  --chart-7: #6366F1;  // Indigo
-  --chart-8: #14B8A6;  // Teal
 }
