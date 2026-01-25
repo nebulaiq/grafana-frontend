@@ -12,10 +12,10 @@ import store from 'app/core/store';
 import { CommandPalette } from 'app/features/commandPalette/CommandPalette';
 import { ScopesDashboards, useScopesDashboardsState } from 'app/features/scopes';
 
-import { AppChromeMenu } from './AppChromeMenu';
 import { DOCKED_LOCAL_STORAGE_KEY, DOCKED_MENU_OPEN_LOCAL_STORAGE_KEY } from './AppChromeService';
-import { MegaMenu, MENU_WIDTH } from './MegaMenu/MegaMenu';
+import { MENU_WIDTH } from './MegaMenu/MegaMenu';
 import { useMegaMenuFocusHelper } from './MegaMenu/utils';
+import { NavRail, RAIL_WIDTH_COLLAPSED } from './NavRail';
 import { ReturnToPrevious } from './ReturnToPrevious/ReturnToPrevious';
 import { SingleTopBar } from './TopBar/SingleTopBar';
 import { SingleTopBarActions } from './TopBar/SingleTopBarActions';
@@ -91,10 +91,9 @@ export function AppChrome({ children }: Props) {
           <LinkButton className={styles.skipLink} href="#pageContent">
             <Trans i18nKey="app-chrome.skip-content-button">Skip to main content</Trans>
           </LinkButton>
-          {menuDockedAndOpen && (
-            <MegaMenu className={styles.dockedMegaMenu} onClose={() => chrome.setMegaMenuOpen(false)} />
-          )}
-          <header className={cx(styles.topNav, menuDockedAndOpen && styles.topNavMenuDocked)}>
+          {/* NebulaIQ NavRail - Always visible Gmail-style navigation */}
+          <NavRail />
+          <header className={cx(styles.topNav, styles.topNavWithRail)}>
             <SingleTopBar
               sectionNav={state.sectionNav.node}
               pageNav={state.pageNav}
@@ -105,7 +104,7 @@ export function AppChrome({ children }: Props) {
           </header>
         </>
       )}
-      <div className={contentClass}>
+      <div className={cx(contentClass, !state.chromeless && styles.contentWithRail)}>
         <div className={styles.panes}>
           {!state.chromeless && (
             <div
@@ -117,9 +116,8 @@ export function AppChrome({ children }: Props) {
             </div>
           )}
           <main
-            className={cx(styles.pageContainer, {
-              [styles.pageContainerMenuDocked]: menuDockedAndOpen || isScopesDashboardsOpen,
-              [styles.pageContainerMenuDockedScopes]: menuDockedAndOpen && isScopesDashboardsOpen,
+            className={cx(styles.pageContainer, styles.pageContainerWithRail, {
+              [styles.pageContainerMenuDocked]: isScopesDashboardsOpen,
             })}
             id="pageContent"
           >
@@ -127,7 +125,7 @@ export function AppChrome({ children }: Props) {
           </main>
         </div>
       </div>
-      {!state.chromeless && !state.megaMenuDocked && <AppChromeMenu />}
+      {/* Slide-out menu removed - using NavRail instead */}
       {!state.chromeless && <CommandPalette />}
       {shouldShowReturnToPrevious && state.returnToPrevious && (
         <ReturnToPrevious href={state.returnToPrevious.href} title={state.returnToPrevious.title} />
@@ -147,6 +145,10 @@ const getStyles = (theme: GrafanaTheme2, hasActions: boolean) => {
     }),
     contentChromeless: css({
       paddingTop: 0,
+    }),
+    // Add left padding for NavRail
+    contentWithRail: css({
+      paddingLeft: RAIL_WIDTH_COLLAPSED,
     }),
     dockedMegaMenu: css({
       background: theme.colors.background.primary,
@@ -179,6 +181,10 @@ const getStyles = (theme: GrafanaTheme2, hasActions: boolean) => {
       background: theme.colors.background.primary,
       flexDirection: 'column',
     }),
+    // TopNav positioned after NavRail
+    topNavWithRail: css({
+      left: RAIL_WIDTH_COLLAPSED,
+    }),
     topNavMenuDocked: css({
       left: MENU_WIDTH,
     }),
@@ -199,6 +205,10 @@ const getStyles = (theme: GrafanaTheme2, hasActions: boolean) => {
       display: 'flex',
       flexDirection: 'column',
       flexGrow: 1,
+    }),
+    // Page container already accounts for rail via contentWithRail
+    pageContainerWithRail: css({
+      // No additional padding needed - handled by contentWithRail
     }),
     skipLink: css({
       position: 'fixed',

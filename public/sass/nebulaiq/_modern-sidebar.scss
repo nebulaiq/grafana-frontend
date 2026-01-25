@@ -1,585 +1,92 @@
 /**
- * NebulaIQ Modern Sidebar v2.0
- * "Gmail-Style Rail Navigation"
+ * NebulaIQ NavRail Styles v2.0
+ * Supporting styles for the NavRail React component
  *
- * Features:
- * - Ultra-thin 56px collapsed by default
- * - Icon + abbreviated label (stacked)
- * - Smooth expand on hover to 220px
- * - Violet accent for active states
+ * Note: Most styling is done inline via Emotion CSS in NavRail.tsx
+ * This file provides global overrides and fallbacks
  */
 
 // ==================================================
-// SIDEBAR CONTAINER - Rail Navigation
+// HIDE CONFLICTING GRAFANA NAVIGATION
 // ==================================================
 
-.sidemenu,
-[class*='sidemenu'],
-.navbar-page-btn,
-.mega-menu,
-.nebulaiq-mega-menu {
-  position: fixed !important;
-  left: 0 !important;
-  top: 0 !important;
-  height: 100vh !important;
-  width: var(--sidebar-width-collapsed) !important;
-  background: var(--bg-sidebar) !important;
-  border-right: 1px solid var(--border-subtle) !important;
-  z-index: var(--z-sidebar) !important;
-  overflow: hidden !important;
-  transition: width var(--transition-expand) !important;
-  display: flex !important;
-  flex-direction: column !important;
-
-  // Subtle inner shadow for depth
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(139, 92, 246, 0.1) 50%,
-      transparent
-    );
-    pointer-events: none;
-  }
-
-  // ═══════════════════════════════════════════════
-  // EXPANDED STATE (on hover)
-  // ═══════════════════════════════════════════════
-
-  &:hover,
-  &.expanded,
-  &.is-open {
-    width: var(--sidebar-width-expanded) !important;
-
-    // Show full labels
-    .nav-item-label,
-    .nav-item-text,
-    .nebulaiq-nav-label {
-      opacity: 1 !important;
-      transform: translateX(0) !important;
-    }
-
-    // Hide abbreviated labels
-    .nav-item-abbrev {
-      opacity: 0 !important;
-      height: 0 !important;
-    }
-
-    // Show section headers
-    .nav-section-header {
-      opacity: 1 !important;
-    }
-
-    // Show chevrons
-    .nav-chevron {
-      opacity: 1 !important;
-    }
-
-    // Update logo area
-    .sidebar-logo .logo-text {
-      opacity: 1 !important;
-      transform: translateX(0) !important;
-    }
-
-    // Horizontal layout for nav items
-    .nebulaiq-nav-item,
-    .nav-item {
-      flex-direction: row !important;
-      justify-content: flex-start !important;
-      padding: 0 12px !important;
-      height: 40px !important;
-    }
-  }
+// Hide Grafana's default mega menu when our NavRail is active
+.css-mega-menu-class,
+[data-testid="navigation-mega-menu"] {
+  // Allow our NavRail to take precedence
 }
 
-// Main content shift
-body {
-  margin-left: var(--sidebar-width-collapsed) !important;
-  transition: margin-left var(--transition-expand) !important;
+// Hide the hamburger menu button in topbar since NavRail is always visible
+// Uncomment if you want to completely hide the menu toggle:
+// .navbar-page-btn[aria-label="Open menu"],
+// button[aria-label="Open menu"] {
+//   display: none !important;
+// }
+
+// ==================================================
+// NAVRAIL GLOBAL STYLES
+// ==================================================
+
+// Ensure NavRail is above other content
+.main-view {
+  position: relative;
+}
+
+// When NavRail expands on hover, add subtle overlay to content
+.main-view::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: background 0.2s ease;
+  z-index: 1;
 }
 
 // ==================================================
-// SIDEBAR LOGO / BRANDING
+// TOPBAR ADJUSTMENTS
 // ==================================================
 
-.sidebar-logo,
-.sidemenu__logo,
-.navbar-brand,
-[class*='logo-container'] {
-  height: 52px !important;
-  min-height: 52px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 !important;
-  border-bottom: 1px solid var(--border-subtle) !important;
-  margin-bottom: 8px !important;
-  position: relative !important;
-
-  // Logo icon
-  img,
-  .logo-icon {
-    width: 28px !important;
-    height: 28px !important;
-    flex-shrink: 0 !important;
-    transition: all var(--transition-base) !important;
-  }
-
-  // Logo text (hidden when collapsed)
-  .logo-text {
-    margin-left: 10px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    color: var(--text-primary) !important;
-    letter-spacing: -0.02em !important;
-    opacity: 0 !important;
-    transform: translateX(-8px) !important;
-    transition: all var(--transition-base) !important;
-    white-space: nowrap !important;
-  }
-
-  // When expanded
-  .sidemenu:hover & {
-    justify-content: flex-start !important;
-    padding: 0 16px !important;
-  }
+// Ensure topbar accounts for NavRail width
+header.css-topnav,
+[class*="topNav"] {
+  // The React component handles left offset via styles.topNavWithRail
 }
 
 // ==================================================
-// NAVIGATION LIST
+// CONTENT AREA ADJUSTMENTS
 // ==================================================
 
-.nebulaiq-nav-list,
-.sidemenu__nav,
-[class*='nav-list'] {
-  flex: 1 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding: 4px 6px !important;
-
-  // Custom scrollbar for nav
-  &::-webkit-scrollbar {
-    width: 4px !important;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-radius: 2px !important;
-  }
+// Main content area padding for NavRail
+.page-container,
+[class*="pageContainer"] {
+  // The React component handles this via styles.contentWithRail
 }
 
 // ==================================================
-// NAVIGATION ITEMS - Stacked Icon + Label
+// SLIDE-OUT MENU OVERRIDE
 // ==================================================
 
-.nebulaiq-nav-item,
-.nav-item,
-[class*='nav-item']:not(.nav-section):not(.nav-children) {
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  height: 52px !important;
-  padding: 6px 4px !important;
-  margin-bottom: 2px !important;
-  border-radius: 10px !important;
-  color: var(--text-tertiary) !important;
-  cursor: pointer !important;
-  transition: all var(--transition-fast) !important;
-  text-decoration: none !important;
-  overflow: hidden !important;
-
-  // ═══════════════════════════════════════════════
-  // ICON
-  // ═══════════════════════════════════════════════
-
-  svg,
-  .nav-icon,
-  [class*='icon'] {
-    width: 20px !important;
-    height: 20px !important;
-    flex-shrink: 0 !important;
-    color: inherit !important;
-    transition: all var(--transition-fast) !important;
-  }
-
-  // ═══════════════════════════════════════════════
-  // ABBREVIATED LABEL (visible when collapsed)
-  // ═══════════════════════════════════════════════
-
-  .nav-item-abbrev {
-    margin-top: 4px !important;
-    font-size: 9px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.03em !important;
-    text-transform: uppercase !important;
-    color: inherit !important;
-    text-align: center !important;
-    line-height: 1 !important;
-    opacity: 1 !important;
-    transition: all var(--transition-fast) !important;
-    max-width: 44px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-
-  // ═══════════════════════════════════════════════
-  // FULL LABEL (visible when expanded)
-  // ═══════════════════════════════════════════════
-
-  .nav-item-label,
-  .nav-item-text,
-  .nebulaiq-nav-label,
-  > span:not(.nav-item-abbrev) {
-    margin-left: 12px !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: inherit !important;
-    white-space: nowrap !important;
-    opacity: 0 !important;
-    transform: translateX(-8px) !important;
-    transition: all var(--transition-base) !important;
-    letter-spacing: -0.006em !important;
-  }
-
-  // ═══════════════════════════════════════════════
-  // STATES
-  // ═══════════════════════════════════════════════
-
-  // Hover
-  &:hover {
-    background: var(--bg-sidebar-hover) !important;
-    color: var(--text-secondary) !important;
-  }
-
-  // Active/Current
-  &.active,
-  &[aria-current='page'],
-  &.selected {
-    background: var(--bg-sidebar-active) !important;
-    color: var(--accent-primary) !important;
-
-    // Active indicator dot (visible in collapsed)
-    &::before {
-      content: '' !important;
-      position: absolute !important;
-      left: 0 !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      width: 3px !important;
-      height: 24px !important;
-      background: var(--accent-primary) !important;
-      border-radius: 0 3px 3px 0 !important;
-    }
-
-    svg,
-    .nav-icon {
-      color: var(--accent-primary) !important;
-    }
-  }
-
-  // Disabled
-  &.disabled,
-  &[disabled] {
-    opacity: 0.4 !important;
-    pointer-events: none !important;
-  }
+// Hide the slide-out AppChromeMenu since we use NavRail
+[data-testid="navbarmenu"],
+.navbar-menu-portal,
+[class*="AppChromeMenu"] {
+  display: none !important;
 }
 
 // ==================================================
-// NAVIGATION SECTIONS
+// ANIMATION REFINEMENTS
 // ==================================================
 
-.nav-section,
-.nebulaiq-nav-section {
-  margin-top: 8px !important;
-  padding-top: 8px !important;
-  border-top: 1px solid var(--border-subtle) !important;
-
-  &:first-child {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    border-top: none !important;
+// Smooth transitions for any NavRail-related animations
+* {
+  // Only apply to nav-related elements to avoid performance issues
+  &[class*="nav"],
+  &[class*="rail"],
+  &[class*="sidebar"] {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
-}
-
-// Section headers
-.nav-section-header,
-.nebulaiq-nav-section-header {
-  padding: 8px 12px 6px !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: var(--text-disabled) !important;
-  opacity: 0 !important;
-  transition: opacity var(--transition-base) !important;
-  white-space: nowrap !important;
-}
-
-// ==================================================
-// EXPANDABLE ITEMS (with children)
-// ==================================================
-
-.nav-item-expandable,
-.nebulaiq-nav-expandable {
-  // Chevron icon
-  .nav-chevron,
-  .expand-icon,
-  .chevron {
-    margin-left: auto !important;
-    width: 14px !important;
-    height: 14px !important;
-    opacity: 0 !important;
-    transition: all var(--transition-fast) !important;
-
-    .sidemenu:hover &,
-    .expanded & {
-      opacity: 0.6 !important;
-    }
-  }
-
-  // Rotated when expanded
-  &.expanded,
-  &.open {
-    .nav-chevron,
-    .expand-icon,
-    .chevron {
-      transform: rotate(90deg) !important;
-    }
-  }
-}
-
-// Child items (nested)
-.nav-children,
-.nebulaiq-nav-children {
-  max-height: 0 !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-  padding-left: 0 !important;
-  transition: all var(--transition-base) !important;
-
-  // When parent is expanded
-  .nav-item-expandable.expanded + &,
-  .nav-item-expandable.open + & {
-    max-height: 500px !important;
-    opacity: 1 !important;
-  }
-
-  // Child nav items
-  .nav-item {
-    height: 36px !important;
-    padding-left: 40px !important;
-    font-size: 12px !important;
-
-    &::before {
-      display: none !important;
-    }
-  }
-}
-
-// ==================================================
-// BOTTOM SECTION (Settings, User, etc.)
-// ==================================================
-
-.sidemenu__bottom,
-.nav-bottom-actions,
-.sidebar-footer {
-  margin-top: auto !important;
-  padding: 8px 6px !important;
-  border-top: 1px solid var(--border-subtle) !important;
-  background: var(--bg-sidebar) !important;
-}
-
-// User profile widget
-.user-profile,
-.sidebar-user {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 8px !important;
-  border-radius: 10px !important;
-  cursor: pointer !important;
-  transition: all var(--transition-fast) !important;
-
-  &:hover {
-    background: var(--bg-sidebar-hover) !important;
-  }
-
-  // Avatar
-  .user-avatar {
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50% !important;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    color: white !important;
-    flex-shrink: 0 !important;
-  }
-
-  // User info (hidden when collapsed)
-  .user-info {
-    margin-left: 10px !important;
-    opacity: 0 !important;
-    transform: translateX(-8px) !important;
-    transition: all var(--transition-base) !important;
-    overflow: hidden !important;
-
-    .user-name {
-      font-size: 13px !important;
-      font-weight: 600 !important;
-      color: var(--text-primary) !important;
-      white-space: nowrap !important;
-    }
-
-    .user-email {
-      font-size: 11px !important;
-      color: var(--text-tertiary) !important;
-      white-space: nowrap !important;
-    }
-  }
-
-  // When sidebar expanded
-  .sidemenu:hover & {
-    flex-direction: row !important;
-    justify-content: flex-start !important;
-    padding: 10px 12px !important;
-
-    .user-info {
-      opacity: 1 !important;
-      transform: translateX(0) !important;
-    }
-  }
-}
-
-// ==================================================
-// TOOLTIPS (for collapsed state)
-// ==================================================
-
-.nav-item[data-tooltip] {
-  &::after {
-    content: attr(data-tooltip) !important;
-    position: absolute !important;
-    left: calc(100% + 8px) !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    padding: 6px 10px !important;
-    background: var(--bg-surface-overlay) !important;
-    color: var(--text-primary) !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    border-radius: 6px !important;
-    box-shadow: var(--shadow-lg) !important;
-    white-space: nowrap !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: opacity var(--transition-fast) !important;
-    z-index: var(--z-tooltip) !important;
-  }
-
-  &:hover::after {
-    opacity: 1 !important;
-  }
-
-  // Hide tooltips when sidebar expanded
-  .sidemenu:hover &::after,
-  .sidemenu.expanded &::after {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
-
-// ==================================================
-// BADGES & INDICATORS
-// ==================================================
-
-.nav-badge {
-  position: absolute !important;
-  top: 8px !important;
-  right: 8px !important;
-  min-width: 16px !important;
-  height: 16px !important;
-  padding: 0 4px !important;
-  background: var(--accent-secondary) !important;
-  color: white !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  border-radius: 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-}
-
-// Status dot (online/offline)
-.nav-status-dot {
-  position: absolute !important;
-  bottom: 2px !important;
-  right: 2px !important;
-  width: 8px !important;
-  height: 8px !important;
-  border-radius: 50% !important;
-  background: var(--color-success) !important;
-  border: 2px solid var(--bg-sidebar) !important;
-}
-
-// ==================================================
-// MOBILE RESPONSIVENESS
-// ==================================================
-
-@media (max-width: 768px) {
-  .sidemenu,
-  .mega-menu,
-  .nebulaiq-mega-menu {
-    transform: translateX(-100%) !important;
-    width: var(--sidebar-width-expanded) !important;
-    box-shadow: var(--shadow-xl) !important;
-
-    &.mobile-open,
-    &.is-open {
-      transform: translateX(0) !important;
-    }
-  }
-
-  body {
-    margin-left: 0 !important;
-  }
-
-  // Mobile overlay
-  .sidebar-overlay,
-  .mobile-overlay {
-    display: none !important;
-    position: fixed !important;
-    inset: 0 !important;
-    background: rgba(8, 7, 11, 0.8) !important;
-    backdrop-filter: blur(4px) !important;
-    z-index: calc(var(--z-sidebar) - 1) !important;
-
-    &.visible {
-      display: block !important;
-    }
-  }
-}
-
-// ==================================================
-// KEYBOARD NAVIGATION
-// ==================================================
-
-.nav-item:focus-visible {
-  outline: none !important;
-  box-shadow: inset 0 0 0 2px var(--accent-primary) !important;
 }
