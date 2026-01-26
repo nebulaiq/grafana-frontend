@@ -14,3 +14,6 @@ export type { CardProps, CardHeaderProps, CardTitleProps, CardBodyProps, CardFoo
 
 export { Input } from './Input';
 export type { InputProps } from './Input';
+
+export { NebulaIQSpinner } from './Spinner';
+export type { NebulaIQSpinnerProps } from './Spinner';

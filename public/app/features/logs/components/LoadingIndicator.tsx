@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 
-import { Spinner } from '@grafana/ui';
+import { NebulaIQSpinner } from 'app/nebulaiq/components';
 
 // ideally we'd use `@grafana/ui/LoadingPlaceholder`, but that
 // one has a large margin-bottom.
@@ -13,7 +13,7 @@ export const LoadingIndicator = ({ adjective = 'newer' }: Props) => {
   return (
     <div className={loadingIndicatorStyles}>
       <div>
-        {text} <Spinner inline />
+        {text} <NebulaIQSpinner inline />
       </div>
     </div>
   );

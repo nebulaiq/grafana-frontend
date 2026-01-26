@@ -2,7 +2,8 @@ import { css, keyframes } from '@emotion/css';
 
 import { GrafanaTheme2 } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
-import { Button, HorizontalGroup, Spinner, useStyles2, VerticalGroup } from '@grafana/ui';
+import { Button, HorizontalGroup, useStyles2, VerticalGroup } from '@grafana/ui';
+import { NebulaIQSpinner } from 'app/nebulaiq/components';
 import { DashboardInitPhase } from 'app/types';
 
 export interface Props {
@@ -20,7 +21,7 @@ export const DashboardLoading = ({ initPhase }: Props) => {
       <div className={styles.dashboardLoadingText}>
         <VerticalGroup spacing="md">
           <HorizontalGroup align="center" justify="center" spacing="xs">
-            <Spinner inline={true} /> {initPhase}
+            <NebulaIQSpinner inline={true} /> {initPhase}
           </HorizontalGroup>{' '}
           <HorizontalGroup align="center" justify="center">
             <Button variant="secondary" size="md" icon="repeat" onClick={cancelVariables}>
