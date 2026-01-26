@@ -102,7 +102,7 @@ export interface PanelContext {
    * Set the header legend for panels with top-placed legends
    * @internal
    */
-  setHeaderLegend?: (legendProps: any) => void;
+  setHeaderLegend?: (legend: React.ReactNode) => void;
 }
 
 export const PanelContextRoot = createContext<PanelContext>({

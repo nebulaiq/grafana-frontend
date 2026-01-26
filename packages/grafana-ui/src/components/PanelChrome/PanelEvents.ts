@@ -1,23 +1,6 @@
-import { BusEventWithPayload } from '@grafana/data';
-import { LegendDisplayMode, LegendPlacement } from '@grafana/schema';
-import { VizLegendItem, SeriesVisibilityChangeBehavior } from '../VizLegend/types';
+import { ReactNode } from 'react';
 
-/**
- * Legend props data to be passed to PanelChrome for rendering in header
- * @internal
- */
-export interface LegendPropsData<T = any> {
-  items: Array<VizLegendItem<T>>;
-  thresholdItems?: Array<VizLegendItem<T>>;
-  mappingItems?: Array<VizLegendItem<T>>;
-  placement: LegendPlacement;
-  displayMode: LegendDisplayMode;
-  sortBy?: string;
-  sortDesc?: boolean;
-  seriesVisibilityChangeBehavior?: SeriesVisibilityChangeBehavior;
-  isSortable?: boolean;
-  readonly?: boolean;
-}
+import { BusEventWithPayload } from '@grafana/data';
 
 /**
  * Payload for SetHeaderLegendEvent
@@ -25,7 +8,7 @@ export interface LegendPropsData<T = any> {
  */
 export interface SetHeaderLegendEventPayload {
   panelId: string;
-  legendProps: LegendPropsData | null;
+  legend: ReactNode;
 }
 
 /**
@@ -34,4 +17,23 @@ export interface SetHeaderLegendEventPayload {
  */
 export class SetHeaderLegendEvent extends BusEventWithPayload<SetHeaderLegendEventPayload> {
   static type = 'set-header-legend';
+}
+
+/**
+ * Payload for SeriesVisibilityChangedEvent
+ * @internal
+ */
+export interface SeriesVisibilityChangedEventPayload {
+  label: string;
+  mode: string;
+  hiddenSeries: string[];
+  panelId?: string; // Optional panel ID for filtering events
+}
+
+/**
+ * Event published when series visibility is toggled
+ * @internal
+ */
+export class SeriesVisibilityChangedEvent extends BusEventWithPayload<SeriesVisibilityChangedEventPayload> {
+  static type = 'series-visibility-changed';
 }

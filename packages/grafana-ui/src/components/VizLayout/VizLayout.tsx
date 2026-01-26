@@ -62,8 +62,10 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
     placement = 'bottom';
   }
 
-  // For top placement, pass legend props to panel header via event bus
+  // For top placement, pass legend to panel header via event bus
   useEffect(() => {
+    console.log('[VizLayout] useEffect - placement:', placement, 'hasLegend:', !!legend, 'alreadyEmitted:', legendEmittedRef.current);
+
     if (placement === 'top' && !legendEmittedRef.current) {
       // Find the parent PanelChrome by traversing up the DOM
       let panelId: string | null = null;
@@ -77,42 +79,19 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
       }
 
       if (!panelId) {
+        console.warn('[VizLayout] Could not find parent panel ID, skipping legend event');
         return undefined;
       }
 
-      // Extract legend props from the legend element
-      // The legend structure is: VizLayout.Legend > VizLegend (as child)
-      // We need to extract VizLegend's props
-      let legendProps = null;
-      if (legend && React.isValidElement(legend)) {
-        // VizLayout.Legend wraps the actual VizLegend component
-        // The children of VizLayout.Legend contains the VizLegend with its props
-        const vizLegendElement = legend.props.children;
-        if (vizLegendElement && React.isValidElement(vizLegendElement)) {
-          // Extract props from VizLegend
-          const { items, thresholdItems, mappingItems, displayMode, sortBy, sortDesc, seriesVisibilityChangeBehavior, isSortable, readonly } = vizLegendElement.props;
-          legendProps = {
-            items,
-            thresholdItems,
-            mappingItems,
-            placement,
-            displayMode,
-            sortBy,
-            sortDesc,
-            seriesVisibilityChangeBehavior,
-            isSortable,
-            readonly,
-          };
-        }
-      }
-
       const eventBus = getAppEvents();
-      eventBus.publish(new SetHeaderLegendEvent({ panelId, legendProps }));
+      console.log('[VizLayout] Emitting header legend event for panel', panelId);
+      eventBus.publish(new SetHeaderLegendEvent({ panelId, legend }));
       legendEmittedRef.current = true;
 
       return () => {
         // Clear legend on unmount
-        eventBus.publish(new SetHeaderLegendEvent({ panelId, legendProps: null }));
+        console.log('[VizLayout] Emitting clear header legend event for panel', panelId);
+        eventBus.publish(new SetHeaderLegendEvent({ panelId, legend: null }));
         legendEmittedRef.current = false;
       };
     }
@@ -124,7 +103,7 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
 
     // Return empty cleanup function when condition is not met
     return undefined;
-  }, [placement, legend]); // Depend on both placement and legend to capture prop changes
+  }, [placement]); // Only depend on placement, not legend
 
   let size: VizSize | null = null;
 
