@@ -42,21 +42,6 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
   };
   const [legendRef, legendMeasure] = useMeasure<HTMLDivElement>();
 
-  // For top placement, pass legend to panel header via context
-  useEffect(() => {
-    if (legend && legend.props.placement === 'top' && panelContext.setHeaderLegend) {
-      panelContext.setHeaderLegend(legend);
-      return () => {
-        // Clean up when component unmounts or legend changes
-        if (panelContext.setHeaderLegend) {
-          panelContext.setHeaderLegend(null);
-        }
-      };
-    }
-    // Return empty cleanup function when condition is not met
-    return undefined;
-  }, [legend, panelContext]);
-
   if (!legend) {
     return (
       <>
@@ -67,11 +52,27 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
     );
   }
 
+  // Compute the actual placement based on screen size
   let { placement, maxHeight = '35%', maxWidth = '60%' } = legend.props;
 
   if (document.body.clientWidth < theme.breakpoints.values.lg) {
     placement = 'bottom';
   }
+
+  // For top placement, pass legend to panel header via context
+  useEffect(() => {
+    if (placement === 'top' && panelContext.setHeaderLegend) {
+      panelContext.setHeaderLegend(legend);
+      return () => {
+        // Clean up when component unmounts or legend changes
+        if (panelContext.setHeaderLegend) {
+          panelContext.setHeaderLegend(null);
+        }
+      };
+    }
+    // Return empty cleanup function when condition is not met
+    return undefined;
+  }, [legend, placement, panelContext]);
 
   let size: VizSize | null = null;
 
