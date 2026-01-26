@@ -53,6 +53,7 @@ export { usePluginInteractionReporter } from './analytics/plugins/usePluginInter
 export { setReturnToPreviousHook, useReturnToPrevious } from './utils/returnToPrevious';
 export { setChromeHeaderHeightHook, useChromeHeaderHeight } from './utils/chromeHeaderHeight';
 export { type EmbeddedDashboardProps, EmbeddedDashboard, setEmbeddedDashboard } from './components/EmbeddedDashboard';
+export { type AppChromeUpdateProps, AppChromeUpdate, setAppChromeUpdate } from './components/AppChromeUpdate';
 export { hasPermission, hasPermissionInMetadata, hasAllPermissions, hasAnyPermission } from './utils/rbac';
 export { QueryEditorWithMigration } from './components/QueryEditorWithMigration';
 export { type MigrationHandler, isMigrationHandler, migrateQuery, migrateRequest } from './utils/migrationHandler';

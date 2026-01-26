@@ -375,7 +375,7 @@ const getContentStyle = (
   const chromePadding = (padding === 'md' ? theme.components.panel.padding : 0) * theme.spacing.gridSize;
 
   const panelPadding = chromePadding * 2;
-  const panelBorder = 1 * 2;
+  const panelBorder = 0;  // NebulaIQ: No border
 
   let innerWidth = 0;
   if (width) {
@@ -399,13 +399,13 @@ const getContentStyle = (
 };
 
 const getStyles = (theme: GrafanaTheme2) => {
-  const { background, borderColor, padding } = theme.components.panel;
+  const { background, padding } = theme.components.panel;
 
   return {
     container: css({
       label: 'panel-container',
       backgroundColor: background,
-      border: `1px solid ${borderColor}`,
+      border: 'none',  // NebulaIQ: Borderless panels
       position: 'relative',
       borderRadius: theme.shape.radius.default,
       height: '100%',
@@ -445,10 +445,10 @@ const getStyles = (theme: GrafanaTheme2) => {
     transparentContainer: css({
       label: 'panel-transparent-container',
       backgroundColor: 'transparent',
-      border: '1px solid transparent',
+      border: 'none',  // NebulaIQ: Borderless panels
       boxSizing: 'border-box',
       '&:hover': {
-        border: `1px solid ${borderColor}`,
+        border: 'none',  // NebulaIQ: No border on hover
       },
     }),
     loadingBarContainer: css({

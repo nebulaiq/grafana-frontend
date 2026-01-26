@@ -212,11 +212,14 @@ export function transformSaveModelSchemaV2ToScene(dto: DashboardWithAccessInfo<D
     }),
     controls: new DashboardControls({
       variableControls: [new VariableValueSelectors({}), new SceneDataLayerControls()],
-      timePicker: new SceneTimePicker({}),
+      // NebulaIQ: isOnCanvas makes time picker more compact for toolbar
+      timePicker: new SceneTimePicker({ isOnCanvas: true }),
       refreshPicker: new SceneRefreshPicker({
         refresh: dashboard.timeSettings.autoRefresh,
         intervals: dashboard.timeSettings.autoRefreshIntervals,
-        withText: true,
+        // NebulaIQ: Compact mode for toolbar - no text, just icon
+        withText: false,
+        isOnCanvas: true,
       }),
       hideTimeControls: dashboard.timeSettings.hideTimepicker,
     }),

@@ -18,7 +18,6 @@ import { useMegaMenuFocusHelper } from './MegaMenu/utils';
 import { NavRail, RAIL_WIDTH_COLLAPSED } from './NavRail';
 import { ReturnToPrevious } from './ReturnToPrevious/ReturnToPrevious';
 import { SingleTopBar } from './TopBar/SingleTopBar';
-import { SingleTopBarActions } from './TopBar/SingleTopBarActions';
 import { TOP_BAR_LEVEL_HEIGHT } from './types';
 
 export interface Props extends PropsWithChildren<{}> {}
@@ -27,7 +26,7 @@ export function AppChrome({ children }: Props) {
   const { chrome } = useGrafana();
   const state = chrome.useState();
   const theme = useTheme2();
-  const styles = useStyles2(getStyles, Boolean(state.actions));
+  const styles = useStyles2(getStyles);
 
   const dockedMenuBreakpoint = theme.breakpoints.values.xl;
   const dockedMenuLocalStorageState = store.getBool(DOCKED_LOCAL_STORAGE_KEY, true);
@@ -99,8 +98,8 @@ export function AppChrome({ children }: Props) {
               pageNav={state.pageNav}
               onToggleMegaMenu={handleMegaMenu}
               onToggleKioskMode={chrome.onToggleKioskMode}
+              actions={state.actions}
             />
-            {state.actions && <SingleTopBarActions>{state.actions}</SingleTopBarActions>}
           </header>
         </>
       )}
@@ -134,12 +133,13 @@ export function AppChrome({ children }: Props) {
   );
 }
 
-const getStyles = (theme: GrafanaTheme2, hasActions: boolean) => {
+const getStyles = (theme: GrafanaTheme2) => {
   return {
     content: css({
       display: 'flex',
       flexDirection: 'column',
-      paddingTop: hasActions ? TOP_BAR_LEVEL_HEIGHT * 2 : TOP_BAR_LEVEL_HEIGHT,
+      // Single unified top bar - always one row height
+      paddingTop: TOP_BAR_LEVEL_HEIGHT,
       flexGrow: 1,
       height: 'auto',
     }),

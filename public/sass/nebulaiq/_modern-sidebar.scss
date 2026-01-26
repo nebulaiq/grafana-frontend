@@ -1,73 +1,14 @@
 /**
- * NebulaIQ NavRail Styles v2.0
- * Supporting styles for the NavRail React component
+ * NebulaIQ NavRail Styles v3.0 - Minimal
  *
- * Note: Most styling is done inline via Emotion CSS in NavRail.tsx
- * This file provides global overrides and fallbacks
+ * Supporting styles for the NavRail React component.
+ * Most styling is done inline via Emotion CSS in NavRail.tsx
+ *
+ * This file provides only necessary global overrides.
  */
 
 // ==================================================
 // HIDE CONFLICTING GRAFANA NAVIGATION
-// ==================================================
-
-// Hide Grafana's default mega menu when our NavRail is active
-.css-mega-menu-class,
-[data-testid="navigation-mega-menu"] {
-  // Allow our NavRail to take precedence
-}
-
-// Hide the hamburger menu button in topbar since NavRail is always visible
-// Uncomment if you want to completely hide the menu toggle:
-// .navbar-page-btn[aria-label="Open menu"],
-// button[aria-label="Open menu"] {
-//   display: none !important;
-// }
-
-// ==================================================
-// NAVRAIL GLOBAL STYLES
-// ==================================================
-
-// Ensure NavRail is above other content
-.main-view {
-  position: relative;
-}
-
-// When NavRail expands on hover, add subtle overlay to content
-.main-view::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  pointer-events: none;
-  transition: background 0.2s ease;
-  z-index: 1;
-}
-
-// ==================================================
-// TOPBAR ADJUSTMENTS
-// ==================================================
-
-// Ensure topbar accounts for NavRail width
-header.css-topnav,
-[class*="topNav"] {
-  // The React component handles left offset via styles.topNavWithRail
-}
-
-// ==================================================
-// CONTENT AREA ADJUSTMENTS
-// ==================================================
-
-// Main content area padding for NavRail
-.page-container,
-[class*="pageContainer"] {
-  // The React component handles this via styles.contentWithRail
-}
-
-// ==================================================
-// SLIDE-OUT MENU OVERRIDE
 // ==================================================
 
 // Hide the slide-out AppChromeMenu since we use NavRail
@@ -78,15 +19,10 @@ header.css-topnav,
 }
 
 // ==================================================
-// ANIMATION REFINEMENTS
+// NAVRAIL LAYOUT SUPPORT
 // ==================================================
 
-// Smooth transitions for any NavRail-related animations
-* {
-  // Only apply to nav-related elements to avoid performance issues
-  &[class*="nav"],
-  &[class*="rail"],
-  &[class*="sidebar"] {
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
+// Ensure NavRail is above other content
+.main-view {
+  position: relative;
 }

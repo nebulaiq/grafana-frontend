@@ -87,39 +87,52 @@ export interface ThemeColors extends ThemeColorsBase<ThemeRichColor> {
 /** @internal */
 export type ThemeColorsInput = DeepPartial<ThemeColorsBase<ThemeRichColor>>;
 
+/**
+ * NebulaIQ "Obsidian Command Center" Dark Theme
+ * Features:
+ * - Violet-tinted backgrounds (not pure black)
+ * - High contrast white text
+ * - White links (not blue/purple) for cleaner look
+ * - Subtle borders
+ * - Violet accent color
+ */
 class DarkColors implements ThemeColorsBase<Partial<ThemeRichColor>> {
   mode: ThemeColorsMode = 'dark';
 
-  // Used to get more white opacity colors
-  whiteBase = '204, 204, 220';
+  // NebulaIQ: Pure white base for high contrast text
+  whiteBase = '255, 255, 255';
 
+  // NebulaIQ: Very subtle borders
   border = {
-    weak: `rgba(${this.whiteBase}, 0.12)`,
-    medium: `rgba(${this.whiteBase}, 0.2)`,
-    strong: `rgba(${this.whiteBase}, 0.30)`,
+    weak: `rgba(${this.whiteBase}, 0.06)`,    // Barely visible
+    medium: `rgba(${this.whiteBase}, 0.10)`,  // Subtle
+    strong: `rgba(${this.whiteBase}, 0.15)`,  // Visible but not harsh
   };
 
+  // NebulaIQ: High contrast text with white links (not blue)
   text = {
-    primary: `rgb(${this.whiteBase})`,
-    secondary: `rgba(${this.whiteBase}, 0.65)`,
-    disabled: `rgba(${this.whiteBase}, 0.6)`,
-    link: palette.blueDarkText,
+    primary: `rgba(${this.whiteBase}, 0.95)`,    // Near-white for max readability
+    secondary: `rgba(${this.whiteBase}, 0.65)`,  // Secondary content
+    disabled: `rgba(${this.whiteBase}, 0.40)`,   // Disabled/tertiary
+    link: `rgba(${this.whiteBase}, 0.85)`,       // White links, NOT blue
     maxContrast: palette.white,
   };
 
+  // NebulaIQ: Violet as primary accent
   primary = {
-    main: palette.blueDarkMain,
-    text: palette.blueDarkText,
+    main: palette.blueDarkMain,     // Violet (#8B5CF6)
+    text: palette.blueDarkText,     // Lighter violet for text
     border: palette.blueDarkText,
   };
 
+  // NebulaIQ: Subtle secondary colors
   secondary = {
-    main: `rgba(${this.whiteBase}, 0.10)`,
-    shade: `rgba(${this.whiteBase}, 0.14)`,
-    transparent: `rgba(${this.whiteBase}, 0.08)`,
+    main: `rgba(${this.whiteBase}, 0.08)`,       // Subtle background
+    shade: `rgba(${this.whiteBase}, 0.12)`,      // Slightly stronger
+    transparent: `rgba(${this.whiteBase}, 0.06)`, // Very subtle
     text: this.text.primary,
-    contrastText: `rgb(${this.whiteBase})`,
-    border: `rgba(${this.whiteBase}, 0.08)`,
+    contrastText: `rgba(${this.whiteBase}, 0.95)`,
+    border: `rgba(${this.whiteBase}, 0.06)`,
   };
 
   info = this.primary;
@@ -139,26 +152,29 @@ class DarkColors implements ThemeColorsBase<Partial<ThemeRichColor>> {
     text: palette.orangeDarkText,
   };
 
+  // NebulaIQ: Violet-tinted backgrounds
   background = {
-    canvas: palette.gray05,
-    primary: palette.gray10,
-    secondary: palette.gray15,
+    canvas: palette.gray05,     // #08070B - darkest, dashboard bg
+    primary: palette.gray10,    // #13111A - panels, cards
+    secondary: palette.gray15,  // #1A1823 - raised elements
   };
 
+  // NebulaIQ: Subtle interaction states
   action = {
-    hover: `rgba(${this.whiteBase}, 0.16)`,
-    selected: `rgba(${this.whiteBase}, 0.12)`,
-    selectedBorder: palette.orangeDarkMain,
-    focus: `rgba(${this.whiteBase}, 0.16)`,
-    hoverOpacity: 0.08,
+    hover: `rgba(${this.whiteBase}, 0.06)`,      // Subtle hover
+    selected: `rgba(${this.whiteBase}, 0.08)`,   // Selected state
+    selectedBorder: palette.blueDarkMain,        // Violet border for selected
+    focus: `rgba(${this.whiteBase}, 0.10)`,      // Focus state
+    hoverOpacity: 0.06,
     disabledText: this.text.disabled,
-    disabledBackground: `rgba(${this.whiteBase}, 0.04)`,
+    disabledBackground: `rgba(${this.whiteBase}, 0.02)`,
     disabledOpacity: 0.38,
   };
 
+  // NebulaIQ: Violet-based gradients
   gradients = {
-    brandHorizontal: 'linear-gradient(270deg, #F55F3E 0%, #FF8833 100%)',
-    brandVertical: 'linear-gradient(0.01deg, #F55F3E 0.01%, #FF8833 99.99%)',
+    brandHorizontal: 'linear-gradient(270deg, #8B5CF6 0%, #A78BFA 100%)',
+    brandVertical: 'linear-gradient(0.01deg, #8B5CF6 0.01%, #A78BFA 99.99%)',
   };
 
   contrastThreshold = 3;

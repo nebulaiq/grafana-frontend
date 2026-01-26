@@ -25,9 +25,15 @@ export const TabsBar = forwardRef<HTMLDivElement, Props>(({ children, className,
   );
 });
 
+/**
+ * NebulaIQ: Pill-style tabs
+ * - No bottom border
+ * - Subtle background container
+ * - Rounded pill shape
+ */
 const getStyles = (theme: GrafanaTheme2) => ({
   tabsWrapper: css({
-    borderBottom: `1px solid ${theme.colors.border.weak}`,
+    borderBottom: 'none',  // NebulaIQ: No bottom border
     overflowX: 'auto',
   }),
   noBorder: css({
@@ -35,9 +41,14 @@ const getStyles = (theme: GrafanaTheme2) => ({
   }),
   tabs: css({
     position: 'relative',
-    display: 'flex',
-    height: theme.spacing(theme.components.menuTabs.height),
-    alignItems: 'stretch',
+    display: 'inline-flex',
+    height: 'auto',
+    alignItems: 'center',
+    // NebulaIQ: Pill container background
+    background: 'rgba(255, 255, 255, 0.04)',
+    padding: theme.spacing(0.5),
+    borderRadius: theme.spacing(1.25),
+    gap: theme.spacing(0.5),
   }),
 });
 

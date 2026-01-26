@@ -55,20 +55,28 @@ export interface ThemeComponents {
   };
 }
 
+/**
+ * NebulaIQ Component Defaults
+ * - Borderless panels (floating card design)
+ * - Subtle shadows for depth
+ * - Clean, minimal aesthetic
+ */
 export function createComponents(colors: ThemeColors, shadows: ThemeShadows): ThemeComponents {
+  // NebulaIQ: Borderless panels with subtle shadow
   const panel = {
     padding: 1,
     headerHeight: 4,
     background: colors.background.primary,
-    borderColor: colors.border.weak,
-    boxShadow: 'none',
+    borderColor: 'transparent',  // No visible borders
+    boxShadow: 'none',           // Clean, no shadow by default
   };
 
+  // NebulaIQ: Subtle input styling - use secondary (raised) background for better contrast
   const input = {
-    borderColor: colors.border.medium,
-    borderHover: colors.border.strong,
+    borderColor: colors.border.weak,     // Very subtle border
+    borderHover: colors.border.medium,   // Slightly stronger on hover
     text: colors.text.primary,
-    background: colors.mode === 'dark' ? colors.background.canvas : colors.background.primary,
+    background: colors.background.secondary,  // Raised background for inputs & dropdowns
   };
 
   return {
@@ -80,7 +88,7 @@ export function createComponents(colors: ThemeColors, shadows: ThemeShadows): Th
     input,
     panel,
     dropdown: {
-      background: input.background,
+      background: input.background,  // Same as input for consistency
     },
     tooltip: {
       background: colors.background.secondary,
@@ -91,10 +99,11 @@ export function createComponents(colors: ThemeColors, shadows: ThemeShadows): Th
       padding: 1,
     },
     overlay: {
-      background: colors.mode === 'dark' ? 'rgba(63, 62, 62, 0.45)' : 'rgba(208, 209, 211, 0.24)',
+      // NebulaIQ: Darker overlay with violet tint
+      background: colors.mode === 'dark' ? 'rgba(8, 7, 11, 0.75)' : 'rgba(208, 209, 211, 0.24)',
     },
     sidemenu: {
-      width: 57,
+      width: 56,  // Match our NavRail collapsed width
     },
     menuTabs: {
       height: 5,

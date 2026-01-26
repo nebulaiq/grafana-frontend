@@ -9,7 +9,7 @@ import NativeScrollbar from 'app/core/components/NativeScrollbar';
 
 import { useSnappingSplitter } from '../panel-edit/splitter/useSnappingSplitter';
 import { DashboardScene } from '../scene/DashboardScene';
-import { NavToolbarActions } from '../scene/NavToolbarActions';
+import { NavToolbarActions, ToolbarActions } from '../scene/NavToolbarActions';
 
 import { DashboardEditPaneRenderer } from './DashboardEditPane';
 import { useEditPaneCollapsed } from './shared';
@@ -31,7 +31,12 @@ export function DashboardEditPaneSplitter({ dashboard, isEditing, body, controls
     return (
       <NativeScrollbar onSetScrollRef={dashboard.onSetScrollRef}>
         <div className={styles.canvasWrappperOld}>
+          {/* NavToolbarActions only sends time controls to top bar */}
           <NavToolbarActions dashboard={dashboard} />
+          {/* ToolbarActions renders Add/Settings/Save/Edit buttons in content area */}
+          <div className={styles.toolbarActionsWrapper}>
+            <ToolbarActions dashboard={dashboard} />
+          </div>
           <div className={styles.controlsWrapperSticky}>{controls}</div>
           <div className={styles.body}>{body}</div>
         </div>
@@ -78,7 +83,12 @@ export function DashboardEditPaneSplitter({ dashboard, isEditing, body, controls
         className={cx(primaryProps.className, styles.canvasWithSplitter)}
         onPointerDown={() => editPane.clearSelection()}
       >
+        {/* NavToolbarActions only sends time controls to top bar */}
         <NavToolbarActions dashboard={dashboard} />
+        {/* ToolbarActions renders Add/Settings/Save/Edit buttons in content area */}
+        <div className={styles.toolbarActionsWrapper}>
+          <ToolbarActions dashboard={dashboard} />
+        </div>
         <div className={cx(!isEditing && styles.controlsWrapperSticky)}>{controls}</div>
         <div className={styles.bodyWrapper}>
           <div className={cx(styles.body, isEditing && styles.bodyEditing)} ref={onBodyRef}>
@@ -156,6 +166,20 @@ function getStyles(theme: GrafanaTheme2, headerHeight: number) {
         position: 'sticky',
         zIndex: theme.zIndex.activePanel,
         background: theme.colors.background.canvas,
+        top: headerHeight,
+      },
+    }),
+    // NebulaIQ: Toolbar actions (Add/Settings/Save) rendered in content area
+    toolbarActionsWrapper: css({
+      padding: theme.spacing(1, 2),
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      borderBottom: `1px solid ${theme.colors.border.weak}`,
+      background: theme.colors.background.canvas,
+      [theme.breakpoints.up('md')]: {
+        position: 'sticky',
+        zIndex: theme.zIndex.activePanel,
         top: headerHeight,
       },
     }),

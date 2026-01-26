@@ -85,6 +85,12 @@ export const Tab = React.forwardRef<HTMLElement, TabProps>(
 
 Tab.displayName = 'Tab';
 
+/**
+ * NebulaIQ: Pill-style tabs
+ * - No bottom indicator bar
+ * - Background color for active state
+ * - Rounded pill shape
+ */
 const getStyles = (theme: GrafanaTheme2) => {
   return {
     item: css({
@@ -92,15 +98,17 @@ const getStyles = (theme: GrafanaTheme2) => {
       position: 'relative',
       display: 'flex',
       whiteSpace: 'nowrap',
-      padding: theme.spacing(0.5),
+      padding: 0,  // NebulaIQ: No extra padding, handled by link
     }),
     link: css({
       color: theme.colors.text.secondary,
-      padding: theme.spacing(1, 1.5, 0.5),
-      borderRadius: theme.shape.radius.default,
-
-      display: 'block',
-      height: '100%',
+      padding: theme.spacing(1, 2),  // NebulaIQ: Pill padding
+      borderRadius: theme.spacing(1),  // NebulaIQ: Rounded pill
+      display: 'flex',
+      alignItems: 'center',
+      height: 'auto',
+      transition: 'all 150ms ease',
+      textDecoration: 'none',
 
       svg: {
         marginRight: theme.spacing(1),
@@ -108,33 +116,27 @@ const getStyles = (theme: GrafanaTheme2) => {
 
       '&:focus-visible': getFocusStyles(theme),
 
+      // NebulaIQ: Remove the bottom indicator bar
       '&::before': {
-        display: 'block',
-        content: '" "',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        height: '4px',
-        borderRadius: theme.shape.radius.default,
-        bottom: 0,
+        display: 'none',
       },
     }),
     notActive: css({
       'a:hover, &:hover, &:focus': {
         color: theme.colors.text.primary,
-
-        '&::before': {
-          backgroundColor: theme.colors.action.hover,
-        },
+        background: 'rgba(255, 255, 255, 0.06)',  // NebulaIQ: Subtle hover
+        textDecoration: 'none',
       },
     }),
     activeStyle: css({
       label: 'activeTabStyle',
       color: theme.colors.text.primary,
+      background: 'rgba(255, 255, 255, 0.10)',  // NebulaIQ: Active background
       overflow: 'hidden',
 
+      // NebulaIQ: No bottom indicator
       '&::before': {
-        backgroundImage: theme.colors.gradients.brandHorizontal,
+        display: 'none',
       },
     }),
     suffix: css({

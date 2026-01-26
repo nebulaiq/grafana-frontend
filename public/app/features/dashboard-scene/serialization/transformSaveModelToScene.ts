@@ -268,11 +268,14 @@ export function createDashboardSceneFromDashboardModel(oldModel: DashboardModel,
     $data: new DashboardDataLayerSet({ annotationLayers, alertStatesLayer }),
     controls: new DashboardControls({
       variableControls: [new VariableValueSelectors({}), new SceneDataLayerControls()],
-      timePicker: new SceneTimePicker({}),
+      // NebulaIQ: isOnCanvas makes time picker more compact for toolbar
+      timePicker: new SceneTimePicker({ isOnCanvas: true }),
       refreshPicker: new SceneRefreshPicker({
         refresh: oldModel.refresh,
         intervals: oldModel.timepicker.refresh_intervals,
-        withText: true,
+        // NebulaIQ: Compact mode for toolbar - no text, just icon
+        withText: false,
+        isOnCanvas: true,
       }),
       hideTimeControls: oldModel.timepicker.hidden,
     }),

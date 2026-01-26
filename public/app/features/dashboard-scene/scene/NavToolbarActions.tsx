@@ -41,14 +41,48 @@ interface Props {
   dashboard: DashboardScene;
 }
 
+/**
+ * NebulaIQ: NavToolbarActions now ONLY sends time controls to the top bar.
+ * Other actions (Add, Settings, Save, Edit, Share, etc.) are rendered
+ * separately in the page content via DashboardContentActions.
+ */
 export const NavToolbarActions = React.memo<Props>(({ dashboard }) => {
   const id = useId();
 
-  const actions = <ToolbarActions dashboard={dashboard} key={id} />;
-  return <AppChromeUpdate actions={actions} />;
+  // Only time controls go to the top bar
+  const timeControls = <TimeControlsOnly dashboard={dashboard} key={id} />;
+  return <AppChromeUpdate actions={timeControls} />;
 });
 
 NavToolbarActions.displayName = 'NavToolbarActions';
+
+/**
+ * Renders ONLY time picker and refresh picker for the top bar.
+ */
+function TimeControlsOnly({ dashboard }: Props) {
+  const { controls, editview, viewPanelScene, editPanel } = dashboard.useState();
+
+  const controlsState = controls?.useState();
+  const timePicker = controlsState?.timePicker;
+  const refreshPicker = controlsState?.refreshPicker;
+  const hideTimeControls = controlsState?.hideTimeControls;
+
+  const isEditingPanel = Boolean(editPanel);
+  const isViewingPanel = Boolean(viewPanelScene);
+  const isShowingDashboard = !editview && !isViewingPanel && !isEditingPanel;
+
+  // Only show time controls when viewing the dashboard (not in settings, panel edit, etc.)
+  if (!isShowingDashboard) {
+    return null;
+  }
+
+  return (
+    <Stack gap={0.5} alignItems="center" wrap="nowrap">
+      {!hideTimeControls && timePicker && <timePicker.Component model={timePicker} />}
+      {refreshPicker && <refreshPicker.Component model={refreshPicker} />}
+    </Stack>
+  );
+}
 
 /**
  * This part is split into a separate component to help test this
@@ -74,6 +108,9 @@ export function ToolbarActions({ dashboard }: Props) {
   const isEditingAndShowingDashboard = isEditing && isShowingDashboard;
   const showScopesSelector = config.featureToggles.scopeFilters && !isEditing;
   const dashboardNewLayouts = config.featureToggles.dashboardNewLayouts;
+
+  // NebulaIQ: Time controls are now handled separately by TimeControlsOnly
+  // and sent to the top bar via AppChromeUpdate
 
   if (isNotFound) {
     return null;
@@ -660,6 +697,9 @@ export function ToolbarActions({ dashboard }: Props) {
       );
     },
   });
+
+  // NebulaIQ: Time controls are now handled by TimeControlsOnly and sent to top bar via AppChromeUpdate
+  // They are no longer part of ToolbarActions which renders in the content area
 
   const rigthActionsElements: React.ReactNode[] = renderActionElements(toolbarActions);
   const leftActionsElements: React.ReactNode[] = renderActionElements(leftActions);

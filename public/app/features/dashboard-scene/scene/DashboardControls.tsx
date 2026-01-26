@@ -104,6 +104,10 @@ export class DashboardControls extends SceneObjectBase<DashboardControlsState> {
     }
   }
 
+  /**
+   * NebulaIQ: Check if we have controls to render in the content area.
+   * Note: Time picker is now in the top bar, so we don't consider it here.
+   */
   public hasControls(): boolean {
     const hasVariables = sceneGraph
       .getVariables(this)
@@ -112,23 +116,33 @@ export class DashboardControls extends SceneObjectBase<DashboardControlsState> {
     const hasLinks = getDashboardSceneFor(this).state.links?.length > 0;
     const hideLinks = this.state.hideLinksControls || !hasLinks;
     const hideVariables = this.state.hideVariableControls || (!hasAnnotations && !hasVariables);
-    const hideTimePicker = this.state.hideTimeControls;
 
-    return !(hideVariables && hideLinks && hideTimePicker);
+    // Time picker is in the top bar now, so only consider variables and links
+    return !(hideVariables && hideLinks);
   }
 }
 
+/**
+ * NebulaIQ: DashboardControls now only renders variables and links.
+ * Time picker and refresh controls have been moved to the top bar (NavToolbarActions)
+ * for a cleaner layout where time controls appear consistently in the header.
+ */
 function DashboardControlsRenderer({ model }: SceneComponentProps<DashboardControls>) {
-  const { variableControls, refreshPicker, timePicker, hideTimeControls, hideVariableControls, hideLinksControls } =
+  const { variableControls, hideVariableControls, hideLinksControls } =
     model.useState();
   const dashboard = getDashboardSceneFor(model);
   const { links, editPanel } = dashboard.useState();
   const styles = useStyles2(getStyles);
   const showDebugger = location.search.includes('scene-debugger');
 
-  if (!model.hasControls()) {
-    // To still have spacing when no controls are rendered
-    return <Box padding={1} />;
+  // Check if we have any controls to show (excluding time controls which are in top bar)
+  const hasVariables = !hideVariableControls && variableControls.length > 0;
+  const hasLinks = !hideLinksControls && links?.length > 0 && !editPanel;
+  const hasPanelEditControls = Boolean(editPanel);
+
+  if (!hasVariables && !hasLinks && !hasPanelEditControls && !showDebugger) {
+    // No controls to render - minimal spacing
+    return <Box padding={0.5} />;
   }
 
   return (
@@ -137,17 +151,12 @@ function DashboardControlsRenderer({ model }: SceneComponentProps<DashboardContr
       className={cx(styles.controls, editPanel && styles.controlsPanelEdit)}
     >
       <Stack grow={1} wrap={'wrap'}>
-        {!hideVariableControls && variableControls.map((c) => <c.Component model={c} key={c.state.key} />)}
+        {hasVariables && variableControls.map((c) => <c.Component model={c} key={c.state.key} />)}
         <Box grow={1} />
-        {!hideLinksControls && !editPanel && <DashboardLinksControls links={links} dashboard={dashboard} />}
-        {editPanel && <PanelEditControls panelEditor={editPanel} />}
+        {hasLinks && <DashboardLinksControls links={links} dashboard={dashboard} />}
+        {hasPanelEditControls && editPanel && <PanelEditControls panelEditor={editPanel} />}
       </Stack>
-      {!hideTimeControls && (
-        <Stack justifyContent={'flex-end'}>
-          <timePicker.Component model={timePicker} />
-          <refreshPicker.Component model={refreshPicker} />
-        </Stack>
-      )}
+      {/* Time picker and refresh are now rendered in NavToolbarActions (top bar) */}
       {showDebugger && <SceneDebugger scene={model} key={'scene-debugger'} />}
     </div>
   );

@@ -32,6 +32,7 @@ import {
   setPluginImportUtils,
   setPluginExtensionGetter,
   setEmbeddedDashboard,
+  setAppChromeUpdate,
   setAppEvents,
   setReturnToPreviousHook,
   setPluginExtensionsHook,
@@ -53,6 +54,7 @@ import getDefaultMonacoLanguages from '../lib/monaco-languages';
 import { AppWrapper } from './AppWrapper';
 import appEvents from './core/app_events';
 import { AppChromeService } from './core/components/AppChrome/AppChromeService';
+import { AppChromeUpdate as AppChromeUpdateImpl } from './core/components/AppChrome/AppChromeUpdate';
 import { getAllOptionEditors, getAllStandardFieldConfigs } from './core/components/OptionsUI/registry';
 import { PluginPage } from './core/components/Page/PluginPage';
 import { GrafanaContextType, useChromeHeaderHeight, useReturnToPreviousInternal } from './core/context/GrafanaContext';
@@ -147,6 +149,7 @@ export class GrafanaApp {
       setPanelDataErrorView(PanelDataErrorView);
       setLocationSrv(locationService);
       setEmbeddedDashboard(EmbeddedDashboardLazy);
+      setAppChromeUpdate(AppChromeUpdateImpl);
       setTimeZoneResolver(() => config.bootData.user.timezone);
       initGrafanaLive();
       setCurrentUser(contextSrv.user);

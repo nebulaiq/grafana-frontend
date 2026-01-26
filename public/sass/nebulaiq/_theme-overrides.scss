@@ -1,799 +1,111 @@
 /**
- * NebulaIQ Theme Overrides v2.0
- * "Obsidian Command Center" - Violet-tinted Dark Theme
+ * NebulaIQ Theme Overrides v3.0 - Minimal
  *
- * Comprehensively overrides Grafana's default theme
- * with the new distinctive design system
+ * Most theming is now done at the source in:
+ * - packages/grafana-data/src/themes/palette.ts
+ * - packages/grafana-data/src/themes/createColors.ts
+ * - packages/grafana-data/src/themes/createComponents.ts
+ *
+ * This file only contains CSS overrides that cannot be done via the theme system.
  */
 
 // ==================================================
-// OVERRIDE GRAFANA VARIABLES - Obsidian Palette
+// TYPOGRAPHY - Font family override
 // ==================================================
 
-// Background Colors (Violet-tinted, not pure black)
-$body-bg: #08070B !default;                    // --bg-base
-$panel-bg: #13111A !default;                   // --bg-surface
-$card-background: #13111A !default;            // --bg-surface
-$card-background-hover: #1A1823 !default;      // --bg-surface-raised
-$layer2: #13111A !default;                     // --bg-surface
-
-// Page Header
-$page-header-bg: #0C0A10 !default;             // --bg-app
-$page-header-border-color: rgba(255,255,255,0.04) !default;
-$page-header-shadow: none !default;
-
-// Text Colors (High Contrast)
-$text-color: rgba(255,255,255,0.95) !default;  // --text-primary
-$text-color-weak: rgba(255,255,255,0.65) !default; // --text-secondary
-$text-color-emphasis: #ffffff !default;
-$text-muted: rgba(255,255,255,0.40) !default;  // --text-tertiary
-
-// Link Colors - White tones (NOT purple)
-$link-color: rgba(255,255,255,0.85) !default;  // --text-link
-$link-hover-color: rgba(255,255,255,1) !default; // --text-link-hover
-$link-color-disabled: rgba(255,255,255,0.20) !default;
-
-// Primary/Accent Colors - Violet palette
-$blue: #8B5CF6 !default;                       // Now violet
-$blue-base: #8B5CF6 !default;
-$green-base: #10B981 !default;                 // --color-success
-$red-base: #EF4444 !default;                   // --color-error
-$yellow: #FBBF24 !default;                     // --color-warning
-$orange: #F97316 !default;                     // --accent-secondary
-$cyan: #06B6D4 !default;                       // --accent-tertiary
-
-// Dark Shades - Violet tinted
-$dark-1: #08070B !default;                     // --bg-base
-$dark-3: #13111A !default;                     // --bg-surface
-$dark-6: #1A1823 !default;                     // --bg-surface-raised
-$dark-9: #221F2E !default;                     // --bg-surface-overlay
-$dark-10: #2A2639 !default;                    // --bg-surface-highlight
-
-// Gray Shades (alpha-based for consistency)
-$gray-1: rgba(255,255,255,0.20) !default;
-$gray-2: rgba(255,255,255,0.40) !default;
-$gray-6: rgba(255,255,255,0.95) !default;
-
-// Forms & Inputs
-$input-bg: #13111A !default;                   // --bg-surface
-$input-color: rgba(255,255,255,0.95) !default;
-$input-border-color: rgba(255,255,255,0.06) !default;
-
-// Buttons
-$btn-inverse-bg-hl: #1A1823 !default;
-$btn-divider-left: rgba(255,255,255,0.06) !default;
-$btn-divider-right: #13111A !default;
-
-// Dropdowns
-$dropdownBackground: #221F2E !default;         // --bg-surface-overlay
-$dropdownBorder: rgba(255,255,255,0.06) !default;
-$dropdownLinkColorHover: rgba(255,255,255,0.95) !default;
-$dropdownLinkBackgroundHover: #2A2639 !default; // --bg-surface-highlight
-
-// Menu Dropdowns
-$menu-dropdown-bg: #221F2E !default;
-$menu-dropdown-hover-bg: #2A2639 !default;
-$menu-dropdown-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 8px 16px rgba(0,0,0,0.3) !default;
-
-// Alerts
-$alert-error-bg: #EF4444 !default;
-$alert-success-bg: #10B981 !default;
-$alert-warning-bg: #FBBF24 !default;
-$alert-info-bg: #8B5CF6 !default;              // Now violet
-
-// Tooltips & Popovers
-$tooltipBackground: #221F2E !default;
-$tooltipColor: rgba(255,255,255,0.95) !default;
-$popover-bg: #221F2E !default;
-$popover-color: rgba(255,255,255,0.95) !default;
-$popover-border-color: rgba(255,255,255,0.06) !default;
-$popover-header-bg: #2A2639 !default;
-$popover-shadow: 0 16px 48px rgba(0,0,0,0.5) !default;
-
-// Tables
-$table-bg-accent: #1A1823 !default;
-
-// Scrollbars
-$scrollbarBackground: rgba(255,255,255,0.06) !default;
-$scrollbarBackground2: rgba(255,255,255,0.10) !default;
-
-// Switch/Toggle
-$switch-bg: #13111A !default;
-$switch-slider-color: #1A1823 !default;
-$switch-slider-off-bg: rgba(255,255,255,0.20) !default;
-$switch-slider-on-bg: #8B5CF6 !default;        // Violet
-$switch-slider-shadow: none !default;
-
-// Checkbox
-$checkbox-bg: #13111A !default;
-$checkbox-border: 1px solid rgba(255,255,255,0.10) !default;
-$checkbox-checked-bg: #8B5CF6 !default;        // Violet
-$checkbox-color: #ffffff !default;
-
-// Card Shadows (Subtle)
-$card-shadow: 0 2px 4px rgba(0,0,0,0.3) !default;
-
-// Lists
-$list-item-bg: #13111A !default;
-$empty-list-cta-bg: #13111A !default;
-
-// ==================================================
-// GRAFANA UI COMPONENT OVERRIDES
-// ==================================================
-
-// Comprehensive style reset for Grafana components
-// Using CSS custom properties for consistency
-
-:root {
-  // Override Grafana's internal variables where possible
-  --grafana-bg: var(--bg-app);
-  --grafana-surface: var(--bg-surface);
-  --grafana-primary: var(--accent-primary);
+body,
+* {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 // ==================================================
-// BUTTON OVERRIDES
+// LINK STYLING - No underlines, brightness on hover
 // ==================================================
 
-.btn,
-button,
-[class*='Button'] {
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  transition: all 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-  background-image: none !important; // No gradients
-  box-shadow: none !important;
-
-  &:focus-visible {
-    outline: none !important;
-    box-shadow: 0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent-primary) !important;
-  }
-}
-
-.btn-primary,
-[class*='Button'][class*='Primary'] {
-  background: var(--accent-primary) !important;
-  border-color: var(--accent-primary) !important;
-  color: #ffffff !important;
-
-  &:hover:not(:disabled) {
-    background: var(--accent-primary-hover) !important;
-    border-color: var(--accent-primary-hover) !important;
-    transform: translateY(-1px);
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-}
-
-.btn-secondary,
-[class*='Button'][class*='Secondary'] {
-  background: var(--bg-surface-raised) !important;
-  border: 1px solid var(--border-default) !important;
-  color: var(--text-secondary) !important;
-
-  &:hover:not(:disabled) {
-    background: var(--bg-surface-overlay) !important;
-    border-color: var(--border-strong) !important;
-    color: var(--text-primary) !important;
-  }
-}
-
-.btn-success {
-  background: var(--color-success) !important;
-  border-color: var(--color-success) !important;
-  color: #ffffff !important;
-
-  &:hover:not(:disabled) {
-    background: #059669 !important;
-  }
-}
-
-.btn-danger,
-.btn-destructive {
-  background: var(--color-error) !important;
-  border-color: var(--color-error) !important;
-  color: #ffffff !important;
-
-  &:hover:not(:disabled) {
-    background: #DC2626 !important;
-  }
-}
-
-// ==================================================
-// INPUT OVERRIDES
-// ==================================================
-
-input[type='text'],
-input[type='password'],
-input[type='email'],
-input[type='number'],
-input[type='search'],
-input[type='url'],
-input[type='tel'],
-textarea,
-select,
-.gf-form-input,
-[class*='Input'] {
-  background: var(--bg-surface) !important;
-  border: 1px solid var(--border-default) !important;
-  color: var(--text-primary) !important;
-  border-radius: 8px !important;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 13px !important;
-  transition: all 120ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-
-  &:hover:not(:disabled):not(:focus) {
-    border-color: var(--border-strong) !important;
-  }
-
-  &:focus {
-    border-color: var(--accent-primary) !important;
-    box-shadow: 0 0 0 3px var(--accent-primary-subtle) !important;
-    outline: none !important;
-  }
-
-  &::placeholder {
-    color: var(--text-tertiary) !important;
-  }
-}
-
-// ==================================================
-// PANEL OVERRIDES
-// ==================================================
-
-.panel-container,
-.panel,
-[class*='Panel']:not([class*='panel-']),
-.grafana-panel,
-.dashboard-panel {
-  background: var(--bg-surface) !important;
-  border: none !important;
-  border-radius: 16px !important;
-  box-shadow: var(--shadow-sm) !important;
-  overflow: hidden !important;
+a {
+  text-decoration: none !important;
 
   &:hover {
-    box-shadow: var(--shadow-md) !important;
+    text-decoration: none !important;
+    filter: brightness(1.15);
   }
 }
 
-// Panel header
-.panel-header,
-[class*='PanelHeader'] {
-  background: transparent !important;
+// ==================================================
+// TAB STYLING - No bottom borders
+// ==================================================
+
+[role="tablist"],
+[class*="TabList"],
+[class*="TabsBar"] {
   border-bottom: none !important;
+
+  &::after {
+    display: none !important;
+  }
 }
 
-.panel-title,
-[class*='PanelTitle'] {
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: var(--text-primary) !important;
-}
-
-// ==================================================
-// CARD OVERRIDES
-// ==================================================
-
-.card,
-[class*='Card'] {
-  background: var(--bg-surface) !important;
-  border: none !important;
-  border-radius: 12px !important;
-  box-shadow: var(--shadow-sm) !important;
+[role="tab"],
+[class*="Tab"]:not([class*="Table"]) {
+  text-decoration: none !important;
+  border-bottom: none !important;
 
   &:hover {
-    box-shadow: var(--shadow-md) !important;
+    text-decoration: none !important;
   }
 }
 
 // ==================================================
-// TABLE OVERRIDES
-// ==================================================
-
-.table,
-table,
-[class*='Table'] {
-  background: transparent !important;
-  border-collapse: collapse !important;
-
-  thead {
-    background: transparent !important;
-
-    th {
-      color: var(--text-disabled) !important;
-      font-weight: 600 !important;
-      font-size: 11px !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.06em !important;
-      border-bottom: 1px solid var(--border-subtle) !important;
-      padding: 10px 16px !important;
-    }
-  }
-
-  tbody {
-    tr {
-      border-bottom: 1px solid var(--border-subtle) !important;
-      transition: background 120ms !important;
-
-      &:hover {
-        background: var(--bg-surface-raised) !important;
-      }
-
-      &:last-child {
-        border-bottom: none !important;
-      }
-
-      td {
-        color: var(--text-secondary) !important;
-        padding: 14px 16px !important;
-
-        &:first-child {
-          font-weight: 500 !important;
-          color: var(--text-primary) !important;
-        }
-      }
-    }
-  }
-}
-
-// ==================================================
-// DROPDOWN OVERRIDES
-// ==================================================
-
-.dropdown-menu,
-[class*='Dropdown'],
-[class*='Menu'] {
-  background: var(--bg-surface-overlay) !important;
-  border: 1px solid var(--border-default) !important;
-  border-radius: 12px !important;
-  box-shadow: var(--shadow-xl) !important;
-  padding: 6px !important;
-
-  .dropdown-item,
-  [class*='MenuItem'] {
-    color: var(--text-secondary) !important;
-    border-radius: 8px !important;
-    padding: 10px 12px !important;
-    transition: all 120ms !important;
-
-    &:hover {
-      background: var(--bg-surface-highlight) !important;
-      color: var(--text-primary) !important;
-    }
-
-    &.active,
-    &[aria-selected='true'] {
-      background: rgba(255, 255, 255, 0.10) !important;
-      color: var(--text-primary) !important;
-    }
-  }
-
-  .dropdown-divider {
-    background: var(--border-subtle) !important;
-    margin: 6px 0 !important;
-  }
-}
-
-// ==================================================
-// MODAL OVERRIDES
-// ==================================================
-
-.modal-content,
-[class*='Modal'] {
-  background: var(--bg-surface-overlay) !important;
-  border: 1px solid var(--border-default) !important;
-  border-radius: 16px !important;
-  box-shadow: var(--shadow-xl) !important;
-  overflow: hidden !important;
-}
-
-.modal-header {
-  background: transparent !important;
-  border-bottom: 1px solid var(--border-subtle) !important;
-  padding: 20px 24px !important;
-}
-
-.modal-body {
-  padding: 24px !important;
-}
-
-.modal-footer {
-  background: transparent !important;
-  border-top: 1px solid var(--border-subtle) !important;
-  padding: 16px 24px !important;
-}
-
-// ==================================================
-// ALERT OVERRIDES
-// ==================================================
-
-.alert,
-[class*='Alert'] {
-  border-radius: 10px !important;
-  border: none !important;
-  padding: 12px 16px !important;
-
-  &.alert-success,
-  &[class*='success'] {
-    background: var(--color-success-muted) !important;
-    color: var(--color-success) !important;
-    border-left: 3px solid var(--color-success) !important;
-  }
-
-  &.alert-warning,
-  &[class*='warning'] {
-    background: var(--color-warning-muted) !important;
-    color: var(--color-warning) !important;
-    border-left: 3px solid var(--color-warning) !important;
-  }
-
-  &.alert-error,
-  &.alert-danger,
-  &[class*='error'] {
-    background: var(--color-error-muted) !important;
-    color: var(--color-error) !important;
-    border-left: 3px solid var(--color-error) !important;
-  }
-
-  &.alert-info,
-  &[class*='info'] {
-    background: var(--color-info-muted) !important;
-    color: var(--color-info) !important;
-    border-left: 3px solid var(--color-info) !important;
-  }
-}
-
-// ==================================================
-// BADGE OVERRIDES
-// ==================================================
-
-.badge,
-[class*='Badge'],
-[class*='Tag'] {
-  border-radius: 6px !important;
-  font-weight: 600 !important;
-  font-size: 11px !important;
-  padding: 3px 8px !important;
-  background: var(--bg-surface-raised) !important;
-  color: var(--text-secondary) !important;
-
-  &.badge-primary,
-  &[class*='primary'] {
-    background: var(--accent-primary-muted) !important;
-    color: var(--accent-primary) !important;
-  }
-
-  &.badge-success,
-  &[class*='success'] {
-    background: var(--color-success-muted) !important;
-    color: var(--color-success) !important;
-  }
-
-  &.badge-warning,
-  &[class*='warning'] {
-    background: var(--color-warning-muted) !important;
-    color: var(--color-warning) !important;
-  }
-
-  &.badge-danger,
-  &.badge-error,
-  &[class*='error'] {
-    background: var(--color-error-muted) !important;
-    color: var(--color-error) !important;
-  }
-}
-
-// ==================================================
-// TOOLTIP OVERRIDES
-// ==================================================
-
-.tooltip,
-[class*='Tooltip'] {
-  background: var(--bg-surface-overlay) !important;
-  color: var(--text-primary) !important;
-  border-radius: 8px !important;
-  padding: 8px 12px !important;
-  font-size: 12px !important;
-  box-shadow: var(--shadow-lg) !important;
-
-  .tooltip-arrow,
-  &::before {
-    background: var(--bg-surface-overlay) !important;
-  }
-}
-
-// ==================================================
-// PROGRESS BAR OVERRIDES
-// ==================================================
-
-.progress,
-[class*='Progress'] {
-  background: var(--bg-surface-raised) !important;
-  border-radius: 4px !important;
-  overflow: hidden !important;
-
-  .progress-bar {
-    background: var(--accent-primary) !important;
-    border-radius: 4px !important;
-  }
-}
-
-// ==================================================
-// SWITCH/TOGGLE OVERRIDES
-// ==================================================
-
-.switch,
-[class*='Switch'],
-[class*='Toggle'] {
-  background: var(--bg-surface-raised) !important;
-  border-radius: 12px !important;
-
-  &:checked,
-  &.checked,
-  &[aria-checked='true'] {
-    background: var(--accent-primary) !important;
-  }
-
-  .switch-slider {
-    background: var(--text-secondary) !important;
-    border-radius: 50% !important;
-    box-shadow: var(--shadow-sm) !important;
-  }
-}
-
-// ==================================================
-// CHECKBOX/RADIO OVERRIDES
-// ==================================================
-
-input[type='checkbox'],
-input[type='radio'],
-[class*='Checkbox'],
-[class*='Radio'] {
-  background: var(--bg-surface) !important;
-  border: 2px solid var(--border-strong) !important;
-  border-radius: 4px !important;
-
-  &:checked {
-    background: var(--accent-primary) !important;
-    border-color: var(--accent-primary) !important;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 3px var(--accent-primary-subtle) !important;
-  }
-}
-
-input[type='radio'] {
-  border-radius: 50% !important;
-}
-
-// ==================================================
-// TAB OVERRIDES - Pill-style buttons
-// ==================================================
-
-.nav-tabs,
-[class*='Tabs'],
-[class*='TabList'],
-[role='tablist'] {
-  border-bottom: none !important;
-  display: flex !important;
-  gap: 4px !important;
-  background: rgba(255, 255, 255, 0.04) !important;
-  padding: 4px !important;
-  border-radius: 10px !important;
-  width: fit-content !important;
-
-  .nav-link,
-  [class*='Tab'],
-  [role='tab'] {
-    color: var(--text-secondary) !important;
-    border: none !important;
-    padding: 8px 16px !important;
-    margin: 0 !important;
-    border-radius: 8px !important;
-    transition: all 150ms ease !important;
-    font-weight: 500 !important;
-    font-size: 13px !important;
-    background: transparent !important;
-    white-space: nowrap !important;
-
-    &:hover {
-      color: var(--text-primary) !important;
-      background: rgba(255, 255, 255, 0.06) !important;
-    }
-
-    &.active,
-    &[aria-selected='true'] {
-      color: var(--text-primary) !important;
-      background: rgba(255, 255, 255, 0.10) !important;
-      border-bottom: none !important;
-    }
-  }
-}
-
-// ==================================================
-// SCROLLBAR OVERRIDES
+// SCROLLBAR STYLING
 // ==================================================
 
 ::-webkit-scrollbar {
-  width: 6px !important;
-  height: 6px !important;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent !important;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-radius: 3px !important;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
 // ==================================================
-// CODE BLOCKS
-// ==================================================
-
-code,
-[class*='Code'] {
-  background: var(--bg-surface-raised) !important;
-  color: var(--accent-tertiary) !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
-  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace !important;
-  font-size: 0.9em !important;
-}
-
-pre {
-  background: var(--bg-surface-raised) !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: 10px !important;
-  padding: 16px !important;
-
-  code {
-    background: transparent !important;
-    padding: 0 !important;
-  }
-}
-
-// ==================================================
-// REMOVE ALL GRADIENTS
-// ==================================================
-
-* {
-  background-image: none !important;
-}
-
-// Exceptions for specific effects
-.nebulaiq-skeleton::after,
-[class*='Skeleton']::after {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02), transparent) !important;
-}
-
-// ==================================================
-// GRAFANA SPECIFIC OVERRIDES
-// ==================================================
-
-// Graph/Chart styling
-.graph-panel {
-  background: var(--bg-surface) !important;
-}
-
-// Dashboard row
-.dashboard-row {
-  background: transparent !important;
-  border: none !important;
-
-  .dashboard-row__title {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-  }
-}
-
-// Variable picker
-.variable-link-wrapper {
-  background: var(--bg-surface-raised) !important;
-  border-radius: 8px !important;
-}
-
-// Time picker
-.time-picker-btn {
-  background: transparent !important;
-  border: 1px solid var(--border-default) !important;
-  border-radius: 8px !important;
-
-  &:hover {
-    background: var(--bg-surface-raised) !important;
-    border-color: var(--border-strong) !important;
-  }
-}
-
-// Explore page
-.explore-container {
-  background: transparent !important;
-}
-
-// Query editor
-.query-editor-row {
-  background: var(--bg-surface) !important;
-  border-radius: 10px !important;
-  border: none !important;
-}
-
-// ==================================================
-// BREADCRUMB OVERRIDES - White text, NO purple
-// ==================================================
-
-nav[aria-label="Breadcrumbs"],
-[class*='Breadcrumb'] {
-  a,
-  [class*='BreadcrumbLink'] {
-    color: var(--text-secondary) !important;
-    text-decoration: none !important;
-    transition: color 150ms ease !important;
-
-    &:hover {
-      color: var(--text-primary) !important;
-    }
-  }
-
-  // Current page (last item)
-  span:last-child,
-  [class*='BreadcrumbItem']:last-child {
-    color: var(--text-primary) !important;
-  }
-
-  // Separator
-  [class*='separator'],
-  svg {
-    color: var(--text-tertiary) !important;
-  }
-}
-
-// ==================================================
-// LINK OVERRIDES - White tones, NOT purple
-// ==================================================
-
-a:not([class*='Button']):not([class*='btn']) {
-  color: var(--text-link) !important;
-
-  &:hover {
-    color: var(--text-link-hover) !important;
-    text-decoration: underline !important;
-  }
-}
-
-// Table cell links should be white
-table td a,
-[class*='Table'] td a {
-  color: var(--text-primary) !important;
-
-  &:hover {
-    color: var(--text-primary) !important;
-    text-decoration: underline !important;
-  }
-}
-
-// ==================================================
-// MONOSPACE FONTS FOR METRICS/DATA
+// MONOSPACE FONTS FOR DATA/METRICS
 // ==================================================
 
 .metric-value,
-[class*='metric'],
-[class*='Metric'],
-[class*='stat-value'],
-[class*='BigValue'],
-[class*='gauge-value'],
-td[class*='number'],
-td[class*='value'],
-.font-mono {
-  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace !important;
-  font-variant-numeric: tabular-nums !important;
+[class*="metric"],
+[class*="Metric"],
+[class*="stat-value"],
+[class*="BigValue"],
+[class*="gauge-value"],
+td[class*="number"],
+td[class*="value"],
+.font-mono,
+code {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+// ==================================================
+// BREADCRUMB STYLING - White text
+// ==================================================
+
+nav[aria-label="Breadcrumbs"] a,
+[class*='Breadcrumb'] a {
+  color: rgba(255, 255, 255, 0.65) !important;
+  text-decoration: none !important;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-decoration: none !important;
+  }
 }

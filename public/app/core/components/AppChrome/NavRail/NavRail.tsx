@@ -8,7 +8,6 @@ import { contextSrv } from 'app/core/services/context_srv';
 
 import {
   NEBULAIQ_FEATURES,
-  EXPLORE_SECTION,
   SETTINGS_SECTION,
   getActiveNavItem,
 } from 'app/nebulaiq/navigation';
@@ -74,7 +73,6 @@ export function NavRail({ className }: NavRailProps) {
               href={item.url || '#'}
               isActive={activeNavItem === item.id}
               isExpanded={isExpanded}
-              isLive={item.id === 'service-performance' || item.id === 'infrastructure'}
             />
           ))}
         </div>
@@ -82,42 +80,39 @@ export function NavRail({ className }: NavRailProps) {
         {/* Divider */}
         <div className={styles.divider} />
 
-        {/* Bookmarks Section */}
+        {/* Dashboards Section */}
         <div className={styles.navSection}>
-          {bookmarks.length > 0 ? (
-            bookmarks.slice(0, 3).map((bookmark) => (
-              <NavRailItem
-                key={bookmark.uid}
-                icon="star"
-                label={bookmark.title}
-                abbrev={getAbbrev(bookmark.title)}
-                href={bookmark.url}
-                isActive={false}
-                isExpanded={isExpanded}
-              />
-            ))
-          ) : (
+          <NavRailItem
+            icon="apps"
+            label="Dashboards"
+            abbrev="Dash"
+            href="/dashboards"
+            isActive={activeNavItem === 'dashboards'}
+            isExpanded={isExpanded}
+          />
+          {/* Show bookmarked dashboards if any */}
+          {bookmarks.length > 0 && bookmarks.slice(0, 2).map((bookmark) => (
             <NavRailItem
+              key={bookmark.uid}
               icon="star"
-              label="Bookmark Dashboard"
-              abbrev="Star"
-              href="/dashboards"
+              label={bookmark.title}
+              abbrev={getAbbrev(bookmark.title)}
+              href={bookmark.url}
               isActive={false}
               isExpanded={isExpanded}
             />
-          )}
+          ))}
         </div>
 
         {/* Divider */}
         <div className={styles.divider} />
 
-        {/* Explore Section */}
-        <NavRailItemExpandable
-          icon={EXPLORE_SECTION.icon as IconName}
-          label={EXPLORE_SECTION.text}
+        {/* Explore - Direct link to query view */}
+        <NavRailItem
+          icon="compass"
+          label="Explore"
           abbrev="Explore"
-          href={EXPLORE_SECTION.url || '/dashboards'}
-          children={EXPLORE_SECTION.children || []}
+          href="/explore"
           isActive={activeNavItem === 'explore'}
           isExpanded={isExpanded}
         />
@@ -125,8 +120,6 @@ export function NavRail({ className }: NavRailProps) {
 
       {/* Fixed Bottom Section - User Profile + Settings */}
       <div className={styles.bottomSection}>
-        <div className={styles.divider} />
-
         {/* User Profile Row */}
         <Dropdown
           overlay={() => (
@@ -196,10 +189,9 @@ interface NavRailItemProps {
   href: string;
   isActive: boolean;
   isExpanded: boolean;
-  isLive?: boolean; // Purple indicator for live/updating content
 }
 
-function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded, isLive }: NavRailItemProps) {
+function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded }: NavRailItemProps) {
   const styles = useStyles2(getItemStyles);
 
   return (
@@ -208,14 +200,12 @@ function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded, isLive }
       className={cx(
         styles.item,
         isExpanded && styles.itemExpanded,
-        isActive && styles.itemActive,
-        isLive && styles.itemLive
+        isActive && styles.itemActive
       )}
       title={label}
     >
       <div className={styles.iconWrapper}>
         <Icon name={icon} className={styles.icon} />
-        {isLive && <div className={styles.liveIndicator} />}
       </div>
       {isExpanded ? (
         <span className={styles.label}>{label}</span>
@@ -229,6 +219,7 @@ function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded, isLive }
 
 /**
  * Expandable navigation item with children
+ * @future Reserved for future expandable nav items
  */
 interface NavRailItemExpandableProps {
   icon: IconName;
@@ -240,7 +231,9 @@ interface NavRailItemExpandableProps {
   isExpanded: boolean;
 }
 
-function NavRailItemExpandable({
+// @ts-expect-error Reserved for future expandable nav items
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _NavRailItemExpandable({
   icon,
   label,
   abbrev,
@@ -252,34 +245,52 @@ function NavRailItemExpandable({
   const [isOpen, setIsOpen] = useState(false);
   const styles = useStyles2(getItemStyles);
 
+  // When collapsed, render like a regular NavRailItem
+  if (!isExpanded) {
+    return (
+      <div className={styles.expandableContainer}>
+        <a
+          href={href}
+          className={cx(
+            styles.item,
+            isActive && styles.itemActive
+          )}
+          title={label}
+        >
+          <div className={styles.iconWrapper}>
+            <Icon name={icon} className={styles.icon} />
+          </div>
+          <span className={styles.abbrevVertical}>{abbrev}</span>
+          {isActive && <div className={styles.activeIndicator} />}
+        </a>
+      </div>
+    );
+  }
+
+  // When expanded, show with chevron for submenu
   return (
     <div className={styles.expandableContainer}>
       <div className={cx(
-        styles.item,
-        isExpanded ? styles.expandableItemExpanded : styles.expandableItemCollapsed,
+        styles.expandableRow,
         isActive && styles.itemActive
       )}>
-        <a href={href} className={cx(styles.expandableLink, isExpanded && styles.expandableLinkExpanded)} title={label}>
-          <Icon name={icon} className={styles.icon} />
-          {isExpanded ? (
-            <span className={styles.label}>{label}</span>
-          ) : (
-            <span className={styles.abbrevVertical}>{abbrev}</span>
-          )}
+        <a href={href} className={styles.expandableLinkRow} title={label}>
+          <div className={styles.iconWrapper}>
+            <Icon name={icon} className={styles.icon} />
+          </div>
+          <span className={styles.label}>{label}</span>
         </a>
-        {isExpanded && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={styles.chevronButton}
-            aria-label="Toggle submenu"
-          >
-            <Icon name={isOpen ? 'angle-down' : 'angle-right'} />
-          </button>
-        )}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={styles.chevronButton}
+          aria-label="Toggle submenu"
+        >
+          <Icon name={isOpen ? 'angle-down' : 'angle-right'} />
+        </button>
         {isActive && <div className={styles.activeIndicator} />}
       </div>
 
-      {isExpanded && isOpen && children.length > 0 && (
+      {isOpen && children.length > 0 && (
         <div className={styles.children}>
           {children.map((child) => (
             <a
@@ -333,13 +344,11 @@ function getAbbrev(text: string): string {
   return words[0].substring(0, 7) + '…';
 }
 
-// Color constants for consistent theming - NO PURPLE for text/icons
+// Color constants for consistent theming
 const COLORS = {
   primaryText: '#FFFFFF',           // Bright white for primary text
   secondaryText: 'rgba(255, 255, 255, 0.65)', // Less white for secondary
   tertiaryText: 'rgba(255, 255, 255, 0.45)',  // Even less white for tertiary
-  liveGreen: '#22c55e',             // Green for live/updating indicators
-  liveGreenGlow: 'rgba(34, 197, 94, 0.4)',
   accent: 'rgba(255, 255, 255, 0.1)', // Subtle accent for active/hover backgrounds
   background: '#0a0910',
   border: 'rgba(255, 255, 255, 0.06)',
@@ -538,16 +547,17 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     '&:hover': {
       background: COLORS.hoverBg,
       color: COLORS.primaryText,
+      textDecoration: 'none',
     },
   }),
 
   itemExpanded: css({
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '10px 8px',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: '10px 12px',
     margin: '2px 8px',
-    minHeight: 52,
-    gap: 2,
+    minHeight: 44,
+    gap: 10,
   }),
 
   itemActive: css({
@@ -556,13 +566,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
 
     '&:hover': {
       background: 'rgba(255, 255, 255, 0.10)',
-    },
-  }),
-
-  // Items with live data get purple accent
-  itemLive: css({
-    '& $iconWrapper': {
-      position: 'relative',
+      textDecoration: 'none',
     },
   }),
 
@@ -571,35 +575,12 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
   }),
 
   icon: css({
     fontSize: 18,
     flexShrink: 0,
-  }),
-
-  // Green pulsing dot for live content
-  liveIndicator: css({
-    position: 'absolute',
-    top: -2,
-    right: -4,
-    width: 6,
-    height: 6,
-    borderRadius: '50%',
-    background: COLORS.liveGreen,
-    boxShadow: `0 0 6px ${COLORS.liveGreenGlow}`,
-    animation: 'pulse 2s ease-in-out infinite',
-
-    '@keyframes pulse': {
-      '0%, 100%': {
-        opacity: 1,
-        transform: 'scale(1)',
-      },
-      '50%': {
-        opacity: 0.6,
-        transform: 'scale(0.85)',
-      },
-    },
   }),
 
   label: css({
@@ -637,39 +618,45 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     borderRadius: '0 2px 2px 0',
   }),
 
+  // Expandable item styles (reserved for future use)
   expandableContainer: css({
     display: 'flex',
     flexDirection: 'column',
   }),
 
-  expandableItemCollapsed: css({
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-end',
-    gap: 4,
-  }),
-
-  expandableItemExpanded: css({
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    gap: 8,
-    paddingLeft: 12,
-    minHeight: 52,
-  }),
-
-  expandableLink: css({
+  expandableRow: css({
+    position: 'relative',
     display: 'flex',
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: '10px 8px',
+    margin: '2px 8px',
+    borderRadius: 8,
+    color: COLORS.secondaryText,
+    transition: 'all 0.2s ease',
+    minHeight: 44,
+    gap: 8,
+
+    '&:hover': {
+      background: COLORS.hoverBg,
+      color: COLORS.primaryText,
+    },
+  }),
+
+  expandableLinkRow: css({
+    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     textDecoration: 'none',
     color: 'inherit',
     minWidth: 0,
-    gap: 4,
-  }),
+    gap: 10,
 
-  expandableLinkExpanded: css({
-    flexDirection: 'column',
-    gap: 2,
+    '&:hover': {
+      textDecoration: 'none',
+      color: COLORS.primaryText,
+    },
   }),
 
   chevronButton: css({
@@ -681,6 +668,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
 
     '&:hover': {
       color: COLORS.primaryText,
@@ -708,6 +696,7 @@ const getItemStyles = (theme: GrafanaTheme2) => ({
     '&:hover': {
       background: COLORS.hoverBg,
       color: COLORS.primaryText,
+      textDecoration: 'none',
     },
   }),
 });
