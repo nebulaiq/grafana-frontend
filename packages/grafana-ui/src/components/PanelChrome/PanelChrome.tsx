@@ -7,7 +7,8 @@ import { GrafanaTheme2, LoadingState } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { getAppEvents } from '@grafana/runtime';
 
-import { SetHeaderLegendEvent, SeriesVisibilityChangedEvent } from './PanelEvents';
+import { SetHeaderLegendEvent, LegendPropsData } from './PanelEvents';
+import { VizLegend } from '../VizLegend/VizLegend';
 
 import { useStyles2, useTheme2 } from '../../themes';
 import { getFocusStyles } from '../../themes/mixins';
@@ -24,7 +25,6 @@ import { PanelDescription } from './PanelDescription';
 import { PanelMenu } from './PanelMenu';
 import { PanelStatus } from './PanelStatus';
 import { TitleItem } from './TitleItem';
-import { SeriesVisibilityChangeMode } from './types';
 
 /**
  * @internal
@@ -164,72 +164,46 @@ export function PanelChrome({
   const { isSelected, onSelect } = useElementSelection(selectionId);
   const parentPanelContext = usePanelContext();
 
-  // Default onToggleSeriesVisibility implementation when parent doesn't provide one
-  const defaultOnToggleSeriesVisibility = useCallback((label: string, mode: SeriesVisibilityChangeMode) => {
-    console.log('[PanelChrome] Default onToggleSeriesVisibility called:', { label, mode });
+  // State for header legend props (top-placed legends)
+  const [headerLegendProps, setHeaderLegendProps] = useState<LegendPropsData | null>(null);
 
-    // Emit event on global app event bus so GraphNG can receive it
-    // GraphNG will handle the isolate logic since it knows all available series
-    const eventBus = getAppEvents();
-    eventBus.publish(
-      new SeriesVisibilityChangedEvent({
-        label,
-        mode: mode as string,
-        hiddenSeries: [], // GraphNG will compute this based on its state
-        panelId: panelInstanceId, // Add panelId for filtering
-      })
-    );
-    console.log('[PanelChrome] Published SeriesVisibilityChangedEvent for:', label, 'mode:', mode, 'panelId:', panelInstanceId);
-  }, [panelInstanceId]);
-
-  // DEBUG: Log parent context
-  console.log('[PanelChrome] Parent context:', {
-    hasEventBus: !!parentPanelContext.eventBus,
-    hasOnToggleSeriesVisibility: !!parentPanelContext.onToggleSeriesVisibility,
-    hasOnSeriesColorChange: !!parentPanelContext.onSeriesColorChange,
-    eventsScope: parentPanelContext.eventsScope,
-  });
-
-  // State for header legend (top-placed legends)
-  const [internalHeaderLegend, setInternalHeaderLegend] = useState<ReactNode>(null);
-
-  // Merge external headerLegend prop with internal state
-  // Clone the legend element with a unique key to force React to remount it
-  // This ensures it re-evaluates usePanelContext() with the current context
+  // Create fresh VizLegend instance from props
+  // This ensures hooks evaluate in PanelChrome's context, not VizLayout's
   const effectiveHeaderLegend = React.useMemo(() => {
-    const legend = headerLegend || internalHeaderLegend;
-    if (!legend) return null;
+    if (!headerLegendProps) return null;
 
-    // Clone with a key tied to this panel instance to force remount in header context
-    if (React.isValidElement(legend)) {
-      console.log('[PanelChrome] Cloning legend element to force context re-evaluation');
-      return React.cloneElement(legend as React.ReactElement, {
-        key: `legend-${panelInstanceId}`
-      });
-    }
-    return legend;
-  }, [headerLegend, internalHeaderLegend, panelInstanceId]);
+    return (
+      <VizLegend
+        items={headerLegendProps.items}
+        thresholdItems={headerLegendProps.thresholdItems}
+        mappingItems={headerLegendProps.mappingItems}
+        placement={headerLegendProps.placement}
+        displayMode={headerLegendProps.displayMode}
+        sortBy={headerLegendProps.sortBy}
+        sortDesc={headerLegendProps.sortDesc}
+        seriesVisibilityChangeBehavior={headerLegendProps.seriesVisibilityChangeBehavior}
+        isSortable={headerLegendProps.isSortable}
+        readonly={headerLegendProps.readonly}
+      />
+    );
+  }, [headerLegendProps]);
 
   // Callback for child components to set header legend via context
-  const setHeaderLegendCallback = useCallback((legend: ReactNode) => {
-    console.log('[PanelChrome] setHeaderLegend called with:', legend);
-    setInternalHeaderLegend(legend);
+  const setHeaderLegendCallback = useCallback((legendProps: LegendPropsData | null) => {
+    setHeaderLegendProps(legendProps);
   }, []);
 
   // Subscribe to header legend events from the global app event bus
   useEffect(() => {
     const eventBus = getAppEvents();
-    console.log('[PanelChrome] Panel', panelInstanceId, 'subscribing to set-header-legend events');
     const subscription = eventBus.subscribe(SetHeaderLegendEvent, (event) => {
       // Only update if this event is for this specific panel
       if (event.payload.panelId === panelInstanceId) {
-        console.log('[PanelChrome] Panel', panelInstanceId, 'received matching event');
-        setInternalHeaderLegend(event.payload.legend);
+        setHeaderLegendProps(event.payload.legendProps);
       }
     });
 
     return () => {
-      console.log('[PanelChrome] Panel', panelInstanceId, 'unsubscribing');
       subscription.unsubscribe();
     };
   }, [panelInstanceId]);
@@ -349,19 +323,13 @@ export function PanelChrome({
     </>
   );
 
-  // DEBUG: Log the context being provided
+  // Provide context with parent's handlers
   const panelContextValue = {
     ...parentPanelContext,
     setHeaderLegend: setHeaderLegendCallback,
-    // Provide default onToggleSeriesVisibility if parent doesn't have one
-    onToggleSeriesVisibility: parentPanelContext.onToggleSeriesVisibility || defaultOnToggleSeriesVisibility,
+    // Use parent's onToggleSeriesVisibility (from PanelStateWrapper)
+    // This updates field config properly instead of direct uPlot manipulation
   };
-  console.log('[PanelChrome] Providing context:', {
-    hasEventBus: !!panelContextValue.eventBus,
-    hasOnToggleSeriesVisibility: !!panelContextValue.onToggleSeriesVisibility,
-    usingDefaultHandler: !parentPanelContext.onToggleSeriesVisibility,
-    panelInstanceId,
-  });
 
   return (
     // tabIndex={0} is needed for keyboard accessibility in the plot area
