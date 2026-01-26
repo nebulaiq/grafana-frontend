@@ -61,6 +61,20 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
   const legendStyle: CSSProperties = {};
 
   switch (placement) {
+    case 'top':
+      // Top placement: legend appears inline with title, positioned at top-right
+      // The legend is absolutely positioned to avoid affecting chart height
+      containerStyle.flexDirection = 'column';
+      containerStyle.position = 'relative';
+      legendStyle.position = 'absolute';
+      legendStyle.top = '0';
+      legendStyle.right = '0';
+      legendStyle.zIndex = 1;
+      legendStyle.maxWidth = maxWidth;
+      legendStyle.maxHeight = '32px'; // Match panel header height
+      // Chart uses full dimensions since legend is overlaid
+      size = { width, height };
+      break;
     case 'bottom':
       containerStyle.flexDirection = 'column';
       legendStyle.maxHeight = maxHeight;
@@ -96,10 +110,17 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
 
   return (
     <div style={containerStyle}>
+      {placement === 'top' && (
+        <div style={legendStyle} ref={legendRef}>
+          {legend}
+        </div>
+      )}
       <div className={styles.viz}>{size && children(size.width, size.height)}</div>
-      <div style={legendStyle} ref={legendRef}>
-        <ScrollContainer>{legend}</ScrollContainer>
-      </div>
+      {placement !== 'top' && (
+        <div style={legendStyle} ref={legendRef}>
+          <ScrollContainer>{legend}</ScrollContainer>
+        </div>
+      )}
     </div>
   );
 };

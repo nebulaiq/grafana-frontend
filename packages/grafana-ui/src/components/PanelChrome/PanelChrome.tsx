@@ -473,6 +473,8 @@ const getStyles = (theme: GrafanaTheme2) => {
       label: 'panel-header',
       display: 'flex',
       alignItems: 'center',
+      position: 'relative',
+      zIndex: 2, // Ensure header is above legend when using top placement
     }),
     pointer: css({
       cursor: 'pointer',
@@ -493,6 +495,8 @@ const getStyles = (theme: GrafanaTheme2) => {
       minWidth: 0,
       '& > h2': {
         minWidth: 0,
+        fontSize: '14px', // Ensure consistent 14px font size
+        fontWeight: theme.typography.fontWeightMedium,
       },
     }),
     items: css({

@@ -42,6 +42,17 @@ export const VizLegendList = <T extends unknown>({
   const getItemKey = (item: VizLegendItem<T>) => `${item.getItemKey ? item.getItemKey() : item.label}`;
 
   switch (placement) {
+    case 'top': {
+      const renderItem = (item: VizLegendItem<T>, index: number) => {
+        return <span className={styles.itemTop}>{itemRenderer!(item, index)}</span>;
+      };
+
+      return (
+        <div className={cx(styles.topWrapper, className)}>
+          <InlineList items={items} renderItem={renderItem} getItemKey={getItemKey} />
+        </div>
+      );
+    }
     case 'right': {
       const renderItem = (item: VizLegendItem<T>, index: number) => {
         return <span className={styles.itemRight}>{itemRenderer!(item, index)}</span>;
@@ -91,6 +102,12 @@ const getStyles = (theme: GrafanaTheme2) => {
   });
 
   return {
+    itemTop: css({
+      paddingRight: '10px',
+      display: 'flex',
+      fontSize: '12px', // Compact font for top placement
+      whiteSpace: 'nowrap',
+    }),
     itemBottom: itemStyles,
     itemRight: cx(
       itemStyles,
@@ -98,6 +115,14 @@ const getStyles = (theme: GrafanaTheme2) => {
         marginBottom: theme.spacing(0.5),
       })
     ),
+    topWrapper: css({
+      display: 'flex',
+      flexWrap: 'nowrap',
+      overflow: 'hidden',
+      padding: theme.spacing(0.5, 1),
+      gap: '10px',
+      alignItems: 'center',
+    }),
     rightWrapper: css({
       padding: theme.spacing(0.5),
     }),

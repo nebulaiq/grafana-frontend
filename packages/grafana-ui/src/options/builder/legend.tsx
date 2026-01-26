@@ -36,9 +36,10 @@ export function addLegendOptions<T extends OptionsWithLegend>(
       name: 'Placement',
       category: ['Legend'],
       description: '',
-      defaultValue: 'bottom',
+      defaultValue: 'top',
       settings: {
         options: [
+          { value: 'top', label: 'Top' },
           { value: 'bottom', label: 'Bottom' },
           { value: 'right', label: 'Right' },
         ],

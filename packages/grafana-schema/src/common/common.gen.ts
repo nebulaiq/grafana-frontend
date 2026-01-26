@@ -427,7 +427,7 @@ export interface GraphThresholdsStyleConfig {
 /**
  * TODO docs
  */
-export type LegendPlacement = ('bottom' | 'right');
+export type LegendPlacement = ('bottom' | 'right' | 'top');
 
 /**
  * TODO docs

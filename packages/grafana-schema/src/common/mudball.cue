@@ -130,7 +130,7 @@ GraphThresholdsStyleConfig: {
 } @cuetsy(kind="interface")
 
 // TODO docs
-LegendPlacement: "bottom" | "right" @cuetsy(kind="type")
+LegendPlacement: "bottom" | "right" | "top" @cuetsy(kind="type")
 
 // TODO docs
 // Note: "hidden" needs to remain as an option for plugins compatibility
