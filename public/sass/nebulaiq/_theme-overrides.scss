@@ -32,28 +32,10 @@ a {
 }
 
 // ==================================================
-// TAB STYLING - No bottom borders
+// TAB STYLING - Handled directly in grafana-ui/src/components/Tabs/
+// Tab.tsx and TabsBar.tsx use Emotion CSS-in-JS for NebulaIQ pill-style tabs
+// No SCSS overrides needed - prevents FOUC (flash of unstyled content)
 // ==================================================
-
-[role="tablist"],
-[class*="TabList"],
-[class*="TabsBar"] {
-  border-bottom: none !important;
-
-  &::after {
-    display: none !important;
-  }
-}
-
-[role="tab"],
-[class*="Tab"]:not([class*="Table"]) {
-  text-decoration: none !important;
-  border-bottom: none !important;
-
-  &:hover {
-    text-decoration: none !important;
-  }
-}
 
 // ==================================================
 // SCROLLBAR STYLING
