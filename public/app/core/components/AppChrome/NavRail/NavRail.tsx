@@ -319,6 +319,7 @@ const SHORT_LABELS: Record<string, string> = {
   'Traces': 'Traces',
   'Architecture Insights': 'Insights',
   'Redux Test': 'Redux',
+  'Redux Scene Test': 'Scenes',
   'Explore': 'Explore',
   'Settings': 'Settings',
   'Bookmark Dashboard': 'Starred',
