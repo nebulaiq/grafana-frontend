@@ -68,12 +68,12 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
       containerStyle.position = 'relative';
       legendStyle.position = 'absolute';
       legendStyle.top = '-32px'; // Position at panel header level (negative to go above content)
-      legendStyle.right = '48px'; // Leave space for panel menu (40px) + padding
+      legendStyle.right = '44px'; // NebulaIQ: Leave space for panel menu (40px) + minimal padding
       legendStyle.zIndex = 3; // Above header (zIndex: 2) to ensure visibility
       legendStyle.maxWidth = maxWidth;
       legendStyle.maxHeight = '32px'; // Match panel header height
       legendStyle.display = 'flex';
-      legendStyle.alignItems = 'center';
+      legendStyle.alignItems = 'center'; // Vertical centering
       legendStyle.justifyContent = 'flex-end'; // Right-align legend items
       // Chart uses full dimensions since legend is overlaid
       size = { width, height };
