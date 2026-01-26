@@ -33,27 +33,28 @@ a {
 
 // ==================================================
 // TAB STYLING - NebulaIQ Pill-style tabs
-// These styles MUST match the Emotion CSS-in-JS in:
-// - packages/grafana-ui/src/components/Tabs/Tab.tsx
-// - packages/grafana-ui/src/components/Tabs/TabsBar.tsx
-// This prevents FOUC by providing identical initial styles before React mounts
+// Uses !important on properties that conflict with global CSS reset
+// (*, ::before, ::after { padding: 0; margin: 0; border: 0 solid; })
+// This ensures our styles win immediately, preventing FOUC
 // ==================================================
 
 // TabsBar container (the pill container)
 [role="tablist"] {
   position: relative;
-  display: inline-flex;
+  display: inline-flex !important;
   height: auto;
   align-items: center;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 4px;  // theme.spacing(0.5)
-  border-radius: 10px;  // theme.spacing(1.25)
-  gap: 4px;  // theme.spacing(0.5)
-  border-bottom: none;
+  background: rgba(255, 255, 255, 0.04) !important;
+  padding: 4px !important;  // Override global reset padding: 0
+  border-radius: 10px !important;
+  gap: 4px;
+  border-bottom: none !important;
+  border: none !important;  // Override global reset border
+  margin: 0 !important;  // Override global reset margin
   overflow-x: auto;
 
   &::after {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -61,33 +62,39 @@ a {
 [role="tab"] {
   list-style: none;
   position: relative;
-  display: flex;
+  display: flex !important;
   white-space: nowrap;
-  padding: 8px 16px;  // theme.spacing(1, 2)
-  border-radius: 8px;  // theme.spacing(1)
+  padding: 8px 16px !important;  // Override global reset padding: 0
+  border-radius: 8px !important;
   align-items: center;
   height: auto;
   transition: all 150ms ease;
-  text-decoration: none;
-  border-bottom: none;
-  color: rgba(255, 255, 255, 0.65);  // text.secondary
+  text-decoration: none !important;
+  border-bottom: none !important;
+  border: none !important;  // Override global reset border
+  margin: 0 !important;  // Override global reset margin
+  color: rgba(255, 255, 255, 0.65);
 
   // Remove bottom indicator bar
   &::before {
     display: none !important;
+    content: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
   }
 
   &:hover,
   &:focus {
-    color: rgba(255, 255, 255, 0.95);  // text.primary
-    background: rgba(255, 255, 255, 0.06);
-    text-decoration: none;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.06) !important;
+    text-decoration: none !important;
   }
 
   // Active tab state
   &[aria-selected="true"] {
-    color: rgba(255, 255, 255, 0.95);  // text.primary
-    background: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.10) !important;
   }
 }
 
