@@ -67,11 +67,14 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
       containerStyle.flexDirection = 'column';
       containerStyle.position = 'relative';
       legendStyle.position = 'absolute';
-      legendStyle.top = '0';
-      legendStyle.right = '0';
-      legendStyle.zIndex = 1;
+      legendStyle.top = '-32px'; // Position at panel header level (negative to go above content)
+      legendStyle.right = '48px'; // Leave space for panel menu (40px) + padding
+      legendStyle.zIndex = 3; // Above header (zIndex: 2) to ensure visibility
       legendStyle.maxWidth = maxWidth;
       legendStyle.maxHeight = '32px'; // Match panel header height
+      legendStyle.display = 'flex';
+      legendStyle.alignItems = 'center';
+      legendStyle.justifyContent = 'flex-end'; // Right-align legend items
       // Chart uses full dimensions since legend is overlaid
       size = { width, height };
       break;

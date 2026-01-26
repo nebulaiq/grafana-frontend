@@ -133,3 +133,37 @@ nav[aria-label="Breadcrumbs"] a,
     text-decoration: none !important;
   }
 }
+
+// ==================================================
+// PANEL TITLE STYLING - 16px font size for better readability
+// ==================================================
+
+[class*='panel-header'] h2,
+[data-testid*='header-container'] h2 {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+}
+
+// ==================================================
+// LEGEND IN PANEL HEADER - Horizontal inline legend
+// ==================================================
+
+// Ensure legend container doesn't interfere with header
+[class*='panel-content'] {
+  overflow: visible !important; // Allow legend to overflow into header area
+}
+
+// Style for top-placed legends (in header)
+[class*='VizLegend'] {
+  // Ensure legend items are compact and readable
+  [class*='VizLegendSeriesIcon'] {
+    flex-shrink: 0; // Prevent icon squishing
+  }
+
+  [class*='VizLegendLabel'] {
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+}

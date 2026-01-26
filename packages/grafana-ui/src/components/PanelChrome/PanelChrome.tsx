@@ -404,7 +404,7 @@ const getStyles = (theme: GrafanaTheme2) => {
   return {
     container: css({
       label: 'panel-container',
-      backgroundColor: background,
+      backgroundColor: 'transparent',  // NebulaIQ: Background only on content, not header
       border: 'none',  // NebulaIQ: Borderless panels
       position: 'relative',
       borderRadius: theme.shape.radius.default,
@@ -468,6 +468,9 @@ const getStyles = (theme: GrafanaTheme2) => {
       label: 'panel-content',
       flexGrow: 1,
       contain: 'size layout',
+      backgroundColor: background,  // NebulaIQ: Background only on content, not header
+      borderRadius: theme.shape.radius.default,
+      overflow: 'visible',  // NebulaIQ: Allow legend to overflow into header area
     }),
     headerContainer: css({
       label: 'panel-header',
@@ -495,7 +498,7 @@ const getStyles = (theme: GrafanaTheme2) => {
       minWidth: 0,
       '& > h2': {
         minWidth: 0,
-        fontSize: '14px', // Ensure consistent 14px font size
+        fontSize: '16px', // NebulaIQ: 16px for better readability
         fontWeight: theme.typography.fontWeightMedium,
       },
     }),

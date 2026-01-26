@@ -103,10 +103,11 @@ const getStyles = (theme: GrafanaTheme2) => {
 
   return {
     itemTop: css({
-      paddingRight: '10px',
+      paddingRight: '12px',
       display: 'flex',
       fontSize: '12px', // Compact font for top placement
       whiteSpace: 'nowrap',
+      lineHeight: '1.2',
     }),
     itemBottom: itemStyles,
     itemRight: cx(
@@ -119,9 +120,11 @@ const getStyles = (theme: GrafanaTheme2) => {
       display: 'flex',
       flexWrap: 'nowrap',
       overflow: 'hidden',
-      padding: theme.spacing(0.5, 1),
-      gap: '10px',
+      padding: '0 8px', // Minimal padding for compact inline display
+      gap: '8px', // Reduced gap for tighter spacing
       alignItems: 'center',
+      justifyContent: 'flex-end', // Right-align legend items
+      height: '32px', // Match panel header height
     }),
     rightWrapper: css({
       padding: theme.spacing(0.5),
