@@ -48,9 +48,13 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
       panelContext.setHeaderLegend(legend);
       return () => {
         // Clean up when component unmounts or legend changes
-        panelContext.setHeaderLegend(null);
+        if (panelContext.setHeaderLegend) {
+          panelContext.setHeaderLegend(null);
+        }
       };
     }
+    // Return empty cleanup function when condition is not met
+    return undefined;
   }, [legend, panelContext]);
 
   if (!legend) {
