@@ -244,6 +244,10 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
     }
   }
 
+  // onToggleSeriesVisibility removed - this is now handled by VizPanel through
+  // field config updates. VizPanel's context provides the handler that updates
+  // fieldConfig.overrides to set custom.hideFrom.viz for hidden series.
+
   render() {
     const { width, height, children, renderLegend } = this.props;
     const { config, alignedFrame, alignedData } = this.state;
@@ -252,12 +256,17 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
       return null;
     }
 
+    // Series visibility is handled through field config (custom.hideFrom.viz)
+    // VizPanel's onToggleSeriesVisibility updates field config, which is then
+    // applied during data preparation in applyFieldConfig
+    let displayData = alignedData;
+
     return (
       <VizLayout width={width} height={height} legend={renderLegend(config)}>
         {(vizWidth: number, vizHeight: number) => (
           <UPlotChart
             config={config}
-            data={alignedData!}
+            data={displayData!}
             width={vizWidth}
             height={vizHeight}
             plotRef={(u) => ((this.plotInstance as React.MutableRefObject<uPlot>).current = u)}
@@ -269,3 +278,7 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
     );
   }
 }
+
+// GraphNGWithContext removed - VizPanel already provides onToggleSeriesVisibility
+// through its PanelContext, which updates field config to hide series.
+// The wrapper was breaking the context chain by creating a new provider.
