@@ -32,10 +32,64 @@ a {
 }
 
 // ==================================================
-// TAB STYLING - Handled directly in grafana-ui/src/components/Tabs/
-// Tab.tsx and TabsBar.tsx use Emotion CSS-in-JS for NebulaIQ pill-style tabs
-// No SCSS overrides needed - prevents FOUC (flash of unstyled content)
+// TAB STYLING - NebulaIQ Pill-style tabs
+// These styles MUST match the Emotion CSS-in-JS in:
+// - packages/grafana-ui/src/components/Tabs/Tab.tsx
+// - packages/grafana-ui/src/components/Tabs/TabsBar.tsx
+// This prevents FOUC by providing identical initial styles before React mounts
 // ==================================================
+
+// TabsBar container (the pill container)
+[role="tablist"] {
+  position: relative;
+  display: inline-flex;
+  height: auto;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px;  // theme.spacing(0.5)
+  border-radius: 10px;  // theme.spacing(1.25)
+  gap: 4px;  // theme.spacing(0.5)
+  border-bottom: none;
+  overflow-x: auto;
+
+  &::after {
+    display: none;
+  }
+}
+
+// Individual tab items
+[role="tab"] {
+  list-style: none;
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+  padding: 8px 16px;  // theme.spacing(1, 2)
+  border-radius: 8px;  // theme.spacing(1)
+  align-items: center;
+  height: auto;
+  transition: all 150ms ease;
+  text-decoration: none;
+  border-bottom: none;
+  color: rgba(255, 255, 255, 0.65);  // text.secondary
+
+  // Remove bottom indicator bar
+  &::before {
+    display: none !important;
+  }
+
+  &:hover,
+  &:focus {
+    color: rgba(255, 255, 255, 0.95);  // text.primary
+    background: rgba(255, 255, 255, 0.06);
+    text-decoration: none;
+  }
+
+  // Active tab state
+  &[aria-selected="true"] {
+    color: rgba(255, 255, 255, 0.95);  // text.primary
+    background: rgba(255, 255, 255, 0.10);
+  }
+}
 
 // ==================================================
 // SCROLLBAR STYLING
