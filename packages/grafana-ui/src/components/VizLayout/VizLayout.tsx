@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { FC, CSSProperties, ComponentType } from 'react';
+import { FC, CSSProperties, ComponentType, useEffect } from 'react';
 import * as React from 'react';
 import { useMeasure } from 'react-use';
 
@@ -8,6 +8,7 @@ import { LegendPlacement } from '@grafana/schema';
 
 import { useStyles2, useTheme2 } from '../../themes/ThemeContext';
 import { getFocusStyles } from '../../themes/mixins';
+import { usePanelContext } from '../PanelChrome';
 import { ScrollContainer } from '../ScrollContainer/ScrollContainer';
 
 /**
@@ -33,12 +34,24 @@ export interface VizLayoutComponentType extends FC<VizLayoutProps> {
 export const VizLayout: VizLayoutComponentType = ({ width, height, legend, children }) => {
   const theme = useTheme2();
   const styles = useStyles2(getVizStyles);
+  const panelContext = usePanelContext();
   const containerStyle: CSSProperties = {
     display: 'flex',
     width: `${width}px`,
     height: `${height}px`,
   };
   const [legendRef, legendMeasure] = useMeasure<HTMLDivElement>();
+
+  // For top placement, pass legend to panel header via context
+  useEffect(() => {
+    if (legend && legend.props.placement === 'top' && panelContext.setHeaderLegend) {
+      panelContext.setHeaderLegend(legend);
+      return () => {
+        // Clean up when component unmounts or legend changes
+        panelContext.setHeaderLegend(null);
+      };
+    }
+  }, [legend, panelContext]);
 
   if (!legend) {
     return (
@@ -62,20 +75,9 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
 
   switch (placement) {
     case 'top':
-      // Top placement: legend appears inline with title, positioned at top-right
-      // The legend is absolutely positioned to avoid affecting chart height
+      // Top placement: legend is rendered in panel header via context
+      // Don't render legend here, just use full dimensions for chart
       containerStyle.flexDirection = 'column';
-      containerStyle.position = 'relative';
-      legendStyle.position = 'absolute';
-      legendStyle.top = '-32px'; // Position at panel header level (negative to go above content)
-      legendStyle.right = '44px'; // NebulaIQ: Leave space for panel menu (40px) + minimal padding
-      legendStyle.zIndex = 3; // Above header (zIndex: 2) to ensure visibility
-      legendStyle.maxWidth = maxWidth;
-      legendStyle.maxHeight = '32px'; // Match panel header height
-      legendStyle.display = 'flex';
-      legendStyle.alignItems = 'center'; // Vertical centering
-      legendStyle.justifyContent = 'flex-end'; // Right-align legend items
-      // Chart uses full dimensions since legend is overlaid
       size = { width, height };
       break;
     case 'bottom':
@@ -113,11 +115,7 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
 
   return (
     <div style={containerStyle}>
-      {placement === 'top' && (
-        <div style={legendStyle} ref={legendRef}>
-          {legend}
-        </div>
-      )}
+      {/* Top placement legends are rendered in panel header via context, not here */}
       <div className={styles.viz}>{size && children(size.width, size.height)}</div>
       {placement !== 'top' && (
         <div style={legendStyle} ref={legendRef}>

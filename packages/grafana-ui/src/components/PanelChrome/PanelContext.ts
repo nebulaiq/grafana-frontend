@@ -97,6 +97,12 @@ export interface PanelContext {
    * @internal
    */
   dataLinkPostProcessor?: DataLinkPostProcessor;
+
+  /**
+   * Set the header legend for panels with top-placed legends
+   * @internal
+   */
+  setHeaderLegend?: (legend: React.ReactNode) => void;
 }
 
 export const PanelContextRoot = createContext<PanelContext>({

@@ -69,7 +69,7 @@ export const SeriesIcon = React.memo(
 
 const getStyles = (theme: GrafanaTheme2) => ({
   container: css({
-    marginRight: '4px', // NebulaIQ: Reduced gap between legend line and name
+    marginRight: '2px', // NebulaIQ: Minimal gap between legend line and name
     display: 'inline-block',
     width: '14px',
     height: '4px',

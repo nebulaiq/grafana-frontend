@@ -103,7 +103,7 @@ const getStyles = (theme: GrafanaTheme2) => {
 
   return {
     itemTop: css({
-      paddingRight: '8px', // NebulaIQ: Reduced spacing between legend items
+      paddingRight: '6px', // NebulaIQ: Spacing between legend items (max 6px)
       display: 'flex',
       fontSize: '12px', // Compact font for top placement
       whiteSpace: 'nowrap',
@@ -121,8 +121,8 @@ const getStyles = (theme: GrafanaTheme2) => {
       display: 'flex',
       flexWrap: 'nowrap',
       overflow: 'hidden',
-      padding: '0 6px', // NebulaIQ: Reduced padding for tighter spacing
-      gap: '6px', // NebulaIQ: Reduced gap between legend items
+      padding: '0', // NebulaIQ: No wrapper padding, spacing handled by items
+      gap: '0', // NebulaIQ: No gap, spacing handled by itemTop paddingRight
       alignItems: 'center',
       justifyContent: 'flex-end', // Right-align legend items
       height: '32px', // Match panel header height

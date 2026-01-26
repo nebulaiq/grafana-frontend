@@ -1,5 +1,5 @@
 import { css, cx } from '@emotion/css';
-import { CSSProperties, ReactElement, ReactNode, useId } from 'react';
+import { CSSProperties, ReactElement, ReactNode, useCallback, useId, useState } from 'react';
 import * as React from 'react';
 import { useMeasure, useToggle } from 'react-use';
 
@@ -16,6 +16,7 @@ import { Text } from '../Text/Text';
 import { Tooltip } from '../Tooltip';
 
 import { HoverWidget } from './HoverWidget';
+import { PanelContextProvider, usePanelContext } from './PanelContext';
 import { PanelDescription } from './PanelDescription';
 import { PanelMenu } from './PanelMenu';
 import { PanelStatus } from './PanelStatus';
@@ -69,6 +70,10 @@ interface BaseProps {
    */
   onMouseMove?: () => void;
   onMouseEnter?: () => void;
+  /**
+   * Legend component to render in panel header (for top-placed legends)
+   */
+  headerLegend?: ReactNode;
 }
 
 interface FixedDimensions extends BaseProps {
@@ -145,12 +150,25 @@ export function PanelChrome({
   onMouseEnter,
   onDragStart,
   showMenuAlways = false,
+  headerLegend,
 }: PanelChromeProps) {
   const theme = useTheme2();
   const styles = useStyles2(getStyles);
   const panelContentId = useId();
   const panelTitleId = useId().replace(/:/g, '_');
   const { isSelected, onSelect } = useElementSelection(selectionId);
+  const parentPanelContext = usePanelContext();
+
+  // State for header legend (top-placed legends)
+  const [internalHeaderLegend, setInternalHeaderLegend] = useState<ReactNode>(null);
+
+  // Merge external headerLegend prop with internal state
+  const effectiveHeaderLegend = headerLegend || internalHeaderLegend;
+
+  // Callback for child components to set header legend
+  const setHeaderLegendCallback = useCallback((legend: ReactNode) => {
+    setInternalHeaderLegend(legend);
+  }, []);
 
   const hasHeader = !hoverHeader;
 
@@ -262,6 +280,7 @@ export function PanelChrome({
       )}
       <div className={styles.rightAligned}>
         {actions && <div className={styles.rightActions}>{itemsRenderer(actions, (item) => item)}</div>}
+        {effectiveHeaderLegend && <div className={styles.headerLegendContainer}>{effectiveHeaderLegend}</div>}
       </div>
     </>
   );
@@ -338,14 +357,21 @@ export function PanelChrome({
       )}
 
       {!collapsed && (
-        <div
-          id={panelContentId}
-          data-testid={selectors.components.Panels.Panel.content}
-          className={cx(styles.content, height === undefined && styles.containNone)}
-          style={contentStyle}
+        <PanelContextProvider
+          value={{
+            ...parentPanelContext,
+            setHeaderLegend: setHeaderLegendCallback,
+          }}
         >
-          {typeof children === 'function' ? children(innerWidth, innerHeight) : children}
-        </div>
+          <div
+            id={panelContentId}
+            data-testid={selectors.components.Panels.Panel.content}
+            className={cx(styles.content, height === undefined && styles.containNone)}
+            style={contentStyle}
+          >
+            {typeof children === 'function' ? children(innerWidth, innerHeight) : children}
+          </div>
+        </PanelContextProvider>
       )}
     </section>
   );
@@ -551,6 +577,14 @@ const getStyles = (theme: GrafanaTheme2) => {
       border: 'none',
       padding: 0,
       maxWidth: '100%',
+    }),
+    headerLegendContainer: css({
+      label: 'header-legend-container',
+      display: 'flex',
+      alignItems: 'center',
+      marginLeft: theme.spacing(1),
+      overflow: 'hidden',
+      maxWidth: '60%', // Prevent legend from taking too much space
     }),
   };
 };
