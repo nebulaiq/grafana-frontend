@@ -106,6 +106,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     border: 'none',
     fontSize: 'inherit',
     padding: 0,
+    paddingLeft: '2px', // NebulaIQ: Small spacing between legend icon and label
     userSelect: 'text',
   }),
   itemDisabled: css({

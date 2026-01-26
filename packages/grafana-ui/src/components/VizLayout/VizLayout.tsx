@@ -1,14 +1,15 @@
 import { css } from '@emotion/css';
-import { FC, CSSProperties, ComponentType, useEffect } from 'react';
+import { FC, CSSProperties, ComponentType, useEffect, useRef } from 'react';
 import * as React from 'react';
 import { useMeasure } from 'react-use';
 
 import { GrafanaTheme2 } from '@grafana/data';
+import { getAppEvents } from '@grafana/runtime';
 import { LegendPlacement } from '@grafana/schema';
 
 import { useStyles2, useTheme2 } from '../../themes/ThemeContext';
 import { getFocusStyles } from '../../themes/mixins';
-import { usePanelContext } from '../PanelChrome';
+import { SetHeaderLegendEvent } from '../PanelChrome/PanelEvents';
 import { ScrollContainer } from '../ScrollContainer/ScrollContainer';
 
 /**
@@ -34,13 +35,15 @@ export interface VizLayoutComponentType extends FC<VizLayoutProps> {
 export const VizLayout: VizLayoutComponentType = ({ width, height, legend, children }) => {
   const theme = useTheme2();
   const styles = useStyles2(getVizStyles);
-  const panelContext = usePanelContext();
+  const containerRef = useRef<HTMLDivElement>(null);
   const containerStyle: CSSProperties = {
     display: 'flex',
     width: `${width}px`,
     height: `${height}px`,
   };
   const [legendRef, legendMeasure] = useMeasure<HTMLDivElement>();
+  // Track if we've emitted the legend event to prevent infinite loops
+  const legendEmittedRef = useRef<boolean>(false);
 
   if (!legend) {
     return (
@@ -53,26 +56,54 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
   }
 
   // Compute the actual placement based on screen size
-  let { placement, maxHeight = '35%', maxWidth = '60%' } = legend.props;
+  let { placement, maxHeight = '35%' } = legend.props;
 
   if (document.body.clientWidth < theme.breakpoints.values.lg) {
     placement = 'bottom';
   }
 
-  // For top placement, pass legend to panel header via context
+  // For top placement, pass legend to panel header via event bus
   useEffect(() => {
-    if (placement === 'top' && panelContext.setHeaderLegend) {
-      panelContext.setHeaderLegend(legend);
-      return () => {
-        // Clean up when component unmounts or legend changes
-        if (panelContext.setHeaderLegend) {
-          panelContext.setHeaderLegend(null);
+    console.log('[VizLayout] useEffect - placement:', placement, 'hasLegend:', !!legend, 'alreadyEmitted:', legendEmittedRef.current);
+
+    if (placement === 'top' && !legendEmittedRef.current) {
+      // Find the parent PanelChrome by traversing up the DOM
+      let panelId: string | null = null;
+      let element: HTMLElement | null = containerRef.current;
+
+      while (element && !panelId) {
+        element = element.parentElement;
+        if (element?.hasAttribute('data-panel-instance-id')) {
+          panelId = element.getAttribute('data-panel-instance-id');
         }
+      }
+
+      if (!panelId) {
+        console.warn('[VizLayout] Could not find parent panel ID, skipping legend event');
+        return undefined;
+      }
+
+      const eventBus = getAppEvents();
+      console.log('[VizLayout] Emitting header legend event for panel', panelId);
+      eventBus.publish(new SetHeaderLegendEvent({ panelId, legend }));
+      legendEmittedRef.current = true;
+
+      return () => {
+        // Clear legend on unmount
+        console.log('[VizLayout] Emitting clear header legend event for panel', panelId);
+        eventBus.publish(new SetHeaderLegendEvent({ panelId, legend: null }));
+        legendEmittedRef.current = false;
       };
     }
+
+    // If placement changed away from 'top', clear the flag
+    if (placement !== 'top') {
+      legendEmittedRef.current = false;
+    }
+
     // Return empty cleanup function when condition is not met
     return undefined;
-  }, [legend, placement, panelContext]);
+  }, [placement]); // Only depend on placement, not legend
 
   let size: VizSize | null = null;
 
@@ -95,7 +126,6 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
       break;
     case 'right':
       containerStyle.flexDirection = 'row';
-      legendStyle.maxWidth = maxWidth;
 
       if (legendMeasure.width) {
         size = { width: width - legendMeasure.width, height };
@@ -119,7 +149,7 @@ export const VizLayout: VizLayoutComponentType = ({ width, height, legend, child
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} ref={containerRef}>
       {/* Top placement legends are rendered in panel header via context, not here */}
       <div className={styles.viz}>{size && children(size.width, size.height)}</div>
       {placement !== 'top' && (

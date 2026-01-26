@@ -37,4 +37,6 @@ export { PanelDescription } from './PanelDescription';
 
 export { usePanelContext, PanelContextProvider, type PanelContext, PanelContextRoot } from './PanelContext';
 
+export { SetHeaderLegendEvent, type SetHeaderLegendEventPayload } from './PanelEvents';
+
 export * from './types';

@@ -15,7 +15,9 @@ import {
   TimeZone,
 } from '@grafana/data';
 import { DashboardCursorSync, VizLegendOptions } from '@grafana/schema';
+import { getAppEvents } from '@grafana/runtime';
 import { Themeable2, VizLayout } from '@grafana/ui';
+import { SeriesVisibilityChangedEvent } from '@grafana/ui/src/components/PanelChrome/PanelEvents';
 import { UPlotChart } from '@grafana/ui/src/components/uPlot/Plot';
 import { AxisProps } from '@grafana/ui/src/components/uPlot/config/UPlotAxisBuilder';
 import { Renderers, UPlotConfigBuilder } from '@grafana/ui/src/components/uPlot/config/UPlotConfigBuilder';
@@ -114,6 +116,97 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
     this.state = state;
     this.plotInstance = React.createRef();
   }
+
+  componentDidMount() {
+    // Subscribe to series visibility changes from the global app event bus
+    const eventBus = getAppEvents();
+    console.log('[GraphNG] Subscribing to SeriesVisibilityChangedEvent');
+    this.seriesVisibilitySubscription = eventBus.subscribe(SeriesVisibilityChangedEvent, (event) => {
+      console.log('[GraphNG] Received SeriesVisibilityChangedEvent:', event);
+      const { label, mode, panelId } = event.payload;
+
+      // Filter by panelId if provided (to avoid cross-panel interference)
+      // Find the panel container element that wraps this GraphNG instance
+      const plot = this.plotInstance.current;
+      if (panelId && plot) {
+        const plotElement = (plot as any).root;
+        const panelElement = plotElement?.closest('[data-panel-instance-id]');
+        const thisPanelId = panelElement?.getAttribute('data-panel-instance-id');
+        if (thisPanelId && thisPanelId !== panelId) {
+          console.log('[GraphNG] Ignoring event for different panel:', { thisPanelId, eventPanelId: panelId });
+          return;
+        }
+      }
+
+      // Get the aligned frame to match field display names
+      const { alignedFrame } = this.state;
+      if (!alignedFrame) {
+        console.warn('[GraphNG] No aligned frame available');
+        return;
+      }
+
+      // Find the field index for the clicked series
+      const fieldIndex = alignedFrame.fields.findIndex((field) => {
+        const displayName = field.config?.displayName || field.name;
+        return displayName === label;
+      });
+
+      console.log('[GraphNG] Found field index for', label, ':', fieldIndex);
+
+      if (fieldIndex <= 0) {
+        console.warn('[GraphNG] Field not found or is time field (idx:', fieldIndex, ')');
+        return;
+      }
+
+      if (!plot || !plot.series || !plot.series[fieldIndex]) {
+        console.warn('[GraphNG] Plot or series not available at index', fieldIndex);
+        return;
+      }
+
+      // Implement isolate behavior
+      if (mode === 'select') {
+        // ToggleSelection mode: Isolate this series
+        // Check if this is the only visible series
+        const visibleSeriesCount = plot.series.filter((s, idx) => idx > 0 && s.show).length;
+        const isOnlyVisible = visibleSeriesCount === 1 && plot.series[fieldIndex].show;
+
+        console.log('[GraphNG] Isolate mode - visibleCount:', visibleSeriesCount, 'isOnlyVisible:', isOnlyVisible);
+
+        if (isOnlyVisible) {
+          // Show all series (restore)
+          for (let i = 1; i < plot.series.length; i++) {
+            if (!plot.series[i].show) {
+              plot.setSeries(i, { show: true });
+            }
+          }
+          console.log('[GraphNG] Restored all series');
+        } else {
+          // Hide all series except this one (isolate)
+          for (let i = 1; i < plot.series.length; i++) {
+            const shouldShow = i === fieldIndex;
+            if (plot.series[i].show !== shouldShow) {
+              plot.setSeries(i, { show: shouldShow });
+            }
+          }
+          console.log('[GraphNG] Isolated series', label, 'at index', fieldIndex);
+        }
+      } else if (mode === 'append') {
+        // AppendToSelection mode: Toggle this series
+        const currentShow = plot.series[fieldIndex].show;
+        plot.setSeries(fieldIndex, { show: !currentShow });
+        console.log('[GraphNG] Toggled series', label, 'at index', fieldIndex, 'show:', !currentShow);
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    // Unsubscribe from events
+    if (this.seriesVisibilitySubscription) {
+      this.seriesVisibilitySubscription.unsubscribe();
+    }
+  }
+
+  private seriesVisibilitySubscription?: any;
 
   getTimeRange = () => this.props.timeRange;
 
@@ -251,6 +344,8 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
   render() {
     const { width, height, children, renderLegend } = this.props;
     const { config, alignedFrame, alignedData } = this.state;
+
+    console.log('[GraphNG] render called');
 
     if (!config) {
       return null;
