@@ -172,8 +172,22 @@ body {
   letter-spacing: -0.006em !important;
   text-rendering: optimizeLegibility !important;
 
-  // Subtle noise texture for depth
+  // NebulaIQ nebula background (from login page)
   &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url('../img/nebulaiq-login-bg.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  // Subtle noise texture for depth (layered on top)
+  &::after {
     content: '';
     position: fixed;
     inset: 0;

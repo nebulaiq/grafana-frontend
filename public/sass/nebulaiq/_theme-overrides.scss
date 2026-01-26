@@ -37,7 +37,47 @@ a {
 // - packages/grafana-ui/src/themes/GlobalStyles/elements.ts (global styles)
 // - packages/grafana-ui/src/components/Tabs/Tab.tsx (component styles)
 // - packages/grafana-ui/src/components/Tabs/TabsBar.tsx (component styles)
+//
+// FOUC Fix: Provide static CSS for tablist before Emotion injects styles
+// This prevents flash of unstyled content during client-side rendering
 // ==================================================
+
+[role="tablist"] {
+  position: relative;
+  display: inline-flex;
+  height: auto;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+  border: none;
+  margin: 0;
+  overflow-x: auto;
+}
+
+// Individual tab buttons (the pills inside tablist)
+[role="tab"] {
+  list-style: none;
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+  padding: 8px 16px;  // CRITICAL: Prevents vertical misalignment FOUC
+  border-radius: 8px;
+  align-items: center;
+  height: auto;
+  transition: 150ms;
+  text-decoration: none;
+  border: none;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+// Active/selected tab
+[role="tab"][aria-selected="true"] {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.1);
+}
 
 // ==================================================
 // SCROLLBAR STYLING
