@@ -51,6 +51,13 @@ export const NEBULAIQ_FEATURES: NavModelItem[] = [
     url: '/a/nebulaiq-telemetry-app/architecture-insights',
     sortWeight: 5,
   },
+  {
+    id: 'redux-test',
+    text: 'Redux Test',
+    icon: 'database',
+    url: '/a/nebulaiq-telemetry-app/redux-test',
+    sortWeight: 6,
+  },
 ];
 
 /**
@@ -147,8 +154,12 @@ export const SETTINGS_SECTION: NavModelItem = {
  * Used to highlight the currently active section in the navigation
  */
 export function getActiveNavItem(pathname: string): string | undefined {
-  // Check NebulaIQ features
-  for (const item of NEBULAIQ_FEATURES) {
+  // Check NebulaIQ features (check longest paths first to avoid false matches)
+  const sortedFeatures = [...NEBULAIQ_FEATURES].sort((a, b) =>
+    (b.url?.length || 0) - (a.url?.length || 0)
+  );
+
+  for (const item of sortedFeatures) {
     if (item.url && pathname.startsWith(item.url)) {
       return item.id;
     }
