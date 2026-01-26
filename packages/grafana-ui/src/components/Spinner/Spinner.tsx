@@ -8,8 +8,6 @@ import { useStyles2 } from '../../themes';
 import { IconSize, isIconSize } from '../../types';
 import { t } from '../../utils/i18n';
 import { spin } from '../../utils/keyframes';
-import { Icon } from '../Icon/Icon';
-import { getIconRoot, getIconSubDir } from '../Icon/utils';
 
 export interface Props {
   className?: string;
@@ -41,14 +39,13 @@ export const Spinner = ({
 
   const deprecatedStyles = useStyles2(getDeprecatedStyles, size);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const iconName = prefersReducedMotion ? 'hourglass' : 'spinner';
+
+  // Use NebulaIQ logo instead of default Grafana spinner
+  const nebulaiqLogoPath = '/public/img/nebulaiq-icon.svg';
 
   // this entire if statement is handling the deprecated size prop
   // TODO remove once we fully remove the deprecated type
   if (typeof size !== 'string' || !isIconSize(size)) {
-    const iconRoot = getIconRoot();
-    const subDir = getIconSubDir(iconName, 'default');
-    const svgPath = `${iconRoot}${subDir}/${iconName}.svg`;
     return (
       <div
         data-testid="Spinner"
@@ -62,15 +59,18 @@ export const Spinner = ({
         )}
       >
         <SVG
-          src={svgPath}
+          src={nebulaiqLogoPath}
           width={size}
           height={size}
-          className={cx(styles.spin, deprecatedStyles.icon, className)}
+          className={cx(prefersReducedMotion ? '' : styles.spin, deprecatedStyles.icon, className)}
           style={style}
         />
       </div>
     );
   }
+
+  // Get pixel size for the logo based on IconSize
+  const sizeInPx = getSizeInPixels(size);
 
   return (
     <div
@@ -83,15 +83,31 @@ export const Spinner = ({
         className
       )}
     >
-      <Icon
-        className={cx(styles.spin, iconClassName)}
-        name={iconName}
-        size={size}
+      <img
+        src={nebulaiqLogoPath}
+        alt="Loading"
+        width={sizeInPx}
+        height={sizeInPx}
+        className={cx(prefersReducedMotion ? '' : styles.spin, styles.nebulaiqLogo, iconClassName)}
         aria-label={t('grafana-ui.spinner.aria-label', 'Loading')}
       />
     </div>
   );
 };
+
+// Helper function to convert IconSize to pixels
+function getSizeInPixels(size: IconSize): number {
+  const sizeMap: Record<IconSize, number> = {
+    xs: 12,
+    sm: 16,
+    md: 24,
+    lg: 32,
+    xl: 48,
+    xxl: 64,
+    xxxl: 80,
+  };
+  return sizeMap[size] || 24;
+}
 
 const getStyles = (theme: GrafanaTheme2) => ({
   inline: css({
@@ -101,6 +117,12 @@ const getStyles = (theme: GrafanaTheme2) => ({
     [theme.transitions.handleMotion('no-preference')]: {
       animation: `${spin} 2s infinite linear`,
     },
+  }),
+  nebulaiqLogo: css({
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    // Ensure the logo stays crisp during rotation
+    imageRendering: '-webkit-optimize-contrast',
   }),
 });
 
