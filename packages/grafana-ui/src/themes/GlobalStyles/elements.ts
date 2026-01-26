@@ -448,6 +448,53 @@ export function getElementStyles(theme: GrafanaTheme2) {
       paddingTop: theme.spacing(1),
       margin: theme.spacing(0, 2),
     },
+
+    // NebulaIQ: Pill-style tabs - Global styles to prevent FOUC
+    // These styles ensure tabs render correctly immediately, before Emotion component styles load
+    '[role="tablist"]': {
+      position: 'relative',
+      display: 'inline-flex',
+      height: 'auto',
+      alignItems: 'center',
+      background: 'rgba(255, 255, 255, 0.04)',
+      padding: theme.spacing(0.5),
+      borderRadius: theme.spacing(1.25),
+      gap: theme.spacing(0.5),
+      border: 'none',
+      margin: 0,
+      overflowX: 'auto',
+    },
+
+    '[role="tab"]': {
+      listStyle: 'none',
+      position: 'relative',
+      display: 'flex',
+      whiteSpace: 'nowrap',
+      padding: theme.spacing(1, 2),
+      borderRadius: theme.spacing(1),
+      alignItems: 'center',
+      height: 'auto',
+      transition: 'all 150ms ease',
+      textDecoration: 'none',
+      border: 'none',
+      margin: 0,
+      color: theme.colors.text.secondary,
+
+      '&::before': {
+        display: 'none',
+      },
+
+      '&:hover, &:focus': {
+        color: theme.colors.text.primary,
+        background: 'rgba(255, 255, 255, 0.06)',
+        textDecoration: 'none',
+      },
+
+      '&[aria-selected="true"]': {
+        color: theme.colors.text.primary,
+        background: 'rgba(255, 255, 255, 0.10)',
+      },
+    },
   });
 }
 
