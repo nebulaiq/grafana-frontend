@@ -32,7 +32,9 @@ export class VariableInput extends PureComponent<Props> {
         ref={(instance) => {
           if (instance) {
             instance.focus();
-            instance.setAttribute('style', `width:${Math.max(instance.width, 150)}px`);
+            // Use offsetWidth to get the actual rendered width, or minimum 200px for better usability
+            const currentWidth = instance.offsetWidth || 200;
+            instance.setAttribute('style', `width:${Math.max(currentWidth, 200)}px`);
           }
         }}
         id={id}

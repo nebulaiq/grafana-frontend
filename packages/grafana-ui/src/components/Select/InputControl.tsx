@@ -46,6 +46,8 @@ const getInputControlStyles = (theme: GrafanaTheme2, invalid: boolean, withPrefi
         paddingRight: 0,
         position: 'relative',
         boxSizing: 'border-box',
+        // NebulaIQ: Remove all padding so input fills entire container
+        padding: '0 !important',
       }),
       withPrefix &&
         css({

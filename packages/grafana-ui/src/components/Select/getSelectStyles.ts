@@ -102,6 +102,30 @@ export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
       flex: '1 1 0%',
       outline: 'none',
       overflow: 'hidden',
+      // NebulaIQ: Ensure value container has minimum width for proper input display
+      minWidth: '200px',
+
+      // NebulaIQ: Fix for input wrapper grid layout (override react-select internal styles)
+      '& > div[class*="Input"]': {
+        gridTemplateColumns: 'minmax(200px, 1fr) !important',
+        minWidth: '200px !important',
+        // Make input wrapper transparent so placeholder shows through
+        background: 'transparent !important',
+        // Lower z-index so placeholder appears on top
+        zIndex: '0 !important',
+      },
+
+      // NebulaIQ: Fix for actual input element min-width
+      '& input': {
+        minWidth: '200px !important',
+        background: 'transparent !important',
+      },
+
+      // NebulaIQ: Ensure placeholder is visible above input wrapper
+      '& > div[class*="placeholder"]': {
+        zIndex: '2 !important',
+        pointerEvents: 'none',
+      },
     }),
     valueContainerMulti: css({
       label: 'grafana-select-value-container-multi',
