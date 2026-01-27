@@ -23,21 +23,25 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
         zIndex: 1,
         overflow: 'hidden',
         // NebulaIQ: Make input fill its container width
-        minWidth: '0',
-        width: '100%',
+        minWidth: '0 !important',
+        width: '100% !important',
+        // NebulaIQ: Force flex-grow so input expands
+        flexGrow: '1 !important',
+        flex: '1 1 auto !important',
         // NebulaIQ: Remove borders from input element itself
-        border: 'none',
-        outline: 'none',
-        boxShadow: 'none',
+        border: 'none !important',
+        outline: 'none !important',
+        boxShadow: 'none !important',
       };
     },
     // NebulaIQ: Fix for input container grid layout
     inputContainer: function (originalStyles: CSSObjectWithLabel) {
       return {
         ...originalStyles,
-        minWidth: '0',
-        width: '100%',
-        gridTemplateColumns: '0 minmax(0, 1fr)',
+        minWidth: '0 !important',
+        width: '100% !important',
+        // CRITICAL: Use 1fr not minmax - react-select calculates width incorrectly with minmax
+        gridTemplateColumns: '0px 1fr !important',
       };
     },
     loadingIndicator: () => ({}),

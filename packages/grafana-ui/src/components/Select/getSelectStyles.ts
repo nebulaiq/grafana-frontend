@@ -108,7 +108,8 @@ export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
 
       // NebulaIQ: Fix for input wrapper grid layout (override react-select internal styles)
       '& > div[class*="Input"]': {
-        gridTemplateColumns: '0 minmax(0, 1fr) !important',
+        // CRITICAL: Use 1fr not minmax - react-select calculates width incorrectly
+        gridTemplateColumns: '0px 1fr !important',
         minWidth: '0 !important',
         width: '100% !important',
         // Make input wrapper transparent so placeholder shows through
@@ -123,6 +124,8 @@ export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
       '& input': {
         minWidth: '0 !important',
         width: '100% !important',
+        flexGrow: '1 !important',
+        flex: '1 1 auto !important',
         background: 'transparent !important',
         border: 'none !important',
         outline: 'none !important',

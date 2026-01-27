@@ -180,6 +180,55 @@ export function SelectBase<T, Rest = {}>({
     }
   }, [maxMenuHeight, menuPlacement, loadOptions, isOpen]);
 
+  // NebulaIQ FIX: Override react-select's inline grid-template-columns calculation
+  // React-select calculates and sets this inline based on input content, causing input to be 24px wide
+  // This effect fixes it after render by forcing grid-template-columns to use 1fr
+  useEffect(() => {
+    if (!reactSelectRef.current || !reactSelectRef.current.controlRef) {
+      return;
+    }
+
+    const fixInputContainerWidth = () => {
+      const control = reactSelectRef.current?.controlRef;
+      if (control) {
+        // Find all react-select input elements, then get their parent containers
+        const inputs = control.querySelectorAll('input[id^="react-select"]');
+        inputs.forEach((input) => {
+          const container = input.parentElement;
+          if (container instanceof HTMLElement) {
+            // Override the grid-template-columns set by Emotion CSS
+            container.style.setProperty('grid-template-columns', '0px 1fr', 'important');
+          }
+        });
+      }
+    };
+
+    // Fix immediately
+    fixInputContainerWidth();
+
+    // Also fix after delays to catch any delayed renders
+    const timer1 = setTimeout(fixInputContainerWidth, 50);
+    const timer2 = setTimeout(fixInputContainerWidth, 150);
+    const timer3 = setTimeout(fixInputContainerWidth, 300);
+
+    // Set up a MutationObserver to catch dynamic changes
+    const observer = new MutationObserver(fixInputContainerWidth);
+    if (reactSelectRef.current.controlRef) {
+      observer.observe(reactSelectRef.current.controlRef, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      observer.disconnect();
+    };
+  }, [hasInputValue, isOpen]); // Re-run when input changes or menu opens
+
   const onChangeWithEmpty = useCallback(
     (value: SelectableValue<T>, action: ActionMeta) => {
       if (isMulti && (value === undefined || value === null)) {

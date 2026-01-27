@@ -404,6 +404,7 @@ select,
 
 // ==================================================
 // SELECT/DROPDOWN INPUTS - Fix for NebulaIQ Theme
+// CRITICAL: Override inline styles set by react-select JavaScript
 // ==================================================
 
 // Fix for react-select dropdown inputs
@@ -413,25 +414,48 @@ select,
     min-width: 0 !important;
     width: 100% !important;
 
-    // Input wrapper inside value container
-    & > div[class*='Input'] {
+    // Input wrapper inside value container - CRITICAL FIX
+    // Target by attribute selector to override inline styles
+    & > div[class*='Input'],
+    & > [style*="grid-template-columns"] {
       min-width: 0 !important;
       width: 100% !important;
       background: transparent !important;
       border: none !important;
+      // CRITICAL: Override inline style with higher specificity
+      grid-template-columns: 0px 1fr !important;
+      // Try different approaches to force the grid
+      display: grid !important;
+
+      // Alternative: Force grid areas
+      @supports (grid-template-columns: 0px 1fr) {
+        grid-template-columns: 0px 1fr !important;
+      }
 
       // Actual input element
       input {
         min-width: 0 !important;
         width: 100% !important;
+        max-width: none !important;
+        flex: 1 1 auto !important;
+        flex-grow: 1 !important;
+        flex-basis: auto !important;
         background: transparent !important;
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
         padding: 0 !important;
+        // Force grid column 2 to expand
+        grid-column: 2 / 3 !important;
+        justify-self: stretch !important;
       }
     }
   }
+}
+
+// AGGRESSIVE OVERRIDE: Target any element with inline grid-template-columns in select context
+[class*='grafana-select'] [style*="grid-template-columns"] {
+  grid-template-columns: 0px 1fr !important;
 }
 
 // Fix for InputControl wrapper (used by Select component)
@@ -450,6 +474,8 @@ select,
   // Input inside InputControl
   input {
     width: 100% !important;
+    flex: 1 1 auto !important;
+    flex-grow: 1 !important;
     border: none !important;
     background: transparent !important;
     outline: none !important;
