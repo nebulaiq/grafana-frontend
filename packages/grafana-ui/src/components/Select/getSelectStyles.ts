@@ -130,6 +130,16 @@ export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
         border: 'none !important',
         outline: 'none !important',
         boxShadow: 'none !important',
+        // NebulaIQ: Remove padding from input itself
+        padding: '0 !important',
+        paddingLeft: '0 !important',
+        paddingRight: '0 !important',
+        // NebulaIQ: Remove all focus/hover effects
+        '&:hover, &:focus, &:focus-visible, &:active': {
+          border: 'none !important',
+          outline: 'none !important',
+          boxShadow: 'none !important',
+        },
       },
 
       // NebulaIQ: Ensure placeholder is visible above input wrapper

@@ -444,10 +444,24 @@ select,
         border: none !important;
         outline: none !important;
         box-shadow: none !important;
+        // NebulaIQ: Remove all padding from input
         padding: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         // Force grid column 2 to expand
         grid-column: 2 / 3 !important;
         justify-self: stretch !important;
+
+        // NebulaIQ: Remove all hover/focus/active effects
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &:active {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          border-color: transparent !important;
+        }
       }
     }
   }
@@ -456,6 +470,12 @@ select,
 // AGGRESSIVE OVERRIDE: Target any element with inline grid-template-columns in select context
 [class*='grafana-select'] [style*="grid-template-columns"] {
   grid-template-columns: 0px 1fr !important;
+}
+
+// NebulaIQ: Override control padding (parent of value-container)
+// Target by being parent of grafana-select-value-container
+[class*='css-']:has(> [class*='grafana-select-value-container']) {
+  padding-left: 6px !important;
 }
 
 // Fix for InputControl wrapper (used by Select component)
@@ -480,6 +500,21 @@ select,
     background: transparent !important;
     outline: none !important;
     box-shadow: none !important;
+    // NebulaIQ: Remove all padding from input
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+    // NebulaIQ: Remove all hover/focus/active effects
+    &:hover,
+    &:focus,
+    &:focus-visible,
+    &:active {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-color: transparent !important;
+    }
   }
 }
 

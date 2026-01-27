@@ -7,7 +7,11 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
   return {
     clearIndicator: () => ({}),
     container: () => ({}),
-    control: () => ({}),
+    control: (originalStyles: CSSObjectWithLabel) => ({
+      ...originalStyles,
+      // NebulaIQ: Add padding-left to control (wrapper over value-container)
+      paddingLeft: '6px',
+    }),
     dropdownIndicator: () => ({}),
     group: () => ({}),
     groupHeading: () => ({}),
@@ -18,7 +22,10 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
         ...originalStyles,
         color: 'inherit',
         margin: 0,
-        padding: 0,
+        // NebulaIQ: Force padding to 0
+        padding: '0 !important',
+        paddingLeft: '0 !important',
+        paddingRight: '0 !important',
         // Set an explicit z-index here to ensure this element always overlays the singleValue
         zIndex: 1,
         overflow: 'hidden',
@@ -32,6 +39,22 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
         border: 'none !important',
         outline: 'none !important',
         boxShadow: 'none !important',
+        // NebulaIQ: Remove all focus/hover effects
+        '&:hover': {
+          border: 'none !important',
+          outline: 'none !important',
+          boxShadow: 'none !important',
+        },
+        '&:focus': {
+          border: 'none !important',
+          outline: 'none !important',
+          boxShadow: 'none !important',
+        },
+        '&:focus-visible': {
+          border: 'none !important',
+          outline: 'none !important',
+          boxShadow: 'none !important',
+        },
       };
     },
     // NebulaIQ: Fix for input container grid layout
