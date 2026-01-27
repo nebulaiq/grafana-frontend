@@ -402,6 +402,61 @@ select,
   }
 }
 
+// ==================================================
+// SELECT/DROPDOWN INPUTS - Fix for NebulaIQ Theme
+// ==================================================
+
+// Fix for react-select dropdown inputs
+[class*='grafana-select'] {
+  // Value container should fill parent
+  [class*='value-container'] {
+    min-width: 0 !important;
+    width: 100% !important;
+
+    // Input wrapper inside value container
+    & > div[class*='Input'] {
+      min-width: 0 !important;
+      width: 100% !important;
+      background: transparent !important;
+      border: none !important;
+
+      // Actual input element
+      input {
+        min-width: 0 !important;
+        width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+    }
+  }
+}
+
+// Fix for InputControl wrapper (used by Select component)
+[class*='InputControl'] {
+  width: 100% !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 12px !important;
+
+  &:focus,
+  &:focus-within {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  // Input inside InputControl
+  input {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
 textarea {
   height: auto !important;
   min-height: 80px !important;

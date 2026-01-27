@@ -22,17 +22,22 @@ export default function resetSelectStyles(theme: GrafanaTheme2) {
         // Set an explicit z-index here to ensure this element always overlays the singleValue
         zIndex: 1,
         overflow: 'hidden',
-        // NebulaIQ: Fix for dropdown input appearing too small
-        minWidth: '200px',
-        width: 'auto',
+        // NebulaIQ: Make input fill its container width
+        minWidth: '0',
+        width: '100%',
+        // NebulaIQ: Remove borders from input element itself
+        border: 'none',
+        outline: 'none',
+        boxShadow: 'none',
       };
     },
     // NebulaIQ: Fix for input container grid layout
     inputContainer: function (originalStyles: CSSObjectWithLabel) {
       return {
         ...originalStyles,
-        minWidth: '200px',
-        gridTemplateColumns: 'minmax(200px, 1fr)',
+        minWidth: '0',
+        width: '100%',
+        gridTemplateColumns: '0 minmax(0, 1fr)',
       };
     },
     loadingIndicator: () => ({}),

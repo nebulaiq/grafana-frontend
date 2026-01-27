@@ -46,8 +46,17 @@ const getInputControlStyles = (theme: GrafanaTheme2, invalid: boolean, withPrefi
         paddingRight: 0,
         position: 'relative',
         boxSizing: 'border-box',
-        // NebulaIQ: Remove all padding so input fills entire container
-        padding: '0 !important',
+        // NebulaIQ: Remove padding but keep minimal for visual consistency
+        padding: '0 12px !important',
+        // NebulaIQ: Remove borders as the outer container already has them
+        border: 'none !important',
+        // NebulaIQ: Remove background as container provides it
+        background: 'transparent !important',
+        // NebulaIQ: Remove box-shadow on focus (container handles focus state)
+        '&:focus, &:focus-within': {
+          boxShadow: 'none !important',
+          outline: 'none !important',
+        },
       }),
       withPrefix &&
         css({

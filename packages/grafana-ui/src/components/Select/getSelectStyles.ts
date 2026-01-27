@@ -102,23 +102,31 @@ export const getSelectStyles = stylesFactory((theme: GrafanaTheme2) => {
       flex: '1 1 0%',
       outline: 'none',
       overflow: 'hidden',
-      // NebulaIQ: Ensure value container has minimum width for proper input display
-      minWidth: '200px',
+      // NebulaIQ: Remove fixed minWidth to allow container to adapt to parent width
+      minWidth: '0',
+      width: '100%',
 
       // NebulaIQ: Fix for input wrapper grid layout (override react-select internal styles)
       '& > div[class*="Input"]': {
-        gridTemplateColumns: 'minmax(200px, 1fr) !important',
-        minWidth: '200px !important',
+        gridTemplateColumns: '0 minmax(0, 1fr) !important',
+        minWidth: '0 !important',
+        width: '100% !important',
         // Make input wrapper transparent so placeholder shows through
         background: 'transparent !important',
+        // Remove borders from input wrapper
+        border: 'none !important',
         // Lower z-index so placeholder appears on top
         zIndex: '0 !important',
       },
 
-      // NebulaIQ: Fix for actual input element min-width
+      // NebulaIQ: Fix for actual input element to fill container
       '& input': {
-        minWidth: '200px !important',
+        minWidth: '0 !important',
+        width: '100% !important',
         background: 'transparent !important',
+        border: 'none !important',
+        outline: 'none !important',
+        boxShadow: 'none !important',
       },
 
       // NebulaIQ: Ensure placeholder is visible above input wrapper
