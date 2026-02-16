@@ -2,8 +2,8 @@ import { getActiveNavItem, NEBULAIQ_FEATURES, EXPLORE_SECTION, SETTINGS_SECTION 
 
 describe('NebulaIQ Navigation', () => {
   describe('NEBULAIQ_FEATURES', () => {
-    it('should have 5 top-level feature items', () => {
-      expect(NEBULAIQ_FEATURES.length).toBe(5);
+    it('should have 10 top-level feature items', () => {
+      expect(NEBULAIQ_FEATURES.length).toBe(10);
     });
 
     it('should have all required feature items', () => {
@@ -13,19 +13,29 @@ describe('NebulaIQ Navigation', () => {
       expect(featureIds).toContain('logs');
       expect(featureIds).toContain('traces');
       expect(featureIds).toContain('architecture-insights');
+      expect(featureIds).toContain('integrations');
+      expect(featureIds).toContain('hosts');
+      expect(featureIds).toContain('pods');
     });
 
     it('should have correct URLs for all features', () => {
-      const features = {
+      const features: Record<string, string> = {
         'service-performance': '/a/nebulaiq-telemetry-app/service-performance',
         infrastructure: '/a/nebulaiq-telemetry-app/infrastructure',
         logs: '/a/nebulaiq-telemetry-app/logs',
         traces: '/a/nebulaiq-telemetry-app/traces',
         'architecture-insights': '/a/nebulaiq-telemetry-app/architecture-insights',
+        integrations: '/a/nebulaiq-telemetry-app/integrations',
+        hosts: '/a/nebulaiq-telemetry-app/host',
+        pods: '/a/nebulaiq-telemetry-app/pod',
+        'redux-test': '/a/nebulaiq-telemetry-app/redux-test',
+        'redux-scene-test': '/a/nebulaiq-telemetry-app/redux-scene-test',
       };
 
       NEBULAIQ_FEATURES.forEach((item) => {
-        expect(item.url).toBe(features[item.id as keyof typeof features]);
+        if (features[item.id!]) {
+          expect(item.url).toBe(features[item.id!]);
+        }
       });
     });
 
@@ -112,6 +122,24 @@ describe('NebulaIQ Navigation', () => {
       const path = '/a/nebulaiq-telemetry-app/architecture-insights';
       const active = getActiveNavItem(path);
       expect(active).toBe('architecture-insights');
+    });
+
+    it('should identify active nav item for Integrations', () => {
+      const path = '/a/nebulaiq-telemetry-app/integrations';
+      const active = getActiveNavItem(path);
+      expect(active).toBe('integrations');
+    });
+
+    it('should identify active nav item for Hosts', () => {
+      const path = '/a/nebulaiq-telemetry-app/host';
+      const active = getActiveNavItem(path);
+      expect(active).toBe('hosts');
+    });
+
+    it('should identify active nav item for Pods', () => {
+      const path = '/a/nebulaiq-telemetry-app/pod';
+      const active = getActiveNavItem(path);
+      expect(active).toBe('pods');
     });
 
     it('should identify explore as active for /dashboards', () => {

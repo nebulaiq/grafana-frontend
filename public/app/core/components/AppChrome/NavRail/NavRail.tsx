@@ -1,17 +1,12 @@
-import { css, cx } from '@emotion/css';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom-v5-compat';
+import {css, cx} from '@emotion/css';
+import {useState} from 'react';
+import {useLocation} from 'react-router-dom-v5-compat';
 
-import { GrafanaTheme2 } from '@grafana/data';
-import { Dropdown, Icon, IconName, Menu, useStyles2 } from '@grafana/ui';
-import { contextSrv } from 'app/core/services/context_srv';
-
-import {
-  NEBULAIQ_FEATURES,
-  SETTINGS_SECTION,
-  getActiveNavItem,
-} from 'app/nebulaiq/navigation';
-import { useBookmarkedDashboards } from 'app/nebulaiq/useBookmarkedDashboards';
+import {GrafanaTheme2} from '@grafana/data';
+import {Dropdown, Icon, IconName, Menu, useStyles2} from '@grafana/ui';
+import {contextSrv} from 'app/core/services/context_srv';
+import {getActiveNavItem, NEBULAIQ_FEATURES, SETTINGS_SECTION,} from 'app/nebulaiq/navigation';
+import {useBookmarkedDashboards} from 'app/nebulaiq/useBookmarkedDashboards';
 
 // Rail dimensions
 export const RAIL_WIDTH_COLLAPSED = 56;
@@ -30,12 +25,12 @@ interface NavRailProps {
  * - Expands to full width on hover
  * - Violet accent for active states
  */
-export function NavRail({ className }: NavRailProps) {
+export function NavRail({className}: NavRailProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const styles = useStyles2(getStyles);
   const location = useLocation();
   const activeNavItem = getActiveNavItem(location.pathname);
-  const { bookmarks } = useBookmarkedDashboards();
+  const {bookmarks} = useBookmarkedDashboards();
 
   // Get user info for bottom section
   const user = contextSrv.user;
@@ -78,7 +73,7 @@ export function NavRail({ className }: NavRailProps) {
         </div>
 
         {/* Divider */}
-        <div className={styles.divider} />
+        <div className={styles.divider}/>
 
         {/* Dashboards Section */}
         <div className={styles.navSection}>
@@ -105,7 +100,7 @@ export function NavRail({ className }: NavRailProps) {
         </div>
 
         {/* Divider */}
-        <div className={styles.divider} />
+        <div className={styles.divider}/>
 
         {/* Explore - Direct link to query view */}
         <NavRailItem
@@ -124,9 +119,9 @@ export function NavRail({ className }: NavRailProps) {
         <Dropdown
           overlay={() => (
             <Menu>
-              <Menu.Item url="/profile" label="Profile" icon="user" />
-              <Menu.Item url="/profile/password" label="Change password" icon="lock" />
-              <Menu.Divider />
+              <Menu.Item url="/profile" label="Profile" icon="user"/>
+              <Menu.Item url="/profile/password" label="Change password" icon="lock"/>
+              <Menu.Divider/>
               {SETTINGS_SECTION.children?.map((item) => (
                 <Menu.Item
                   key={item.id || item.text}
@@ -135,8 +130,8 @@ export function NavRail({ className }: NavRailProps) {
                   icon={item.icon as IconName}
                 />
               ))}
-              <Menu.Divider />
-              <Menu.Item url="/logout" label="Sign out" icon="signout" />
+              <Menu.Divider/>
+              <Menu.Item url="/logout" label="Sign out" icon="signout"/>
             </Menu>
           )}
           placement="top-start"
@@ -144,7 +139,7 @@ export function NavRail({ className }: NavRailProps) {
           <div className={cx(styles.userSection, isExpanded && styles.userSectionExpanded)}>
             {/* Avatar */}
             {user.gravatarUrl ? (
-              <img src={user.gravatarUrl} alt={userName} className={styles.userAvatar} />
+              <img src={user.gravatarUrl} alt={userName} className={styles.userAvatar}/>
             ) : (
               <div className={styles.userAvatarPlaceholder}>
                 <span>{userInitials}</span>
@@ -158,7 +153,7 @@ export function NavRail({ className }: NavRailProps) {
                   <span className={styles.userName}>{userName}</span>
                   <span className={styles.userBranding}>NebulaIQ Observe</span>
                 </div>
-                <Icon name="cog" className={styles.settingsIcon} />
+                <Icon name="cog" className={styles.settingsIcon}/>
               </>
             )}
           </div>
@@ -191,7 +186,7 @@ interface NavRailItemProps {
   isExpanded: boolean;
 }
 
-function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded }: NavRailItemProps) {
+function NavRailItem({icon, label, abbrev, href, isActive, isExpanded}: NavRailItemProps) {
   const styles = useStyles2(getItemStyles);
 
   return (
@@ -205,14 +200,14 @@ function NavRailItem({ icon, label, abbrev, href, isActive, isExpanded }: NavRai
       title={label}
     >
       <div className={styles.iconWrapper}>
-        <Icon name={icon} className={styles.icon} />
+        <Icon name={icon} className={styles.icon}/>
       </div>
       {isExpanded ? (
         <span className={styles.label}>{label}</span>
       ) : (
         <span className={styles.abbrevVertical}>{abbrev}</span>
       )}
-      {isActive && <div className={styles.activeIndicator} />}
+      {isActive && <div className={styles.activeIndicator}/>}
     </a>
   );
 }
@@ -234,14 +229,14 @@ interface NavRailItemExpandableProps {
 // @ts-expect-error Reserved for future expandable nav items
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function _NavRailItemExpandable({
-  icon,
-  label,
-  abbrev,
-  href,
-  children,
-  isActive,
-  isExpanded,
-}: NavRailItemExpandableProps) {
+                                  icon,
+                                  label,
+                                  abbrev,
+                                  href,
+                                  children,
+                                  isActive,
+                                  isExpanded,
+                                }: NavRailItemExpandableProps) {
   const [isOpen, setIsOpen] = useState(false);
   const styles = useStyles2(getItemStyles);
 
@@ -258,10 +253,10 @@ function _NavRailItemExpandable({
           title={label}
         >
           <div className={styles.iconWrapper}>
-            <Icon name={icon} className={styles.icon} />
+            <Icon name={icon} className={styles.icon}/>
           </div>
           <span className={styles.abbrevVertical}>{abbrev}</span>
-          {isActive && <div className={styles.activeIndicator} />}
+          {isActive && <div className={styles.activeIndicator}/>}
         </a>
       </div>
     );
@@ -276,7 +271,7 @@ function _NavRailItemExpandable({
       )}>
         <a href={href} className={styles.expandableLinkRow} title={label}>
           <div className={styles.iconWrapper}>
-            <Icon name={icon} className={styles.icon} />
+            <Icon name={icon} className={styles.icon}/>
           </div>
           <span className={styles.label}>{label}</span>
         </a>
@@ -285,9 +280,9 @@ function _NavRailItemExpandable({
           className={styles.chevronButton}
           aria-label="Toggle submenu"
         >
-          <Icon name={isOpen ? 'angle-down' : 'angle-right'} />
+          <Icon name={isOpen ? 'angle-down' : 'angle-right'}/>
         </button>
-        {isActive && <div className={styles.activeIndicator} />}
+        {isActive && <div className={styles.activeIndicator}/>}
       </div>
 
       {isOpen && children.length > 0 && (
@@ -298,7 +293,7 @@ function _NavRailItemExpandable({
               href={child.url || '#'}
               className={styles.childItem}
             >
-              {child.icon && <Icon name={child.icon as IconName} size="sm" />}
+              {child.icon && <Icon name={child.icon as IconName} size="sm"/>}
               <span>{child.text}</span>
             </a>
           ))}
@@ -318,6 +313,9 @@ const SHORT_LABELS: Record<string, string> = {
   'Logs': 'Logs',
   'Traces': 'Traces',
   'Architecture Insights': 'Insights',
+  'Integrations': 'Plugins',
+  'Hosts': 'Hosts',
+  'Pods': 'Pods',
   'Redux Test': 'Redux',
   'Redux Scene Test': 'Scenes',
   'Explore': 'Explore',

@@ -52,18 +52,39 @@ export const NEBULAIQ_FEATURES: NavModelItem[] = [
     sortWeight: 5,
   },
   {
+    id: 'integrations',
+    text: 'Integrations',
+    icon: 'plug',
+    url: '/a/nebulaiq-telemetry-app/integrations',
+    sortWeight: 6,
+  },
+  {
+    id: 'hosts',
+    text: 'Hosts',
+    icon: 'monitor',
+    url: '/a/nebulaiq-telemetry-app/host',
+    sortWeight: 7,
+  },
+  {
+    id: 'pods',
+    text: 'Pods',
+    icon: 'docker',
+    url: '/a/nebulaiq-telemetry-app/pod',
+    sortWeight: 8,
+  },
+  {
     id: 'redux-test',
     text: 'Redux Test',
     icon: 'database',
     url: '/a/nebulaiq-telemetry-app/redux-test',
-    sortWeight: 6,
+    sortWeight: 9,
   },
   {
     id: 'redux-scene-test',
     text: 'Redux Scene Test',
     icon: 'apps',
     url: '/a/nebulaiq-telemetry-app/redux-scene-test',
-    sortWeight: 7,
+    sortWeight: 10,
   },
 ];
 

@@ -47,6 +47,15 @@ function getPageTitleFromPath(pathname: string): string {
   if (pathname.includes('architecture-insights')) {
     return 'Architecture Insights';
   }
+  if (pathname.includes('integrations')) {
+    return 'Integrations';
+  }
+  if (pathname.includes('/host')) {
+    return 'Hosts';
+  }
+  if (pathname.includes('/pod')) {
+    return 'Pods';
+  }
 
   // Grafana pages
   if (pathname.includes('/dashboards')) {
