@@ -4,7 +4,7 @@ export function SupportPage() {
   return (
     <ComingSoonPage
       pageTitle="Support"
-      pageDescription="Get help and support for your NebulaIQ Telemetry platform."
+      pageDescription="Get help and support for your NebulaIQ Observe platform."
     />
   );
 }

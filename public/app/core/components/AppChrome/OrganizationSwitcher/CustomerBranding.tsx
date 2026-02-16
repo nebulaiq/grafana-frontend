@@ -124,10 +124,10 @@ function getDisplayFormat(orgName: string) {
 
   if (isDefaultOrg) {
     return {
-      customerName: 'NebulaIQ Telemetry',
+      customerName: 'NebulaIQ Observe',
       attribution: '',
       shortName: 'NebulaIQ',
-      tooltip: 'NebulaIQ Telemetry',
+      tooltip: 'NebulaIQ Observe',
     };
   }
 

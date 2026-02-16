@@ -10,7 +10,7 @@ export interface BrandComponentProps {
 }
 
 export const LoginLogo: FC<BrandComponentProps & { logo?: string }> = ({ className, logo }) => {
-  return <img className={className} src={`${logo ? logo : 'public/img/nebulaiq-logo.svg'}`} alt="NebulaIQ Telemetry" />;
+  return <img className={className} src={`${logo ? logo : 'public/img/nebulaiq-logo.svg'}`} alt="NebulaIQ Observe" />;
 };
 
 const LoginBackground: FC<BrandComponentProps> = ({ className, children }) => {
@@ -52,7 +52,7 @@ export class Branding {
   static LoginBackground = LoginBackground;
   static MenuLogo = MenuLogo;
   static LoginBoxBackground = LoginBoxBackground;
-  static AppTitle = 'NebulaIQ Telemetry';
+  static AppTitle = 'NebulaIQ Observe';
   static LoginTitle = 'Welcome to NebulaIQ';
   static HideEdition = true;
   static GetLoginSubTitle = (): null | string => {

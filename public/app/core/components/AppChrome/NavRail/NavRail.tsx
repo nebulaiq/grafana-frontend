@@ -53,10 +53,10 @@ export function NavRail({ className }: NavRailProps) {
         <a href="/" className={styles.logoLink}>
           <img
             src="/public/img/nebulaiq-icon.svg"
-            alt="NebulaIQ Telemetry"
+            alt="NebulaIQ Observe"
             className={styles.logoIcon}
           />
-          {isExpanded && <span className={styles.logoText}>NebulaIQ Telemetry</span>}
+          {isExpanded && <span className={styles.logoText}>NebulaIQ Observe</span>}
         </a>
       </div>
 
@@ -156,7 +156,7 @@ export function NavRail({ className }: NavRailProps) {
               <>
                 <div className={styles.userInfo}>
                   <span className={styles.userName}>{userName}</span>
-                  <span className={styles.userBranding}>NebulaIQ Telemetry</span>
+                  <span className={styles.userBranding}>NebulaIQ Observe</span>
                 </div>
                 <Icon name="cog" className={styles.settingsIcon} />
               </>
