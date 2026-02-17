@@ -72,20 +72,6 @@ export const NEBULAIQ_FEATURES: NavModelItem[] = [
     url: '/a/nebulaiq-telemetry-app/pod',
     sortWeight: 8,
   },
-  {
-    id: 'redux-test',
-    text: 'Redux Test',
-    icon: 'database',
-    url: '/a/nebulaiq-telemetry-app/redux-test',
-    sortWeight: 9,
-  },
-  {
-    id: 'redux-scene-test',
-    text: 'Redux Scene Test',
-    icon: 'apps',
-    url: '/a/nebulaiq-telemetry-app/redux-scene-test',
-    sortWeight: 10,
-  },
 ];
 
 /**
