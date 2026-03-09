@@ -313,7 +313,7 @@ const SHORT_LABELS: Record<string, string> = {
   'Logs': 'Logs',
   'Traces': 'Traces',
   'Architecture Insights': 'Insights',
-  'Integrations': 'Plugins',
+  'Integrations': 'Integrations',
   'Hosts': 'Hosts',
   'Pods': 'Pods',
   'Redux Test': 'Redux',
