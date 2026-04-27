@@ -1,4 +1,4 @@
-import { NavModelItem } from '@grafana/data';
+import {NavModelItem} from '@grafana/data';
 
 /**
  * NebulaIQ Navigation Structure
@@ -52,26 +52,40 @@ export const NEBULAIQ_FEATURES: NavModelItem[] = [
     sortWeight: 5,
   },
   {
-    id: 'integrations',
-    text: 'Integrations',
-    icon: 'plug',
-    url: '/a/nebulaiq-telemetry-app/integrations',
+    id: 'tag-explorer',
+    text: 'Tag Explorer',
+    icon: 'tag-alt',
+    url: '/a/nebulaiq-telemetry-app/tags',
     sortWeight: 6,
   },
   {
-    id: 'hosts',
-    text: 'Hosts',
-    icon: 'monitor',
-    url: '/a/nebulaiq-telemetry-app/host',
+    id: 'custom',
+    text: 'Custom',
+    icon: 'dashboard',
+    url: '/a/nebulaiq-telemetry-app/custom',
     sortWeight: 7,
   },
-  {
-    id: 'pods',
-    text: 'Pods',
-    icon: 'docker',
-    url: '/a/nebulaiq-telemetry-app/pod',
-    sortWeight: 8,
-  },
+  // {
+  //   id: 'integrations',
+  //   text: 'Integrations',
+  //   icon: 'plug',
+  //   url: '/a/nebulaiq-telemetry-app/integrations',
+  //   sortWeight: 6,
+  // },
+  // {
+  //   id: 'hosts',
+  //   text: 'Hosts',
+  //   icon: 'monitor',
+  //   url: '/a/nebulaiq-telemetry-app/host',
+  //   sortWeight: 7,
+  // },
+  // {
+  //   id: 'pods',
+  //   text: 'Pods',
+  //   icon: 'docker',
+  //   url: '/a/nebulaiq-telemetry-app/pod',
+  //   sortWeight: 8,
+  // },
 ];
 
 /**
