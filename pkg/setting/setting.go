@@ -496,6 +496,9 @@ type Cfg struct {
 	// Cloud Migration
 	CloudMigration CloudMigrationSettings
 
+	// NebulaIQ
+	NebulaIQ NebulaIQSettings
+
 	// Feature Management Settings
 	FeatureManagement FeatureMgmtSettings
 
@@ -1338,6 +1341,7 @@ func (cfg *Cfg) parseINIFile(iniFile *ini.File) error {
 	cfg.readFeatureManagementConfig()
 	cfg.readPublicDashboardsSettings()
 	cfg.readCloudMigrationSettings()
+	cfg.readNebulaIQSettings()
 
 	// read experimental scopes settings.
 	scopesSection := iniFile.Section("scopes")

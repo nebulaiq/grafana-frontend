@@ -10,7 +10,7 @@ import { useGrafana } from 'app/core/context/GrafanaContext';
 
 // Import NebulaIQ navigation
 import {
-  NEBULAIQ_FEATURES,
+  getEnabledFeatures,
   EXPLORE_SECTION,
   SETTINGS_SECTION,
   getActiveNavItem,
@@ -64,7 +64,7 @@ export const MegaMenu = memo(
             <div className="nebulaiq-mega-menu">
               <div className="nebulaiq-nav-list">
                 {/* Section 1: NebulaIQ Features */}
-                {NEBULAIQ_FEATURES.map((item) => (
+                {getEnabledFeatures().map((item) => (
                   <NavItem
                     key={item.id}
                     item={item}

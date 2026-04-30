@@ -236,6 +236,11 @@ export interface GrafanaConfig {
   reportingStaticContext?: Record<string, string>;
   exploreDefaultTimeOffset?: string;
 
+  /** Comma-separated page IDs that are enabled in the NebulaIQ nav. Undefined = all enabled. */
+  nebulaiqEnabledPages?: string[];
+  /** Comma-separated action IDs that are enabled for viewDetails buttons. Undefined = all enabled. */
+  nebulaiqEnabledActions?: string[];
+
   // The namespace to use for kubernetes apiserver requests
   namespace: string;
 

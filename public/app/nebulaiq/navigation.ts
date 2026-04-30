@@ -1,4 +1,5 @@
-import {NavModelItem} from '@grafana/data';
+import { NavModelItem } from '@grafana/data';
+import { config } from '@grafana/runtime';
 
 /**
  * NebulaIQ Navigation Structure
@@ -87,6 +88,32 @@ export const NEBULAIQ_FEATURES: NavModelItem[] = [
   //   sortWeight: 8,
   // },
 ];
+
+/**
+ * Returns the filtered list of features based on server configuration.
+ * If nebulaiqEnabledPages is not set or empty, returns all features (backwards compatible).
+ * If set, returns only features whose IDs are in the whitelist.
+ */
+export function getEnabledFeatures(): NavModelItem[] {
+  const enabledPages = config.nebulaiqEnabledPages;
+  if (!enabledPages || enabledPages.length === 0) {
+    return NEBULAIQ_FEATURES;
+  }
+  const enabledSet = new Set(enabledPages);
+  return NEBULAIQ_FEATURES.filter((item) => enabledSet.has(item.id!));
+}
+
+/**
+ * Check if a specific page ID is enabled.
+ * Useful for route-level guards.
+ */
+export function isPageEnabled(pageId: string): boolean {
+  const enabledPages = config.nebulaiqEnabledPages;
+  if (!enabledPages || enabledPages.length === 0) {
+    return true;
+  }
+  return enabledPages.includes(pageId);
+}
 
 /**
  * Section 2: Bookmarked Dashboards
@@ -182,8 +209,8 @@ export const SETTINGS_SECTION: NavModelItem = {
  * Used to highlight the currently active section in the navigation
  */
 export function getActiveNavItem(pathname: string): string | undefined {
-  // Check NebulaIQ features (check longest paths first to avoid false matches)
-  const sortedFeatures = [...NEBULAIQ_FEATURES].sort((a, b) =>
+  // Check NebulaIQ features (only enabled ones, longest paths first to avoid false matches)
+  const sortedFeatures = [...getEnabledFeatures()].sort((a, b) =>
     (b.url?.length || 0) - (a.url?.length || 0)
   );
 
@@ -191,6 +218,11 @@ export function getActiveNavItem(pathname: string): string | undefined {
     if (item.url && pathname.startsWith(item.url)) {
       return item.id;
     }
+  }
+
+  // Check datasources section
+  if (pathname.startsWith('/connections/datasources') || pathname.startsWith('/connections/add-new-connection')) {
+    return 'datasources';
   }
 
   // Check explore section

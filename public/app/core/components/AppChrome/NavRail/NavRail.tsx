@@ -5,7 +5,7 @@ import {useLocation} from 'react-router-dom-v5-compat';
 import {GrafanaTheme2} from '@grafana/data';
 import {Dropdown, Icon, IconName, Menu, useStyles2} from '@grafana/ui';
 import {contextSrv} from 'app/core/services/context_srv';
-import {getActiveNavItem, NEBULAIQ_FEATURES, SETTINGS_SECTION,} from 'app/nebulaiq/navigation';
+import {getActiveNavItem, getEnabledFeatures, SETTINGS_SECTION,} from 'app/nebulaiq/navigation';
 import {useBookmarkedDashboards} from 'app/nebulaiq/useBookmarkedDashboards';
 
 // Rail dimensions
@@ -59,7 +59,7 @@ export function NavRail({className}: NavRailProps) {
       <div className={styles.scrollableContent}>
         {/* Main Navigation */}
         <div className={styles.navSection}>
-          {NEBULAIQ_FEATURES.map((item) => (
+          {getEnabledFeatures().map((item) => (
             <NavRailItem
               key={item.id}
               icon={item.icon as IconName}
@@ -98,6 +98,16 @@ export function NavRail({className}: NavRailProps) {
             />
           ))}
         </div>
+
+        {/* Data Sources */}
+        <NavRailItem
+          icon="database"
+          label="Data Sources"
+          abbrev="Sources"
+          href="/connections/datasources"
+          isActive={activeNavItem === 'datasources'}
+          isExpanded={isExpanded}
+        />
 
         {/* Divider */}
         <div className={styles.divider}/>
@@ -318,6 +328,7 @@ const SHORT_LABELS: Record<string, string> = {
   'Pods': 'Pods',
   'Redux Test': 'Redux',
   'Redux Scene Test': 'Scenes',
+  'Data Sources': 'Sources',
   'Explore': 'Explore',
   'Settings': 'Settings',
   'Bookmark Dashboard': 'Starred',

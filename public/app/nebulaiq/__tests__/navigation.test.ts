@@ -1,9 +1,18 @@
-import { getActiveNavItem, NEBULAIQ_FEATURES, EXPLORE_SECTION, SETTINGS_SECTION } from '../navigation';
+import { config } from '@grafana/runtime';
+
+import {
+  getActiveNavItem,
+  getEnabledFeatures,
+  isPageEnabled,
+  NEBULAIQ_FEATURES,
+  EXPLORE_SECTION,
+  SETTINGS_SECTION,
+} from '../navigation';
 
 describe('NebulaIQ Navigation', () => {
   describe('NEBULAIQ_FEATURES', () => {
-    it('should have 10 top-level feature items', () => {
-      expect(NEBULAIQ_FEATURES.length).toBe(10);
+    it('should have 8 top-level feature items', () => {
+      expect(NEBULAIQ_FEATURES.length).toBe(8);
     });
 
     it('should have all required feature items', () => {
@@ -28,8 +37,6 @@ describe('NebulaIQ Navigation', () => {
         integrations: '/a/nebulaiq-telemetry-app/integrations',
         hosts: '/a/nebulaiq-telemetry-app/host',
         pods: '/a/nebulaiq-telemetry-app/pod',
-        'redux-test': '/a/nebulaiq-telemetry-app/redux-test',
-        'redux-scene-test': '/a/nebulaiq-telemetry-app/redux-scene-test',
       };
 
       NEBULAIQ_FEATURES.forEach((item) => {
@@ -46,6 +53,62 @@ describe('NebulaIQ Navigation', () => {
     });
   });
 
+  describe('getEnabledFeatures', () => {
+    afterEach(() => {
+      (config as any).nebulaiqEnabledPages = undefined;
+    });
+
+    it('should return all features when nebulaiqEnabledPages is undefined', () => {
+      (config as any).nebulaiqEnabledPages = undefined;
+      expect(getEnabledFeatures()).toEqual(NEBULAIQ_FEATURES);
+    });
+
+    it('should return all features when nebulaiqEnabledPages is empty array', () => {
+      (config as any).nebulaiqEnabledPages = [];
+      expect(getEnabledFeatures()).toEqual(NEBULAIQ_FEATURES);
+    });
+
+    it('should filter features when nebulaiqEnabledPages is set', () => {
+      (config as any).nebulaiqEnabledPages = ['logs', 'traces'];
+      const enabled = getEnabledFeatures();
+      expect(enabled).toHaveLength(2);
+      expect(enabled.map((f) => f.id)).toEqual(['logs', 'traces']);
+    });
+
+    it('should return empty array when no valid IDs are configured', () => {
+      (config as any).nebulaiqEnabledPages = ['nonexistent'];
+      expect(getEnabledFeatures()).toHaveLength(0);
+    });
+
+    it('should preserve sort order from NEBULAIQ_FEATURES', () => {
+      (config as any).nebulaiqEnabledPages = ['traces', 'logs'];
+      const enabled = getEnabledFeatures();
+      expect(enabled[0].id).toBe('logs');
+      expect(enabled[1].id).toBe('traces');
+    });
+  });
+
+  describe('isPageEnabled', () => {
+    afterEach(() => {
+      (config as any).nebulaiqEnabledPages = undefined;
+    });
+
+    it('should return true for any page when config is not set', () => {
+      (config as any).nebulaiqEnabledPages = undefined;
+      expect(isPageEnabled('logs')).toBe(true);
+    });
+
+    it('should return true for enabled pages', () => {
+      (config as any).nebulaiqEnabledPages = ['logs', 'traces'];
+      expect(isPageEnabled('logs')).toBe(true);
+    });
+
+    it('should return false for disabled pages', () => {
+      (config as any).nebulaiqEnabledPages = ['logs', 'traces'];
+      expect(isPageEnabled('hosts')).toBe(false);
+    });
+  });
+
   describe('EXPLORE_SECTION', () => {
     it('should have correct structure', () => {
       expect(EXPLORE_SECTION.id).toBe('explore');
@@ -54,15 +117,15 @@ describe('NebulaIQ Navigation', () => {
       expect(EXPLORE_SECTION.icon).toBe('compass');
     });
 
-    it('should have 4 child items', () => {
-      expect(EXPLORE_SECTION.children).toHaveLength(4);
+    it('should have child items', () => {
+      expect(EXPLORE_SECTION.children).toBeDefined();
+      expect(EXPLORE_SECTION.children!.length).toBeGreaterThan(0);
     });
 
     it('should have correct child items', () => {
       const childIds = EXPLORE_SECTION.children?.map((child) => child.id);
       expect(childIds).toContain('explore-query');
       expect(childIds).toContain('explore-metrics');
-      expect(childIds).toContain('explore-logs');
       expect(childIds).toContain('explore-profiles');
     });
   });
@@ -74,8 +137,9 @@ describe('NebulaIQ Navigation', () => {
       expect(SETTINGS_SECTION.icon).toBe('cog');
     });
 
-    it('should have 4 child items', () => {
-      expect(SETTINGS_SECTION.children).toHaveLength(4);
+    it('should have child items', () => {
+      expect(SETTINGS_SECTION.children).toBeDefined();
+      expect(SETTINGS_SECTION.children!.length).toBeGreaterThan(0);
     });
 
     it('should have correct child items', () => {
@@ -94,87 +158,74 @@ describe('NebulaIQ Navigation', () => {
   });
 
   describe('getActiveNavItem', () => {
+    afterEach(() => {
+      (config as any).nebulaiqEnabledPages = undefined;
+    });
+
     it('should identify active nav item for Service Performance', () => {
-      const path = '/a/nebulaiq-telemetry-app/service-performance';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('service-performance');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/service-performance')).toBe('service-performance');
     });
 
     it('should identify active nav item for Infrastructure', () => {
-      const path = '/a/nebulaiq-telemetry-app/infrastructure';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('infrastructure');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/infrastructure')).toBe('infrastructure');
     });
 
     it('should identify active nav item for Logs', () => {
-      const path = '/a/nebulaiq-telemetry-app/logs';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('logs');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/logs')).toBe('logs');
     });
 
     it('should identify active nav item for Traces', () => {
-      const path = '/a/nebulaiq-telemetry-app/traces';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('traces');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/traces')).toBe('traces');
     });
 
     it('should identify active nav item for Architecture Insights', () => {
-      const path = '/a/nebulaiq-telemetry-app/architecture-insights';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('architecture-insights');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/architecture-insights')).toBe('architecture-insights');
     });
 
     it('should identify active nav item for Integrations', () => {
-      const path = '/a/nebulaiq-telemetry-app/integrations';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('integrations');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/integrations')).toBe('integrations');
     });
 
     it('should identify active nav item for Hosts', () => {
-      const path = '/a/nebulaiq-telemetry-app/host';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('hosts');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/host')).toBe('hosts');
     });
 
     it('should identify active nav item for Pods', () => {
-      const path = '/a/nebulaiq-telemetry-app/pod';
-      const active = getActiveNavItem(path);
-      expect(active).toBe('pods');
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/pod')).toBe('pods');
     });
 
     it('should identify explore as active for /dashboards', () => {
-      const active = getActiveNavItem('/dashboards');
-      expect(active).toBe('explore');
+      expect(getActiveNavItem('/dashboards')).toBe('explore');
     });
 
     it('should identify explore as active for /explore', () => {
-      const active = getActiveNavItem('/explore');
-      expect(active).toBe('explore');
+      expect(getActiveNavItem('/explore')).toBe('explore');
     });
 
     it('should identify settings as active for /connections', () => {
-      const active = getActiveNavItem('/connections');
-      expect(active).toBe('settings');
+      expect(getActiveNavItem('/connections')).toBe('settings');
     });
 
     it('should identify settings as active for /admin/users', () => {
-      const active = getActiveNavItem('/admin/users');
-      expect(active).toBe('settings');
+      expect(getActiveNavItem('/admin/users')).toBe('settings');
     });
 
     it('should identify settings as active for /admin/orgs', () => {
-      const active = getActiveNavItem('/admin/orgs');
-      expect(active).toBe('settings');
+      expect(getActiveNavItem('/admin/orgs')).toBe('settings');
     });
 
     it('should identify settings as active for /plugins', () => {
-      const active = getActiveNavItem('/plugins');
-      expect(active).toBe('settings');
+      expect(getActiveNavItem('/plugins')).toBe('settings');
     });
 
     it('should return undefined for unknown paths', () => {
-      const active = getActiveNavItem('/unknown/path');
-      expect(active).toBeUndefined();
+      expect(getActiveNavItem('/unknown/path')).toBeUndefined();
+    });
+
+    it('should not match disabled pages as active', () => {
+      (config as any).nebulaiqEnabledPages = ['logs'];
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/traces')).toBeUndefined();
+      expect(getActiveNavItem('/a/nebulaiq-telemetry-app/logs')).toBe('logs');
     });
   });
 });

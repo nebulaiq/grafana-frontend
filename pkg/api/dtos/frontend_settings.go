@@ -264,6 +264,9 @@ type FrontendSettingsDTO struct {
 	PublicDashboardAccessToken string `json:"publicDashboardAccessToken"`
 	PublicDashboardsEnabled    bool   `json:"publicDashboardsEnabled"`
 
+	NebulaIQEnabledPages   []string `json:"nebulaiqEnabledPages,omitempty"`
+	NebulaIQEnabledActions []string `json:"nebulaiqEnabledActions,omitempty"`
+
 	CloudMigrationIsTarget       bool   `json:"cloudMigrationIsTarget"`
 	CloudMigrationFeedbackURL    string `json:"cloudMigrationFeedbackURL"`
 	CloudMigrationPollIntervalMs int    `json:"cloudMigrationPollIntervalMs"`

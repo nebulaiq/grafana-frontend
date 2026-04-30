@@ -236,6 +236,8 @@ func (hs *HTTPServer) getFrontendSettings(c *contextmodel.ReqContext) (*dtos.Fro
 		EnableFrontendSandboxForPlugins:     hs.Cfg.EnableFrontendSandboxForPlugins,
 		PublicDashboardAccessToken:          c.PublicDashboardAccessToken,
 		PublicDashboardsEnabled:             hs.Cfg.PublicDashboardsEnabled,
+		NebulaIQEnabledPages:                hs.Cfg.NebulaIQ.EnabledPages,
+		NebulaIQEnabledActions:              hs.Cfg.NebulaIQ.EnabledActions,
 		CloudMigrationIsTarget:              isCloudMigrationTarget,
 		CloudMigrationFeedbackURL:           hs.Cfg.CloudMigration.FeedbackURL,
 		CloudMigrationPollIntervalMs:        int(hs.Cfg.CloudMigration.FrontendPollInterval.Milliseconds()),
